@@ -1,0 +1,72 @@
+name: Gerar Currículo por Vaga
+
+on:
+  workflow_dispatch:
+    inputs:
+      vaga_id:
+        description: "ID da vaga (ex: remotive_1234)"
+        required: true
+        type: string
+
+jobs:
+  gerar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: "pip"
+
+      - name: Instalar dependências
+        run: pip install -r requirements.txt
+
+      - name: Instalar Playwright (geração de PDF)
+        run: python -m playwright install chromium --with-deps
+        continue-on-error: true
+
+      - name: Baixar vagas.json do Supabase
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
+        run: |
+          python - <<'EOF'
+          import os, json
+          from supabase import create_client
+          sb = create_client(os.environ["SUPABASE_URL"], os.environ["SUPABASE_KEY"])
+          res = sb.table("vagas").select("*").order("score", desc=True).execute()
+          os.makedirs("data", exist_ok=True)
+          with open("data/vagas.json", "w", encoding="utf-8") as f:
+              json.dump(res.data or [], f, ensure_ascii=False, indent=2)
+          print(f"{len(res.data or [])} vagas carregadas do Supabase")
+          EOF
+
+      - name: Gerar currículo para a vaga
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
+        run: python orchestrator.py curriculo "${{ github.event.inputs.vaga_id }}"
+
+      - name: Resumo
+        if: always()
+        run: |
+          echo "### Geração de currículo" >> $GITHUB_STEP_SUMMARY
+          echo "Vaga ID: \`${{ github.event.inputs.vaga_id }}\`" >> $GITHUB_STEP_SUMMARY
+          python - <<'EOF' >> $GITHUB_STEP_SUMMARY
+          import json, os
+          try:
+              vagas = json.load(open("data/vagas.json"))
+              v = next((v for v in vagas if v["id"] == "${{ github.event.inputs.vaga_id }}"), None)
+              if v and v.get("cover_text"):
+                  print(f"✅ Currículo gerado e sincronizado no Supabase")
+              else:
+                  print(f"⚠️ Geração concluída mas cover_text não encontrado")
+          except Exception as e:
+              print(f"❌ Erro: {e}")
+          EOF

@@ -4119,20 +4119,88 @@ async function gerarCurriculoModal() {
   btn.disabled = true;
   msg.textContent = '⟳ Gerando currículo com IA…';
 
+  // Tenta API local primeiro
   try {
     const res = await fetch(`${API_BASE}/api/gerar-curriculo`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ vaga_id: _modalVaga.id }),
+      signal: AbortSignal.timeout(3000),
     });
     const data = await res.json();
     if (!data.ok) { toast(data.msg, 'error'); btn.disabled = false; return; }
     toast('Gerando… aguarde.', 'success');
     _gerarPolling = setInterval(() => _pollGerar(_modalVaga.id), 3000);
-  } catch (_) {
-    toast('API offline.', 'error');
+    return;
+  } catch (_) { /* API offline */ }
+
+  // Fallback: GitHub Actions
+  const ghToken = localStorage.getItem('gh_token');
+  const ghRepo  = localStorage.getItem('gh_repo');
+  if (!ghToken || !ghRepo) {
+    toast('API offline. Configure o GitHub Token em Configurações para gerar online.', 'error');
+    msg.textContent = 'Inicie py api_server.py ou configure GitHub Token.';
+    btn.disabled = false;
+    return;
+  }
+
+  try {
+    const r = await fetch(`https://api.github.com/repos/${ghRepo}/actions/workflows/gerar_curriculo.yml/dispatches`, {
+      method: 'POST',
+      headers: { Authorization: `Bearer ${ghToken}`, 'Content-Type': 'application/json', Accept: 'application/vnd.github+json' },
+      body: JSON.stringify({ ref: 'main', inputs: { vaga_id: _modalVaga.id } }),
+    });
+    if (r.status === 204) {
+      msg.textContent = '⟳ Workflow disparado no GitHub Actions (~3 min)…';
+      toast('Gerando no GitHub Actions! Reabra a vaga em ~3 minutos para ver o resultado.', 'success');
+      // Poll Supabase até cover_text aparecer (máx 5 min)
+      _iniciarPollSupabaseCover(_modalVaga.id);
+    } else {
+      const err = await r.json().catch(() => ({}));
+      toast('Erro GitHub: ' + (err.message || r.status), 'error');
+      btn.disabled = false;
+    }
+  } catch (e) {
+    toast('Falha ao chamar GitHub API: ' + e.message, 'error');
     btn.disabled = false;
   }
+}
+
+function _iniciarPollSupabaseCover(vagaId) {
+  const btn = document.getElementById('mv-btn-gerar');
+  const msg = document.getElementById('mv-cv-loading-msg');
+  let tentativas = 0;
+  const MAX = 30; // 30 × 10s = 5 min
+  const timer = setInterval(async () => {
+    tentativas++;
+    if (tentativas > MAX) {
+      clearInterval(timer);
+      msg.textContent = 'Tempo esgotado. Reabra a vaga para verificar.';
+      if (btn) btn.disabled = false;
+      return;
+    }
+    if (!_sb) return;
+    try {
+      const { data } = await _sb.from('vagas').select('cover_text,curriculo_path,cover_path').eq('id', vagaId).single();
+      if (data?.cover_text) {
+        clearInterval(timer);
+        toast('Currículo gerado!', 'success');
+        // Atualiza vaga local
+        if (_modalVaga && _modalVaga.id === vagaId) {
+          _modalVaga.cover_text    = data.cover_text;
+          _modalVaga.curriculo_path = data.curriculo_path;
+          _modalVaga.cover_path    = data.cover_path;
+          _carregarCover(_modalVaga);
+        }
+        const idx = vagas.findIndex(v => v.id === vagaId);
+        if (idx >= 0) { vagas[idx].cover_text = data.cover_text; salvarVagasLS(); }
+        if (btn) btn.disabled = false;
+        msg.textContent = 'Currículo gerado via GitHub Actions!';
+      } else {
+        msg.textContent = `⟳ Aguardando GitHub Actions… (${tentativas * 10}s)`;
+      }
+    } catch (_) {}
+  }, 10000);
 }
 
 async function _pollGerar(vagaId) {
