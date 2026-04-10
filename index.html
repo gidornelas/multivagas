@@ -142,6 +142,103 @@
     line-height: 1.5714;
   }
 
+  /* ── Auth Screen ────────────────────────────────────── */
+  #auth-screen {
+    position: fixed;
+    inset: 0;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    background:
+      radial-gradient(circle at 20% 20%, rgba(79, 111, 47, 0.2), transparent 50%),
+      radial-gradient(circle at 80% 0%, rgba(46, 58, 107, 0.26), transparent 45%),
+      var(--colorBgLayout);
+    z-index: 1200;
+  }
+  body.auth-locked #auth-screen { display: flex; }
+  body.auth-locked #sidebar,
+  body.auth-locked #main,
+  body.auth-locked #tema-fab,
+  body.auth-locked #tema-overlay,
+  body.auth-locked #tema-panel,
+  body.auth-locked #toast { display: none !important; }
+  .auth-card {
+    width: 100%;
+    max-width: 420px;
+    background: var(--colorBgElevated);
+    border: 1px solid var(--colorBorder);
+    border-radius: var(--borderRadiusLG);
+    padding: 22px;
+    box-shadow: var(--boxShadowSecondary);
+  }
+  .auth-logo {
+    width: 72%;
+    max-width: 220px;
+    display: block;
+    margin: 2px auto 18px;
+  }
+  .auth-title {
+    font-size: 1.08rem;
+    font-weight: 700;
+    color: var(--colorTextBase);
+    margin-bottom: 4px;
+  }
+  .auth-subtitle {
+    font-size: .82rem;
+    color: var(--colorTextSecondary);
+    margin-bottom: 16px;
+  }
+  .auth-label {
+    display: block;
+    font-size: .8rem;
+    color: var(--colorTextSecondary);
+    margin: 8px 0 4px;
+  }
+  .auth-input {
+    width: 100%;
+    height: 38px;
+    border: 1px solid var(--colorBorder);
+    border-radius: var(--borderRadiusSM);
+    padding: 0 10px;
+    font-size: .9rem;
+    color: var(--colorText);
+    background: var(--colorBgInput);
+    outline: none;
+  }
+  .auth-input:focus {
+    border-color: var(--colorPrimary);
+    box-shadow: 0 0 0 3px rgba(79, 111, 47, 0.14);
+  }
+  .auth-actions { margin-top: 14px; }
+  .auth-btn {
+    width: 100%;
+    height: 38px;
+    border: 1px solid var(--colorPrimary);
+    border-radius: var(--borderRadiusSM);
+    background: var(--colorPrimary);
+    color: #fff;
+    font-size: .9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background .12s, border-color .12s, transform .12s;
+  }
+  .auth-btn:hover { background: var(--colorPrimaryHover); border-color: var(--colorPrimaryHover); }
+  .auth-btn:active { transform: scale(.99); }
+  .auth-feedback {
+    min-height: 20px;
+    margin-top: 10px;
+    font-size: .78rem;
+    color: var(--colorErrorText);
+  }
+  .auth-feedback.success { color: var(--colorSuccessText); }
+  .auth-note {
+    margin-top: 8px;
+    font-size: .74rem;
+    color: var(--colorTextTertiary);
+    line-height: 1.45;
+  }
+
   /* ── Sidebar ─────────────────────────────────────────── */
   #sidebar {
     width: 220px;
@@ -209,9 +306,29 @@
   /* Separador visual na nav antes do "Tema" */
   #sidebar nav a[onclick*="TemaPanel"] { margin-top: 8px; border-top: 1px solid rgba(255, 255, 255, 0.2); padding-top: 14px; }
   #sidebar .sidebar-footer {
-    padding: 12px 16px; font-size: .73rem;
-    color: rgba(255, 255, 255, 0.72); border-top: 1px solid rgba(255, 255, 255, 0.16);
+    padding: 12px 16px;
+    font-size: .73rem;
+    color: rgba(255, 255, 255, 0.72);
+    border-top: 1px solid rgba(255, 255, 255, 0.16);
   }
+  #sidebar .sidebar-footer .auth-user {
+    display: block;
+    font-size: .7rem;
+    color: rgba(255, 255, 255, 0.84);
+    margin: 2px 0 8px;
+    word-break: break-all;
+  }
+  #sidebar .sidebar-footer .logout-btn {
+    width: 100%;
+    height: 30px;
+    border: 1px solid rgba(255, 255, 255, 0.28);
+    background: rgba(255, 255, 255, 0.1);
+    color: #fff;
+    border-radius: var(--borderRadiusSM);
+    font-size: .78rem;
+    cursor: pointer;
+  }
+  #sidebar .sidebar-footer .logout-btn:hover { background: rgba(255, 255, 255, 0.18); }
 
   /* ── Main ────────────────────────────────────────────── */
   #main { margin-left: 220px; flex: 1; min-height: 100vh; background: var(--colorBgLayout); position: relative; }
@@ -1192,11 +1309,30 @@
   .tp-reset-btn:hover { border-color: var(--colorErrorBorder); color: var(--colorErrorText); background: var(--colorErrorBg); }
 </style>
 </head>
-<body>
+<body class="auth-locked">
 
 <!-- ══════════════════════════════════════════════════════
      SIDEBAR
 ══════════════════════════════════════════════════════ -->
+<div id="auth-screen">
+  <div class="auth-card">
+    <img class="auth-logo" src="assets/inclua_logo_3.png" alt="Multivagas" />
+    <div class="auth-title">Entrar no painel</div>
+    <div class="auth-subtitle">Use seu e-mail e senha para acessar o dashboard.</div>
+    <form id="auth-form" onsubmit="signInWithEmailPassword(event)">
+      <label class="auth-label" for="auth-email">E-mail</label>
+      <input id="auth-email" class="auth-input" type="email" autocomplete="email" required placeholder="voce@exemplo.com" />
+      <label class="auth-label" for="auth-password">Senha</label>
+      <input id="auth-password" class="auth-input" type="password" autocomplete="current-password" required placeholder="Sua senha" />
+      <div class="auth-actions">
+        <button id="auth-submit" class="auth-btn" type="submit">Entrar</button>
+      </div>
+      <div id="auth-feedback" class="auth-feedback"></div>
+      <div id="auth-note" class="auth-note"></div>
+    </form>
+  </div>
+</div>
+
 <aside id="sidebar">
   <div class="logo">
     <img src="assets/inclua_logo_3.png" alt="Multivagas" />
@@ -1226,6 +1362,8 @@
   </nav>
   <div class="sidebar-footer">
     Fase 4 — Abril 2026
+    <span class="auth-user" id="auth-user-email">não autenticado</span>
+    <button type="button" class="logout-btn" onclick="logoutUser()">Sair</button>
   </div>
 </aside>
 
@@ -2079,6 +2217,7 @@ function escapeHtml(s) {
 // Supabase — init lazy
 // ═══════════════════════════════════════════════════════
 let _sb = null;
+let _authListenerBound = false;
 
 function initSupabase() {
   const url = localStorage.getItem('mv_sb_url') || '';
@@ -2090,6 +2229,113 @@ function initSupabase() {
   } catch(e) {
     _sb = null; return false;
   }
+}
+
+function _setAuthLocked(locked) {
+  document.body.classList.toggle('auth-locked', !!locked);
+}
+
+function _setAuthFeedback(message = '', type = 'error') {
+  const el = document.getElementById('auth-feedback');
+  if (!el) return;
+  el.textContent = message;
+  el.classList.remove('success');
+  if (type === 'success') el.classList.add('success');
+}
+
+function _setAuthNote(message = '') {
+  const el = document.getElementById('auth-note');
+  if (el) el.textContent = message;
+}
+
+function _setAuthUserEmail(email = '') {
+  const el = document.getElementById('auth-user-email');
+  if (el) el.textContent = email || 'não autenticado';
+}
+
+function _registerAuthListener() {
+  if (!_sb || _authListenerBound) return;
+  _sb.auth.onAuthStateChange((_event, session) => {
+    const email = session?.user?.email || '';
+    _setAuthUserEmail(email);
+    _setAuthLocked(!session);
+  });
+  _authListenerBound = true;
+}
+
+async function ensureAuthSession() {
+  if (!_sb) {
+    _setAuthLocked(true);
+    _setAuthUserEmail('não autenticado');
+    _setAuthNote('Configure Supabase em Configurações para habilitar o login.');
+    return false;
+  }
+  try {
+    const { data, error } = await _sb.auth.getSession();
+    if (error) throw error;
+    const session = data?.session || null;
+    _setAuthUserEmail(session?.user?.email || 'não autenticado');
+    _setAuthLocked(!session);
+    return !!session;
+  } catch (e) {
+    _setAuthLocked(true);
+    _setAuthUserEmail('não autenticado');
+    _setAuthFeedback(e.message || 'Não foi possível validar a sessão.');
+    return false;
+  }
+}
+
+async function signInWithEmailPassword(event) {
+  event.preventDefault();
+  if (!_sb && !initSupabase()) {
+    _setAuthFeedback('Supabase não configurado. Defina URL e Anon Key na aba Configurações.');
+    _setAuthNote('Sem credenciais do Supabase não é possível autenticar com e-mail e senha.');
+    return;
+  }
+
+  const emailEl = document.getElementById('auth-email');
+  const passwordEl = document.getElementById('auth-password');
+  const submitEl = document.getElementById('auth-submit');
+  const email = (emailEl?.value || '').trim();
+  const password = passwordEl?.value || '';
+
+  if (!email || !password) {
+    _setAuthFeedback('Preencha e-mail e senha.');
+    return;
+  }
+
+  _setAuthFeedback('Entrando...', 'success');
+  if (submitEl) submitEl.disabled = true;
+
+  try {
+    const { data, error } = await _sb.auth.signInWithPassword({ email, password });
+    if (error) throw error;
+    _setAuthUserEmail(data?.user?.email || email);
+    _setAuthFeedback('Login realizado com sucesso.', 'success');
+    _setAuthLocked(false);
+    _setAuthNote('');
+  } catch (e) {
+    _setAuthFeedback(e.message || 'Falha ao autenticar. Verifique seu e-mail e senha.');
+  } finally {
+    if (submitEl) submitEl.disabled = false;
+  }
+}
+
+async function logoutUser() {
+  if (!_sb) {
+    _setAuthLocked(true);
+    _setAuthUserEmail('não autenticado');
+    return;
+  }
+  try {
+    const { error } = await _sb.auth.signOut();
+    if (error) throw error;
+  } catch (e) {
+    toast(e.message || 'Falha ao encerrar sessão.', 'error');
+  }
+  _setAuthLocked(true);
+  _setAuthUserEmail('não autenticado');
+  _setAuthFeedback('Sessão encerrada.', 'success');
 }
 
 async function sbGet(table, opts = {}) {
@@ -4140,6 +4386,13 @@ renderConfig();
 document.addEventListener('DOMContentLoaded', async () => {
   carregarTemaLS();
   initSupabase();
+  _registerAuthListener();
+
+  const autenticado = await ensureAuthSession();
+  if (!autenticado) {
+    _atualizarBadgeSupabase();
+    return;
+  }
 
   // Preenche campos de config do Supabase na página de Configurações
   _preencherCamposSupabase();
