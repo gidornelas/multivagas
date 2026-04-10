@@ -4001,16 +4001,31 @@ function _carregarIframe(v) {
 async function _carregarCover(v) {
   const ta = document.getElementById('mv-cover-text');
   ta.value = '';
+
+  // Se a vaga já tem cover_text direto (vindo do Supabase), usa imediatamente
+  if (v.cover_text) { ta.value = v.cover_text; return; }
+
   if (!v.cover_path) { ta.placeholder = 'Nenhuma cover letter gerada.'; return; }
+
+  // Tenta API local
   const fname = v.cover_path.split(/[\\/]/).pop();
   try {
     const res = await fetch(`${API_BASE}/api/output/cover?f=${encodeURIComponent(fname)}`,
                             { signal: AbortSignal.timeout(3000) });
-    if (res.ok) { ta.value = await res.text(); }
-    else        { ta.placeholder = 'Não foi possível carregar a cover letter.'; }
-  } catch (_) {
-    ta.placeholder = 'API offline — cover letter indisponível.';
+    if (res.ok) { ta.value = await res.text(); return; }
+  } catch (_) { /* API offline */ }
+
+  // Fallback: busca cover_text direto no Supabase
+  if (_sb && v.id) {
+    try {
+      const { data } = await _sb.from('vagas').select('cover_text').eq('id', v.id).single();
+      if (data?.cover_text) { ta.value = data.cover_text; return; }
+    } catch (_) {}
   }
+
+  ta.placeholder = v.cover_path
+    ? 'API offline — rode o servidor local para ver a cover letter.'
+    : 'Nenhuma cover letter gerada.';
 }
 
 async function _preencherEmail(v) {

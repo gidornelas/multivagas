@@ -87,15 +87,18 @@ def get_vagas() -> list[dict]:
         return []
 
 
-def marcar_curriculo_gerado(vaga_id: str, curriculo_path: str, cover_path: str) -> bool:
+def marcar_curriculo_gerado(vaga_id: str, curriculo_path: str, cover_path: str, cover_text: str = "") -> bool:
     sb = get_client()
     if not sb:
         return False
     try:
-        sb.table("vagas").update({
+        payload = {
             "curriculo_path": curriculo_path,
             "cover_path": cover_path,
-        }).eq("id", vaga_id).execute()
+        }
+        if cover_text:
+            payload["cover_text"] = cover_text
+        sb.table("vagas").update(payload).eq("id", vaga_id).execute()
         return True
     except Exception as e:
         print(f"[Supabase] Erro ao marcar curriculo gerado: {e}")
