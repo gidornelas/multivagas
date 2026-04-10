@@ -87,7 +87,7 @@ def get_vagas() -> list[dict]:
         return []
 
 
-def marcar_curriculo_gerado(vaga_id: str, curriculo_path: str, cover_path: str, cover_text: str = "") -> bool:
+def marcar_curriculo_gerado(vaga_id: str, curriculo_path: str, cover_path: str, cover_text: str = "", curriculo_html: str = "") -> bool:
     sb = get_client()
     if not sb:
         return False
@@ -98,6 +98,8 @@ def marcar_curriculo_gerado(vaga_id: str, curriculo_path: str, cover_path: str, 
         }
         if cover_text:
             payload["cover_text"] = cover_text
+        if curriculo_html:
+            payload["curriculo_html"] = curriculo_html
         sb.table("vagas").update(payload).eq("id", vaga_id).execute()
         return True
     except Exception as e:

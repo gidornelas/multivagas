@@ -147,10 +147,11 @@ def _run_gerar_curriculo(vaga_id: str) -> None:
     except Exception:
         pass
 
-    # Lê texto da cover letter gerada
+    # Lê texto da cover letter e HTML do currículo
+    from pathlib import Path as _Path
+
     if cover_path:
         try:
-            from pathlib import Path as _Path
             cp = _Path(cover_path)
             if not cp.is_absolute():
                 cp = ROOT / cp
@@ -159,9 +160,20 @@ def _run_gerar_curriculo(vaga_id: str) -> None:
         except Exception:
             pass
 
+    curriculo_html = ""
+    if curriculo_path:
+        try:
+            hp = _Path(curriculo_path)
+            if not hp.is_absolute():
+                hp = ROOT / hp
+            if hp.exists():
+                curriculo_html = hp.read_text(encoding="utf-8")
+        except Exception:
+            pass
+
     # Sincroniza com Supabase
     if not err and curriculo_path and _SB_DISPONIVEL:
-        marcar_curriculo_gerado(vaga_id, curriculo_path or "", cover_path or "", cover_text)
+        marcar_curriculo_gerado(vaga_id, curriculo_path or "", cover_path or "", cover_text, curriculo_html)
 
     with _gerar_lock:
         _gerar_states[vaga_id].update(

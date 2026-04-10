@@ -4026,33 +4026,63 @@ function _toggle(id, show) {
   if (el) el.style.display = show ? '' : 'none';
 }
 
-function _carregarIframe(v) {
-  const iframe  = document.getElementById('mv-iframe');
-  const loading = document.getElementById('mv-cv-loading');
-  const msg     = document.getElementById('mv-cv-loading-msg');
+async function _carregarIframe(v) {
+  const iframe   = document.getElementById('mv-iframe');
+  const loading  = document.getElementById('mv-cv-loading');
+  const msg      = document.getElementById('mv-cv-loading-msg');
   const btnGerar = document.getElementById('mv-btn-gerar');
 
-  iframe.style.display  = 'none';
-  loading.style.display = 'flex';
+  iframe.style.display   = 'none';
+  loading.style.display  = 'flex';
   btnGerar.style.display = 'none';
 
-  if (!v.curriculo_path) {
+  if (!v.curriculo_path && !v.curriculo_html) {
     msg.textContent = 'Currículo ainda não gerado para esta vaga.';
     btnGerar.style.display = 'inline-flex';
     return;
   }
 
-  const fname = v.curriculo_path.split(/[\\/]/).pop();
-  const src   = `${API_BASE}/api/output/pdf?f=${encodeURIComponent(fname)}`;
-  iframe.onload = () => {
-    loading.style.display = 'none';
-    iframe.style.display  = 'block';
-  };
-  iframe.onerror = () => {
-    msg.textContent = 'API offline — não foi possível carregar o currículo.';
-    btnGerar.style.display = 'none';
-  };
-  iframe.src = src;
+  function _mostrarHtml(html) {
+    const blob = new Blob([html], { type: 'text/html' });
+    const url  = URL.createObjectURL(blob);
+    iframe.onload = () => {
+      loading.style.display = 'none';
+      iframe.style.display  = 'block';
+      URL.revokeObjectURL(url);
+    };
+    iframe.src = url;
+  }
+
+  // Se já tem o HTML em memória (vindo do Supabase), usa direto
+  if (v.curriculo_html) { _mostrarHtml(v.curriculo_html); return; }
+
+  // Tenta API local
+  if (v.curriculo_path) {
+    const fname = v.curriculo_path.split(/[\\/]/).pop();
+    try {
+      const res = await fetch(`${API_BASE}/api/output/pdf?f=${encodeURIComponent(fname)}`,
+                              { signal: AbortSignal.timeout(3000) });
+      if (res.ok) { _mostrarHtml(await res.text()); return; }
+    } catch (_) { /* API offline */ }
+  }
+
+  // Fallback: busca curriculo_html do Supabase
+  if (_sb && v.id) {
+    try {
+      msg.textContent = '⟳ Carregando currículo da nuvem…';
+      const { data } = await _sb.from('vagas').select('curriculo_html').eq('id', v.id).single();
+      if (data?.curriculo_html) {
+        v.curriculo_html = data.curriculo_html;
+        _mostrarHtml(data.curriculo_html);
+        return;
+      }
+    } catch (_) {}
+  }
+
+  msg.textContent = v.curriculo_path
+    ? 'Inicie py api_server.py para visualizar o currículo.'
+    : 'Currículo ainda não gerado para esta vaga.';
+  if (!v.curriculo_path) btnGerar.style.display = 'inline-flex';
 }
 
 async function _carregarCover(v) {
