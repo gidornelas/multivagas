@@ -58,6 +58,8 @@ PORT              = 5001
 # ── Estado da busca ────────────────────────────────────
 _busca_state: dict = {"running": False, "started_at": None, "finished_at": None, "error": None}
 _busca_lock = threading.Lock()
+_busca_log: list[str] = []
+_busca_log_lock = threading.Lock()
 
 # ── Estado por geração de currículo ───────────────────
 _gerar_states: dict = {}
@@ -67,14 +69,35 @@ _gerar_lock   = threading.Lock()
 # ── Workers ───────────────────────────────────────────
 
 def _run_busca() -> None:
+    import io
     cmd = [sys.executable, str(BASE / "orchestrator.py"), "busca"]
     with _busca_lock:
         _busca_state.update(running=True, started_at=time.time(), finished_at=None, error=None)
+    with _busca_log_lock:
+        _busca_log.clear()
+        _busca_log.append("▶ Busca iniciada…")
+    err = None
     try:
-        proc = subprocess.run(cmd, cwd=str(BASE), capture_output=False, text=True)
-        err = None if proc.returncode == 0 else f"Exit code {proc.returncode}"
+        proc = subprocess.Popen(
+            cmd, cwd=str(BASE),
+            stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
+            text=True, encoding="utf-8", errors="replace",
+            bufsize=1,
+        )
+        for line in proc.stdout:
+            line = line.rstrip()
+            if line:
+                with _busca_log_lock:
+                    _busca_log.append(line)
+                    if len(_busca_log) > 500:
+                        _busca_log.pop(0)
+        proc.wait()
+        if proc.returncode != 0:
+            err = f"Exit code {proc.returncode}"
     except Exception as exc:
         err = str(exc)
+    with _busca_log_lock:
+        _busca_log.append("✓ Busca concluída." if not err else f"✗ Erro: {err}")
     with _busca_lock:
         _busca_state.update(running=False, finished_at=time.time(), error=err)
     # Após busca concluída, sincroniza vagas locais com Supabase
@@ -166,6 +189,13 @@ class _Handler(BaseHTTPRequestHandler):
         if path == "/api/status":
             with _busca_lock:
                 self._json(dict(_busca_state))
+
+        elif path == "/api/busca-log":
+            since = int(params.get("since", ["0"])[0])
+            with _busca_log_lock:
+                linhas = _busca_log[since:]
+                total  = len(_busca_log)
+            self._json({"lines": linhas, "total": total})
 
         elif path == "/api/vagas":
             # Tenta Supabase; fallback JSON local

@@ -2127,6 +2127,20 @@
         <span style="font-size:.76rem;opacity:.8">Deixe o terminal aberto enquanto usa o dashboard. Ou use o atalho <strong>iniciar_dashboard.bat</strong>.</span>
       </div>
 
+      <!-- Terminal de log da busca -->
+      <div id="busca-terminal-wrap" style="display:none;margin-top:12px">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px">
+          <span style="font-size:.72rem;text-transform:uppercase;letter-spacing:.06em;color:var(--colorTextTertiary)">Terminal</span>
+          <button class="btn btn-ghost btn-sm" style="font-size:.7rem;padding:2px 8px" onclick="document.getElementById('busca-terminal').scrollTop=document.getElementById('busca-terminal').scrollHeight">↓ Fim</button>
+        </div>
+        <div id="busca-terminal" style="
+          background:#0f1117;color:#c8ffc8;font-family:'Fira Mono','Consolas',monospace;
+          font-size:.74rem;line-height:1.55;padding:12px 14px;border-radius:var(--borderRadiusSM);
+          height:220px;overflow-y:auto;white-space:pre-wrap;word-break:break-all;
+          border:1px solid #1e2a1e;
+        "></div>
+      </div>
+
       <!-- Comandos manuais (recolhíveis) -->
       <details class="cmd-details">
         <summary>Rodar manualmente no terminal</summary>
@@ -3569,6 +3583,7 @@ async function executarBuscaAPI() {
     if (!data.ok) { toast(data.msg, 'error'); return; }
     btn.disabled = true;
     _setBuscaState('running');
+    _abrirTerminal();
     toast('Busca iniciada!', 'success');
     _buscaPolling = setInterval(_pollBuscaStatus, 2500);
     return;
@@ -3617,16 +3632,20 @@ function limparGithubConfig() {
   toast('Configuração GitHub removida.', 'info');
 }
 
+let _logOffset = 0;
+
 async function _pollBuscaStatus() {
   try {
     const res = await fetch(API_BASE + '/api/status', { signal: AbortSignal.timeout(2000) });
     const data = await res.json();
+    // Busca log ao mesmo tempo
+    _pollBuscaLog();
     if (!data.running) {
       clearInterval(_buscaPolling); _buscaPolling = null;
       document.getElementById('btn-executar-busca').disabled = false;
       if (data.error) {
         _setBuscaState('error');
-        toast('Erro na busca. Veja o terminal do api_server.py.', 'error');
+        toast('Erro na busca. Veja o terminal.', 'error');
       } else {
         _setBuscaState('success');
         await _carregarVagasAPI();
@@ -3637,6 +3656,44 @@ async function _pollBuscaStatus() {
     document.getElementById('btn-executar-busca').disabled = false;
     _setBuscaState('idle');
   }
+}
+
+async function _pollBuscaLog() {
+  try {
+    const res = await fetch(`${API_BASE}/api/busca-log?since=${_logOffset}`, { signal: AbortSignal.timeout(2000) });
+    if (!res.ok) return;
+    const data = await res.json();
+    if (!data.lines?.length) return;
+    const term = document.getElementById('busca-terminal');
+    if (!term) return;
+    data.lines.forEach(l => {
+      const span = document.createElement('div');
+      // Colorização simples
+      const cor = l.startsWith('✓') ? '#a8e6a8'
+                : l.startsWith('✗') || l.includes('Erro') ? '#ff9090'
+                : l.startsWith('▶') ? '#ffe080'
+                : l.match(/^\[.*\]/) ? '#80cfff'
+                : '#c8ffc8';
+      span.style.color = cor;
+      span.textContent = l;
+      term.appendChild(span);
+    });
+    _logOffset = data.total;
+    term.scrollTop = term.scrollHeight;
+  } catch (_) {}
+}
+
+function _abrirTerminal() {
+  const wrap = document.getElementById('busca-terminal-wrap');
+  if (wrap) wrap.style.display = 'block';
+  const term = document.getElementById('busca-terminal');
+  if (term) { term.innerHTML = ''; }
+  _logOffset = 0;
+}
+
+function _fecharTerminal() {
+  const wrap = document.getElementById('busca-terminal-wrap');
+  if (wrap) wrap.style.display = 'none';
 }
 
 async function _carregarVagasAPI() {
