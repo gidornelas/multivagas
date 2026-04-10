@@ -4144,17 +4144,25 @@ async function gerarCurriculoModal() {
     return;
   }
 
+  const vagaId = (_modalVaga.id || '').toString().trim();
+  if (!vagaId) {
+    toast('Esta vaga não tem ID — não é possível gerar via GitHub Actions.', 'error');
+    msg.textContent = 'Vaga sem ID. Use o servidor local.';
+    btn.disabled = false;
+    return;
+  }
+
   try {
     const r = await fetch(`https://api.github.com/repos/${ghRepo}/actions/workflows/gerar_curriculo.yml/dispatches`, {
       method: 'POST',
       headers: { Authorization: `Bearer ${ghToken}`, 'Content-Type': 'application/json', Accept: 'application/vnd.github+json' },
-      body: JSON.stringify({ ref: 'main', inputs: { vaga_id: _modalVaga.id } }),
+      body: JSON.stringify({ ref: 'main', inputs: { vaga_id: vagaId } }),
     });
     if (r.status === 204) {
       msg.textContent = '⟳ Workflow disparado no GitHub Actions (~3 min)…';
-      toast('Gerando no GitHub Actions! Reabra a vaga em ~3 minutos para ver o resultado.', 'success');
+      toast('Gerando no GitHub Actions! Aguarde ~3 minutos.', 'success');
       // Poll Supabase até cover_text aparecer (máx 5 min)
-      _iniciarPollSupabaseCover(_modalVaga.id);
+      _iniciarPollSupabaseCover(vagaId);
     } else {
       const err = await r.json().catch(() => ({}));
       toast('Erro GitHub: ' + (err.message || r.status), 'error');
