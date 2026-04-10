@@ -2413,8 +2413,8 @@ let _sb = null;
 let _authListenerBound = false;
 
 function initSupabase() {
-  const url = localStorage.getItem('mv_sb_url') || '';
-  const key = localStorage.getItem('mv_sb_key') || '';
+  const url = localStorage.getItem('mv_sb_url') || 'https://jmlcylmaxnpwfcaobwdy.supabase.co';
+  const key = localStorage.getItem('mv_sb_key') || 'sb_publishable_d4txCakJobNEYSpi7KxB_g_CCmEL5M1';
   if (!url || !key) { _sb = null; return false; }
   try {
     _sb = supabase.createClient(url, key);
