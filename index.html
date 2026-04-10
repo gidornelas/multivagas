@@ -3080,16 +3080,14 @@ function aplicarFiltros() {
       if (!ok) return false;
     }
 
-    // Tags (OR dentro do grupo — cada tag ativa amplia o resultado)
+    // Tags (AND entre todas as tags ativas — a vaga deve satisfazer TODAS)
     if (_filtros.tags.size > 0) {
       const isPcd  = !!(v.pcd || v.pcd_detectado);
-      const isPtbr = v.idioma_vaga === 'pt' || v.idioma_vaga === 'pt-BR' || !!v.ptbr || (v.plataforma||'').match(/BR|Gupy|Catho|Adzuna BR/i);
+      const isPtbr = v.idioma_vaga === 'pt' || v.idioma_vaga === 'pt-BR' || !!v.ptbr || !!(v.plataforma||'').match(/BR|Gupy|Catho|Adzuna BR/i);
       const isDe   = (v.titulo||'').toLowerCase().includes('design eng');
-      let ok = false;
-      if (_filtros.tags.has('pcd')  && isPcd)  ok = true;
-      if (_filtros.tags.has('ptbr') && isPtbr) ok = true;
-      if (_filtros.tags.has('de')   && isDe)   ok = true;
-      if (!ok) return false;
+      if (_filtros.tags.has('pcd')  && !isPcd)  return false;
+      if (_filtros.tags.has('ptbr') && !isPtbr) return false;
+      if (_filtros.tags.has('de')   && !isDe)   return false;
     }
 
     // Status (OR dentro do grupo)
