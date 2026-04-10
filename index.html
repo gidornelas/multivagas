@@ -151,8 +151,8 @@
     justify-content: center;
     padding: 24px;
     background:
-      radial-gradient(circle at 20% 20%, rgba(79, 111, 47, 0.2), transparent 50%),
-      radial-gradient(circle at 80% 0%, rgba(46, 58, 107, 0.26), transparent 45%),
+      radial-gradient(circle at 12% 12%, rgba(79, 111, 47, 0.22), transparent 38%),
+      radial-gradient(circle at 88% 0%, rgba(46, 58, 107, 0.22), transparent 44%),
       var(--colorBgLayout);
     z-index: 1200;
   }
@@ -163,31 +163,141 @@
   body.auth-locked #tema-overlay,
   body.auth-locked #tema-panel,
   body.auth-locked #toast { display: none !important; }
+  .auth-shell {
+    width: 100%;
+    max-width: 900px;
+    min-height: 540px;
+    border: 1px solid var(--colorBorder);
+    border-radius: 18px;
+    overflow: hidden;
+    box-shadow: var(--boxShadowSecondary);
+    background: var(--colorBgElevated);
+    display: grid;
+    grid-template-columns: 1.1fr .9fr;
+  }
+  .auth-brand {
+    position: relative;
+    padding: 34px 32px;
+    background:
+      linear-gradient(160deg, rgba(46, 58, 107, 0.95), rgba(46, 58, 107, 0.78)),
+      linear-gradient(35deg, rgba(79, 111, 47, 0.48), rgba(169, 194, 125, 0.1));
+    color: rgba(255, 255, 255, 0.92);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  .auth-brand::after {
+    content: '';
+    position: absolute;
+    right: -120px;
+    bottom: -120px;
+    width: 280px;
+    height: 280px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(169, 194, 125, 0.38), transparent 70%);
+  }
+  .auth-brand-kicker {
+    font-size: .74rem;
+    letter-spacing: .09em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.72);
+    margin-bottom: 14px;
+  }
+  .auth-brand-logo {
+    width: 160px;
+    max-width: 72%;
+    display: block;
+    margin-bottom: 16px;
+  }
+  .auth-brand h2 {
+    font-size: 1.9rem;
+    line-height: 1.08;
+    color: #fff;
+    margin-bottom: 12px;
+  }
+  .auth-brand p {
+    font-size: .88rem;
+    line-height: 1.55;
+    color: rgba(255, 255, 255, 0.84);
+    max-width: 320px;
+  }
+  .auth-brand-list {
+    margin-top: 18px;
+    display: grid;
+    gap: 8px;
+  }
+  .auth-brand-list span {
+    font-size: .8rem;
+    color: rgba(255, 255, 255, 0.9);
+  }
   .auth-card {
     width: 100%;
-    max-width: 420px;
     background: var(--colorBgElevated);
-    border: 1px solid var(--colorBorder);
-    border-radius: var(--borderRadiusLG);
-    padding: 22px;
-    box-shadow: var(--boxShadowSecondary);
+    padding: 28px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  .auth-card {
+    border-left: 1px solid var(--colorBorderSecondary);
   }
   .auth-logo {
     width: 58%;
     max-width: 176px;
     display: block;
-    margin: 2px auto 18px;
+    margin: 0 auto 14px;
   }
   .auth-title {
-    font-size: 1.08rem;
-    font-weight: 700;
+    text-align: center;
+    font-size: 2rem;
+    font-weight: 800;
     color: var(--colorTextBase);
-    margin-bottom: 4px;
+    margin-bottom: 6px;
+    letter-spacing: -.02em;
   }
   .auth-subtitle {
-    font-size: .82rem;
+    text-align: center;
+    font-size: .8rem;
     color: var(--colorTextSecondary);
-    margin-bottom: 16px;
+    margin-bottom: 14px;
+  }
+  .auth-social {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    margin-bottom: 14px;
+  }
+  .auth-social button {
+    height: 34px;
+    border: 1px solid var(--colorBorder);
+    border-radius: var(--borderRadiusSM);
+    background: var(--colorBgContainer);
+    color: var(--colorTextSecondary);
+    font-size: .78rem;
+    font-weight: 600;
+    cursor: default;
+  }
+  .auth-divider {
+    position: relative;
+    text-align: center;
+    font-size: .72rem;
+    color: var(--colorTextTertiary);
+    margin: 2px 0 12px;
+  }
+  .auth-divider::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 50%;
+    border-top: 1px solid var(--colorBorderSecondary);
+    z-index: 0;
+  }
+  .auth-divider span {
+    position: relative;
+    z-index: 1;
+    background: var(--colorBgElevated);
+    padding: 0 8px;
   }
   .auth-label {
     display: block;
@@ -197,10 +307,10 @@
   }
   .auth-input {
     width: 100%;
-    height: 38px;
+    height: 40px;
     border: 1px solid var(--colorBorder);
     border-radius: var(--borderRadiusSM);
-    padding: 0 10px;
+    padding: 0 12px;
     font-size: .9rem;
     color: var(--colorText);
     background: var(--colorBgInput);
@@ -210,13 +320,24 @@
     border-color: var(--colorPrimary);
     box-shadow: 0 0 0 3px rgba(79, 111, 47, 0.14);
   }
+  .auth-meta {
+    margin-top: 8px;
+    display: flex;
+    justify-content: flex-end;
+  }
+  .auth-meta a {
+    font-size: .76rem;
+    color: var(--colorPrimaryText);
+    text-decoration: none;
+  }
+  .auth-meta a:hover { color: var(--colorPrimaryTextHover); text-decoration: underline; }
   .auth-actions { margin-top: 14px; }
   .auth-btn {
     width: 100%;
-    height: 38px;
+    height: 40px;
     border: 1px solid var(--colorPrimary);
     border-radius: var(--borderRadiusSM);
-    background: var(--colorPrimary);
+    background: linear-gradient(140deg, var(--colorPrimary), var(--colorPrimaryHover));
     color: #fff;
     font-size: .9rem;
     font-weight: 600;
@@ -237,6 +358,15 @@
     font-size: .74rem;
     color: var(--colorTextTertiary);
     line-height: 1.45;
+  }
+  @media (max-width: 860px) {
+    .auth-shell {
+      max-width: 460px;
+      min-height: auto;
+      grid-template-columns: 1fr;
+    }
+    .auth-brand { display: none; }
+    .auth-card { border-left: 0; }
   }
 
   /* ── Sidebar ─────────────────────────────────────────── */
@@ -1315,21 +1445,44 @@
      SIDEBAR
 ══════════════════════════════════════════════════════ -->
 <div id="auth-screen">
-  <div class="auth-card">
-    <img class="auth-logo" src="assets/inclua_logo_3.png" alt="Multivagas" />
-    <div class="auth-title">Entrar no painel</div>
-    <div class="auth-subtitle">Use seu e-mail e senha para acessar o dashboard.</div>
-    <form id="auth-form" onsubmit="signInWithEmailPassword(event)">
-      <label class="auth-label" for="auth-email">E-mail</label>
-      <input id="auth-email" class="auth-input" type="email" autocomplete="email" required placeholder="voce@exemplo.com" />
-      <label class="auth-label" for="auth-password">Senha</label>
-      <input id="auth-password" class="auth-input" type="password" autocomplete="current-password" required placeholder="Sua senha" />
-      <div class="auth-actions">
-        <button id="auth-submit" class="auth-btn" type="submit">Entrar</button>
+  <div class="auth-shell">
+    <div class="auth-brand">
+      <div>
+        <img class="auth-brand-logo" src="assets/inclua_logo_3.png" alt="Multi Vagas" />
+        <h2>Seu pipeline de candidaturas em um só lugar</h2>
+        <p>Monitore vagas, personalize currículo e mantenha follow-up com fluxo contínuo e organizado.</p>
       </div>
-      <div id="auth-feedback" class="auth-feedback"></div>
-      <div id="auth-note" class="auth-note"></div>
-    </form>
+      <div class="auth-brand-list">
+        <span>Dados centralizados em nuvem</span>
+        <span>Atualização de pipeline com um clique</span>
+        <span>Controle de candidatura e status</span>
+      </div>
+    </div>
+
+    <div class="auth-card">
+      <div class="auth-title">Sign in</div>
+      <div class="auth-subtitle">Acesse com seu e-mail e senha</div>
+      <div class="auth-social" aria-hidden="true">
+        <button type="button" tabindex="-1">Google</button>
+        <button type="button" tabindex="-1">GitHub</button>
+        <button type="button" tabindex="-1">LinkedIn</button>
+      </div>
+      <div class="auth-divider"><span>ou use sua conta</span></div>
+      <form id="auth-form" onsubmit="signInWithEmailPassword(event)">
+        <label class="auth-label" for="auth-email">E-mail</label>
+        <input id="auth-email" class="auth-input" type="email" autocomplete="email" required placeholder="voce@exemplo.com" />
+        <label class="auth-label" for="auth-password">Senha</label>
+        <input id="auth-password" class="auth-input" type="password" autocomplete="current-password" required placeholder="Sua senha" />
+        <div class="auth-meta">
+          <a href="#" onclick="requestPasswordReset(event)">Esqueceu sua senha?</a>
+        </div>
+        <div class="auth-actions">
+          <button id="auth-submit" class="auth-btn" type="submit">Entrar</button>
+        </div>
+        <div id="auth-feedback" class="auth-feedback"></div>
+        <div id="auth-note" class="auth-note"></div>
+      </form>
+    </div>
   </div>
 </div>
 
@@ -2318,6 +2471,30 @@ async function signInWithEmailPassword(event) {
     _setAuthFeedback(e.message || 'Falha ao autenticar. Verifique seu e-mail e senha.');
   } finally {
     if (submitEl) submitEl.disabled = false;
+  }
+}
+
+async function requestPasswordReset(event) {
+  if (event) event.preventDefault();
+  if (!_sb && !initSupabase()) {
+    _setAuthFeedback('Supabase não configurado para recuperação de senha.');
+    return;
+  }
+
+  const emailEl = document.getElementById('auth-email');
+  const email = (emailEl?.value || '').trim();
+  if (!email) {
+    _setAuthFeedback('Informe seu e-mail para receber o link de recuperação.');
+    if (emailEl) emailEl.focus();
+    return;
+  }
+
+  try {
+    const { error } = await _sb.auth.resetPasswordForEmail(email);
+    if (error) throw error;
+    _setAuthFeedback('Link de recuperação enviado para o e-mail informado.', 'success');
+  } catch (e) {
+    _setAuthFeedback(e.message || 'Não foi possível enviar o e-mail de recuperação.');
   }
 }
 
