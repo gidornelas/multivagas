@@ -1,0 +1,89 @@
+{
+  "ats_domains": {
+    "greenhouse.io": {
+      "nome": "Greenhouse",
+      "regras": {
+        "colunas_duplas": false,
+        "aceita_icones": false,
+        "aceita_tabelas": false,
+        "keywords_no_topo": true,
+        "formato_ideal": "PDF coluna única, Arial 11pt",
+        "fontes_recomendadas": ["Arial", "Calibri"],
+        "tamanho_fonte": 11
+      }
+    },
+    "lever.co": {
+      "nome": "Lever",
+      "regras": {
+        "colunas_duplas": false,
+        "aceita_icones": false,
+        "aceita_tabelas": false,
+        "keywords_no_topo": true,
+        "formato_ideal": "PDF ou DOCX simples",
+        "fontes_recomendadas": ["Arial", "Calibri", "Georgia"],
+        "tamanho_fonte": 11
+      }
+    },
+    "myworkdayjobs.com": {
+      "nome": "Workday",
+      "regras": {
+        "colunas_duplas": false,
+        "aceita_icones": false,
+        "aceita_tabelas": false,
+        "keywords_no_topo": true,
+        "formato_ideal": "Texto puro ou PDF minimalista",
+        "fontes_recomendadas": ["Arial"],
+        "tamanho_fonte": 11
+      }
+    },
+    "gupy.io": {
+      "nome": "Gupy",
+      "regras": {
+        "colunas_duplas": false,
+        "aceita_icones": false,
+        "aceita_tabelas": false,
+        "keywords_no_topo": false,
+        "pcd_no_resumo": true,
+        "formato_ideal": "PDF com layout leve, PCD declarado",
+        "fontes_recomendadas": ["Arial", "Calibri"],
+        "tamanho_fonte": 11
+      }
+    },
+    "ashbyhq.com": {
+      "nome": "Ashby",
+      "regras": {
+        "colunas_duplas": false,
+        "aceita_icones": false,
+        "aceita_links": true,
+        "keywords_no_topo": false,
+        "formato_ideal": "PDF com links clicáveis",
+        "fontes_recomendadas": ["Arial", "Calibri", "Georgia"],
+        "tamanho_fonte": 11
+      }
+    },
+    "icims.com": {
+      "nome": "iCIMS",
+      "regras": {
+        "colunas_duplas": false,
+        "aceita_icones": false,
+        "aceita_tabelas": false,
+        "keywords_no_topo": true,
+        "formato_ideal": "PDF padrão sem elementos visuais",
+        "fontes_recomendadas": ["Arial", "Calibri"],
+        "tamanho_fonte": 11
+      }
+    }
+  },
+  "default": {
+    "nome": "Genérico",
+    "regras": {
+      "colunas_duplas": false,
+      "aceita_icones": false,
+      "aceita_tabelas": false,
+      "keywords_no_topo": true,
+      "formato_ideal": "PDF coluna única",
+      "fontes_recomendadas": ["Arial", "Calibri"],
+      "tamanho_fonte": 11
+    }
+  }
+}

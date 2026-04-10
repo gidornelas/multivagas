@@ -1,0 +1,36 @@
+# Variáveis de ambiente
+.env
+
+# Ambiente virtual Python
+venv/
+.venv/
+env/
+
+# Saídas geradas (currículos e covers não versionados por padrão)
+output/pdfs/*.pdf
+output/pdfs/*.html
+output/covers/*.txt
+
+# Dados sensíveis
+data/candidaturas.json
+config/google_credentials.json
+config/google_token.json
+
+# Cache e artefatos Python
+__pycache__/
+*.pyc
+*.pyo
+*.egg-info/
+dist/
+build/
+
+# VS Code
+.vscode/settings.json
+.vscode/*.code-snippets
+
+# Sistema
+.DS_Store
+Thumbs.db
+
+.vercel
+.env*.local

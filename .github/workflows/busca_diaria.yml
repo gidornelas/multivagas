@@ -1,0 +1,51 @@
+name: Busca Diária de Vagas
+
+on:
+  schedule:
+    # 08:00 BRT (Brasília) = 11:00 UTC, seg–sex
+    - cron: "0 11 * * 1-5"
+  workflow_dispatch:
+    # Permite disparar manualmente pela UI do GitHub ou via API
+
+jobs:
+  busca:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: "pip"
+
+      - name: Instalar dependências
+        run: pip install -r requirements.txt
+
+      - name: Instalar Playwright (fallback PDF)
+        run: python -m playwright install chromium --with-deps
+        continue-on-error: true
+
+      - name: Executar busca e sincronizar Supabase
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
+          ADZUNA_APP_ID: ${{ secrets.ADZUNA_APP_ID }}
+          ADZUNA_APP_KEY: ${{ secrets.ADZUNA_APP_KEY }}
+          JOOBLE_API_KEY: ${{ secrets.JOOBLE_API_KEY }}
+        run: python orchestrator.py busca
+
+      - name: Resumo
+        if: always()
+        run: |
+          echo "### Resultado da busca" >> $GITHUB_STEP_SUMMARY
+          if [ -f data/vagas.json ]; then
+            COUNT=$(python -c "import json; d=json.load(open('data/vagas.json')); print(len(d))")
+            echo "✅ $COUNT vagas encontradas e sincronizadas no Supabase" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "⚠️ data/vagas.json não encontrado" >> $GITHUB_STEP_SUMMARY
+          fi

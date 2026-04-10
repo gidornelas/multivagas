@@ -1,0 +1,53 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(py --version)",
+      "Bash(py -m pip --version)",
+      "Bash(py -m pip install anthropic httpx beautifulsoup4 python-docx schedule python-dotenv)",
+      "Bash(py -c \"from dotenv import load_dotenv; import os; load_dotenv\\(\\); key = os.getenv\\('ANTHROPIC_API_KEY', ''\\); print\\('API key carregada:', 'OK' if key.startswith\\('sk-ant-'\\) else 'ERRO'\\)\")",
+      "Bash(py orchestrator.py busca)",
+      "Bash(py -c ':*)",
+      "Bash(py -c \"import json; open\\('data/vagas.json','w'\\).write\\('[]'\\)\")",
+      "Bash(py -c \"import json; open\\('data/vagas.json','w',encoding='utf-8'\\).write\\('[]'\\)\")",
+      "Bash(py orchestrator.py)",
+      "Bash(py orchestrator.py listar)",
+      "Bash(py orchestrator.py gerar)",
+      "Bash(py orchestrator.py dashboard)",
+      "Bash(py -m pip install playwright)",
+      "Bash(py -m playwright install chromium)",
+      "Bash(py -m pip install pdfkit)",
+      "Bash(py -c \"import pdfkit; print\\('pdfkit OK'\\)\")",
+      "Bash(py -c \"from playwright.sync_api import sync_playwright; print\\('Playwright OK'\\)\")",
+      "Bash(py test_gupy.py)",
+      "Bash(del \"g:\\\\PASTA SITES\\\\MULTI VAGAS\\\\test_gupy.py\")",
+      "Bash(py -c \"import json; v=json.load\\(open\\('data/vagas.json',encoding='utf-8'\\)\\); pipeline=[x for x in v if x['score']>=80]; print\\(f'Total: {len\\(v\\)} | Pipeline: {len\\(pipeline\\)} | Já processadas: {sum\\(1 for x in pipeline if x.get\\(\\\\\"curriculo_path\\\\\"\\)\\)}'\\)\")",
+      "Bash(py -m pip install google-api-python-client google-auth-httplib2 google-auth-oauthlib)",
+      "Bash(py -c \"from agents.google_auth import testar_conexao; testar_conexao\\(\\)\")",
+      "Bash(py -c \"from agents.sheets_dashboard import criar_estrutura_planilha; criar_estrutura_planilha\\(\\)\")",
+      "Bash(py orchestrator.py sheets --confirmar)",
+      "Bash(start \"\" \"g:/PASTA SITES/MULTI VAGAS/dashboard.html\")",
+      "WebSearch",
+      "WebFetch(domain:www.canva.com)",
+      "WebFetch(domain:www.canva.dev)",
+      "mcp__notebooklm__setup_auth",
+      "mcp__notebooklm__cleanup_data",
+      "mcp__notebooklm__get_health",
+      "mcp__notebooklm__list_notebooks",
+      "Bash(python -c ':*)",
+      "Read(//c/Users/Meiyka/.claude/skills/ui-ux-pro-max/**)",
+      "Bash(python scripts/search.py \"job search automation dashboard saas productivity tool\" --design-system -p \"Multivagas\" -f markdown)",
+      "Bash(py scripts/search.py \"job search automation dashboard saas productivity tool\" --design-system -p \"Multivagas\" -f markdown)",
+      "Bash(dir \"C:\\\\\\\\Users\\\\\\\\Meiyka\\\\\\\\.claude\\\\\\\\skills\\\\\\\\ui-ux-pro-max\")",
+      "Bash(dir \"C:\\\\\\\\Users\\\\\\\\Meiyka\\\\\\\\.claude\\\\\\\\skills\\\\\\\\ui-ux-pro-max\\\\\\\\scripts\")",
+      "Bash(py \"C:\\\\\\\\Users\\\\\\\\Meiyka\\\\\\\\.claude\\\\\\\\skills\\\\\\\\ui-ux-pro-max\\\\\\\\scripts\\\\\\\\search.py\" \"job search automation dashboard saas productivity\" --design-system -p \"Multivagas\" -f markdown)",
+      "Bash(vercel --version)",
+      "Bash(vercel ls:*)",
+      "Bash(vercel --prod)"
+    ]
+  },
+  "mcpServers": {
+    "canva": {
+      "url": "https://mcp.canva.com/mcp"
+    }
+  }
+}

@@ -1,0 +1,23 @@
+anthropic>=0.92.0
+httpx>=0.28.0
+beautifulsoup4>=4.14.0
+python-docx>=1.2.0
+schedule>=1.2.0
+python-dotenv>=1.2.0
+pdfkit>=1.0.0
+
+# Supabase — banco de dados em nuvem
+supabase>=2.3.0
+
+# Fase 2 — scraping de SPAs (Gupy, Catho, LinkedIn)
+playwright>=1.45.0
+# Após instalar: py -m playwright install chromium
+
+# Fase 2 — wkhtmltopdf para geração de PDF
+# Download em: https://wkhtmltopdf.org/downloads.html
+# Configure o caminho em agents/gerador_pdf.py
+
+# Fase 3 — Google APIs (Gmail, Sheets, Calendar)
+google-api-python-client>=2.0.0
+google-auth-httplib2>=0.2.0
+google-auth-oauthlib>=1.2.0

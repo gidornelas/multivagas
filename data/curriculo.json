@@ -1,0 +1,48 @@
+{
+  "nome": "Gianny Batista Dornelas",
+  "contato": {
+    "email": "dornelasgianny@gmail.com",
+    "linkedin": "https://www.linkedin.com/in/giannydornelas/",
+    "portfolio": "",
+    "github": "https://github.com/gidornelas"
+  },
+  "localidade": "Vila Velha, ES — Remoto",
+  "pcd": true,
+  "tipo_pcd": "Deficiência Auditiva",
+  "resumo_base": "Designer UX/UI com foco em interfaces digitais, sistemas de design e ferramentas de IA. Experiência em projetos freelance com alta autonomia, entregando soluções visuais funcionais e acessíveis. Trabalho 100% remoto com comunicação escrita clara e eficiente.",
+  "skills": [
+    { "nome": "Figma", "nivel": "avancado", "anos": 6 },
+    { "nome": "Adobe Illustrator", "nivel": "avancado", "anos": 6 },
+    { "nome": "Storybook", "nivel": "avancado", "anos": 3 },
+    { "nome": "Framer", "nivel": "intermediario", "anos": 2 },
+    { "nome": "Inteligência Artificial (IA)", "nivel": "avancado", "anos": 2 },
+    { "nome": "Claude Code", "nivel": "intermediario", "anos": 1 },
+    { "nome": "UX/UI Design", "nivel": "avancado", "anos": 6 },
+    { "nome": "Design Systems", "nivel": "avancado", "anos": 4 },
+    { "nome": "Prototyping", "nivel": "avancado", "anos": 5 }
+  ],
+  "experiencias": [
+    {
+      "empresa": "Autônoma — Freelancer",
+      "cargo": "Designer UX/UI & Designer Gráfica",
+      "periodo": "2018–presente",
+      "modalidade": "Remoto",
+      "descricao": [
+        "Criação de interfaces UX/UI para projetos web e mobile com foco em usabilidade e acessibilidade",
+        "Desenvolvimento de identidades visuais, materiais gráficos e sistemas de design para clientes variados",
+        "Uso de ferramentas de IA para acelerar fluxos de trabalho e geração de ativos visuais"
+      ],
+      "resultados": [
+        "Atendimento contínuo a clientes com entrega autônoma e sem supervisão presencial",
+        "Projetos entregues com alta aprovação em revisões de usabilidade e identidade visual"
+      ]
+    }
+  ],
+  "educacao": [],
+  "projetos": [],
+  "idiomas": [
+    { "lingua": "Português", "nivel": "nativo" },
+    { "lingua": "Inglês", "nivel": "intermediario" }
+  ],
+  "certificacoes": []
+}
