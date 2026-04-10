@@ -74,20 +74,28 @@ async def pipeline_completo(limite_vagas: int = 5) -> None:
         imprimir_dashboard()
         return
 
-    print(f"  Processando {len(vagas_processar)} agora.\n")
+    print(f"  Processando {len(vagas_processar)} agora (paralelo).\n")
 
-    # ── Fase 2: Currículo adaptado ─────────────────────
-    print("[FASE 2] Gerando currículos e cover letters...")
+    # ── Fase 2: Currículo adaptado — paralelo ──────────
+    from concurrent.futures import ThreadPoolExecutor, as_completed
+    MAX_WORKERS = min(4, len(vagas_processar))  # máx 4 chamadas simultâneas
+    print(f"[FASE 2] Gerando currículos e cover letters ({MAX_WORKERS} em paralelo)...")
     resultados = []
-    for vaga in vagas_processar:
-        try:
-            resultado = processar_vaga(vaga)
-            resultado["vaga"] = vaga
-            resultados.append(resultado)
-            # Atualiza vagas.json com o caminho do currículo gerado
-            _marcar_processada(vaga["id"], resultado)
-        except Exception as e:
-            print(f"  Erro em {vaga['titulo']}: {e}")
+
+    def _processar(vaga):
+        resultado = processar_vaga(vaga)
+        resultado["vaga"] = vaga
+        _marcar_processada(vaga["id"], resultado)
+        return resultado
+
+    with ThreadPoolExecutor(max_workers=MAX_WORKERS) as ex:
+        futuros = {ex.submit(_processar, v): v for v in vagas_processar}
+        for fut in as_completed(futuros):
+            vaga = futuros[fut]
+            try:
+                resultados.append(fut.result())
+            except Exception as e:
+                print(f"  Erro em {vaga['titulo']}: {e}")
 
     # ── Fase 3: Rascunhos de candidatura ───────────────
     print("\n[FASE 3] Preparando rascunhos de candidatura (sem envio)...")
@@ -140,16 +148,26 @@ def pipeline_processar_pipeline(limite: int = 5) -> None:
         return
 
     vagas_processar = sem_curriculo[:limite]
-    print(f"Gerando para as top {len(vagas_processar)} vagas...\n")
+    MAX_WORKERS = min(4, len(vagas_processar))
+    print(f"Gerando para as top {len(vagas_processar)} vagas ({MAX_WORKERS} em paralelo)...\n")
 
-    for vaga in vagas_processar:
-        try:
-            resultado = processar_vaga(vaga)
-            resultado["vaga"] = vaga
-            _marcar_processada(vaga["id"], resultado)
-            executar_candidatura(vaga, resultado)
-        except Exception as e:
-            print(f"  Erro em {vaga['titulo']}: {e}")
+    from concurrent.futures import ThreadPoolExecutor, as_completed
+
+    def _processar(vaga):
+        resultado = processar_vaga(vaga)
+        resultado["vaga"] = vaga
+        _marcar_processada(vaga["id"], resultado)
+        executar_candidatura(vaga, resultado)
+        return resultado
+
+    with ThreadPoolExecutor(max_workers=MAX_WORKERS) as ex:
+        futuros = {ex.submit(_processar, v): v for v in vagas_processar}
+        for fut in as_completed(futuros):
+            vaga = futuros[fut]
+            try:
+                fut.result()
+            except Exception as e:
+                print(f"  Erro em {vaga['titulo']}: {e}")
 
     imprimir_dashboard()
 

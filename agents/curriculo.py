@@ -50,112 +50,80 @@ def carregar_ats_db() -> dict:
 # Adaptação do currículo via Claude API
 # ──────────────────────────────────────────────
 
-def adaptar_curriculo(vaga: dict, curriculo_base: dict, regras_ats: dict) -> dict:
+def adaptar_curriculo_e_cover(vaga: dict, curriculo_base: dict, regras_ats: dict) -> tuple[dict, str]:
     """
-    Usa a API do Claude para adaptar o currículo base para a vaga específica.
-    Retorna o currículo adaptado como dicionário.
+    Combina adaptação de currículo + cover letter em UMA única chamada ao Claude.
+    Usa Haiku para máxima velocidade. Retorna (curriculo_adaptado, cover_letter).
     """
-    prompt = f"""Você é um especialista em currículos ATS e recrutamento de tecnologia.
-Adapte o currículo base para a vaga abaixo, seguindo rigorosamente as regras do ATS.
+    skills_principais = ', '.join([s['nome'] for s in curriculo_base.get('skills', [])[:6]])
+    pcd = vaga.get('pcd_detectado', False)
+
+    prompt = f"""Você é especialista em currículos ATS e candidaturas para tecnologia/design.
+Gere DUAS saídas em uma única resposta, separadas por ===COVER===.
 
 VAGA:
-Título: {vaga['titulo']}
-Empresa: {vaga['empresa']}
-Descrição: {vaga['descricao'][:3000]}
-PCD detectado: {vaga.get('pcd_detectado', False)}
+Título: {vaga['titulo']} | Empresa: {vaga['empresa']}
+Descrição: {vaga['descricao'][:2000]}
+PCD: {pcd}
 
 CURRÍCULO BASE:
-{json.dumps(curriculo_base, ensure_ascii=False, indent=2)}
+{json.dumps(curriculo_base, ensure_ascii=False, indent=2)[:3000]}
 
-REGRAS DO ATS ({regras_ats.get('nome', 'Genérico')}):
-- Colunas duplas: {'NÃO usar' if not regras_ats.get('regras', {}).get('colunas_duplas', False) else 'Permitido'}
-- Ícones: {'NÃO usar' if not regras_ats.get('regras', {}).get('aceita_icones', False) else 'Permitido'}
-- Keywords obrigatórias no topo: {regras_ats.get('regras', {}).get('keywords_no_topo', False)}
-- Formato: {regras_ats.get('regras', {}).get('formato_ideal', 'PDF')}
+ATS: {regras_ats.get('nome', 'Genérico')} | Colunas duplas: {'NÃO' if not regras_ats.get('regras', {}).get('colunas_duplas') else 'SIM'}
 
-INSTRUÇÕES DE ADAPTAÇÃO:
-1. Extraia TODAS as keywords técnicas e comportamentais da descrição da vaga
-2. Reescreva bullets de experiência para refletir as keywords mais relevantes
-3. Ajuste o resumo profissional mencionando tecnologias e metodologias da vaga
-4. Reordene skills para priorizar as mais relevantes para esta vaga
-5. Se a vaga tem PCD, insira menção estratégica no resumo
-6. Injete as top-10 keywords nas primeiras 150 palavras do resumo
-7. Mantenha apenas experiências e projetos mais relevantes para esta vaga
+PARTE 1 — JSON do currículo adaptado:
+- Extraia keywords da vaga e injete no resumo e bullets
+- Reordene skills priorizando as da vaga
+- {'Mencione PCD (deficiência auditiva) no resumo' if pcd else ''}
+- Adicione: "keywords_injetadas":[], "ats_nome":"...", "vaga_titulo":"...", "vaga_empresa":"..."
+- Retorne JSON válido completo
 
-Retorne SOMENTE JSON válido com a mesma estrutura do currículo base, mas adaptado.
-Adicione os campos:
-- "keywords_injetadas": ["kw1", "kw2", ...]
-- "ats_nome": "nome do ATS"
-- "vaga_titulo": "título da vaga"
-- "vaga_empresa": "empresa"
-- "adaptado_em": "ISO datetime"
-"""
+===COVER===
+
+PARTE 2 — Cover letter (só texto, sem markdown):
+- 4 parágrafos, tom profissional e direto
+- P1: fit imediato com a vaga | P2: 2-3 conquistas com números
+- P3: por que esta empresa | P4: chamada para ação
+- {'P3: mencione deficiência auditiva + autonomia remota' if pcd else ''}
+- Candidato: {curriculo_base.get('nome','')} | Skills: {skills_principais}
+- Sem clichês ("sou apaixonado", "tenho o prazer")"""
 
     message = client.messages.create(
-        model="claude-sonnet-4-6",
+        model="claude-haiku-4-5-20251001",
         max_tokens=4096,
         messages=[{"role": "user", "content": prompt}]
     )
 
     texto = message.content[0].text
-    # Remove bloco de markdown se presente
-    texto = re.sub(r'^```(?:json)?\s*', '', texto.strip())
-    texto = re.sub(r'\s*```$', '', texto.strip())
+    partes = texto.split("===COVER===", 1)
 
-    json_match = re.search(r'\{[\s\S]*\}', texto)
-    if json_match:
-        try:
-            return json.loads(json_match.group())
-        except json.JSONDecodeError:
-            pass
+    # Parte 1: currículo JSON
+    curriculo_adaptado = curriculo_base.copy()
+    try:
+        parte_json = partes[0].strip()
+        parte_json = re.sub(r'^```(?:json)?\s*', '', parte_json)
+        parte_json = re.sub(r'\s*```$', '', parte_json)
+        json_match = re.search(r'\{[\s\S]*\}', parte_json)
+        if json_match:
+            curriculo_adaptado = json.loads(json_match.group())
+    except (json.JSONDecodeError, Exception):
+        curriculo_adaptado["erro_adaptacao"] = True
 
-    # Fallback: retorna currículo base com marcação de erro
-    curriculo_base["erro_adaptacao"] = True
-    return curriculo_base
+    # Parte 2: cover letter
+    cover_letter = partes[1].strip() if len(partes) > 1 else ""
+
+    return curriculo_adaptado, cover_letter
 
 
-# ──────────────────────────────────────────────
-# Geração de Cover Letter
-# ──────────────────────────────────────────────
+# Mantém assinaturas antigas como wrappers para compatibilidade
+def adaptar_curriculo(vaga: dict, curriculo_base: dict, regras_ats: dict) -> dict:
+    curriculo, _ = adaptar_curriculo_e_cover(vaga, curriculo_base, regras_ats)
+    return curriculo
+
 
 def gerar_cover_letter(vaga: dict, curriculo: dict) -> str:
-    """Gera cover letter personalizada para a vaga."""
-
-    prompt = f"""Você é um especialista em candidaturas para vagas de tecnologia e design.
-Escreva uma cover letter personalizada, direta e impactante.
-
-CANDIDATO:
-Nome: {curriculo.get('nome', 'Nome')}
-Cargo desejado: {vaga['titulo']}
-PCD: {curriculo.get('tipo_pcd', 'Não informado')}
-Localidade: {curriculo.get('localidade', 'Remoto')}
-Skills principais: {', '.join([s['nome'] for s in curriculo.get('skills', [])[:6]])}
-
-VAGA:
-Título: {vaga['titulo']}
-Empresa: {vaga['empresa']}
-Descrição: {vaga['descricao'][:2000]}
-PCD detectado: {vaga.get('pcd_detectado', False)}
-
-INSTRUÇÕES:
-- Máximo 4 parágrafos, 1 página
-- Tom profissional mas humano, sem ser genérico
-- Parágrafo 1: abertura direta com fit imediato
-- Parágrafo 2: 2-3 conquistas concretas com números quando possível
-- Parágrafo 3: por que esta empresa especificamente (baseado na descrição)
-- Parágrafo 4: chamada para ação clara
-- Se vaga PCD: mencione deficiência auditiva + autonomia remota no parágrafo 3
-- Não use frases clichê como "sou apaixonado por" ou "tenho o prazer de"
-
-Responda APENAS com o texto da cover letter, sem markdown, sem JSON."""
-
-    message = client.messages.create(
-        model="claude-sonnet-4-6",
-        max_tokens=1024,
-        messages=[{"role": "user", "content": prompt}]
-    )
-
-    return message.content[0].text
+    _, cover = adaptar_curriculo_e_cover(vaga, {}, {})
+    return cover
 
 
 # ──────────────────────────────────────────────
@@ -290,13 +258,9 @@ def processar_vaga(vaga: dict) -> dict:
     data = date.today().strftime("%Y-%m-%d")
     nome_base = f"{empresa_slug}_{titulo_slug}_{data}"
 
-    # Adapta currículo
-    print("  Adaptando currículo...")
-    curriculo_adaptado = adaptar_curriculo(vaga, curriculo_base, ats)
-
-    # Gera cover letter
-    print("  Gerando cover letter...")
-    cover_letter = gerar_cover_letter(vaga, curriculo_adaptado)
+    # Adapta currículo + cover letter em uma única chamada
+    print("  Gerando currículo e cover letter (chamada única)...")
+    curriculo_adaptado, cover_letter = adaptar_curriculo_e_cover(vaga, curriculo_base, ats)
 
     # Salva arquivos
     caminho_curriculo = salvar_curriculo_html(curriculo_adaptado, nome_base)
