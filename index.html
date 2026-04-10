@@ -2769,7 +2769,7 @@ function renderDashboard() {
       <td style="font-weight:600;max-width:260px">${escapeHtml(v.titulo||'')}</td>
       <td style="color:var(--cinza3)">${escapeHtml(v.empresa||'—')}</td>
       <td>
-        ${(v.idioma_vaga==='pt'||v.ptbr)?'<span class="tag tag-ptbr">PT-BR</span>':''}
+        ${(v.idioma_vaga==='pt'||v.idioma_vaga==='pt-BR'||v.ptbr||(v.plataforma||'').match(/BR|Gupy|Catho|Adzuna BR/i))?'<span class="tag tag-ptbr">PT-BR</span>':''}
         ${(v.pcd||v.pcd_detectado)?'<span class="tag tag-pcd">PCD</span>':''}
         ${(v.titulo||'').toLowerCase().includes('design eng')?'<span class="tag tag-de">DE</span>':''}
       </td>
@@ -2998,7 +2998,7 @@ function _renderPagina() {
       <td style="font-weight:600;max-width:250px;font-size:.83rem">${escapeHtml(v.titulo||'')}</td>
       <td class="col-empresa" style="color:var(--cinza3);font-size:.82rem">${escapeHtml(v.empresa||'—')}</td>
       <td>
-        ${(v.idioma_vaga==='pt'||v.ptbr)?'<span class="tag tag-ptbr">PT-BR</span>':''}
+        ${(v.idioma_vaga==='pt'||v.idioma_vaga==='pt-BR'||v.ptbr||(v.plataforma||'').match(/BR|Gupy|Catho|Adzuna BR/i))?'<span class="tag tag-ptbr">PT-BR</span>':''}
         ${(v.pcd||v.pcd_detectado)?'<span class="tag tag-pcd">PCD</span>':''}
         ${(v.titulo||'').toLowerCase().includes('design eng')?'<span class="tag tag-de">DE</span>':''}
       </td>
@@ -3080,11 +3080,15 @@ function aplicarFiltros() {
       if (!ok) return false;
     }
 
-    // Tags (OR dentro do grupo)
+    // Tags (OR dentro do grupo — cada tag ativa amplia o resultado)
     if (_filtros.tags.size > 0) {
-      const ok = (_filtros.tags.has('pcd')  && (v.pcd || v.pcd_detectado))
-              || (_filtros.tags.has('ptbr') && (v.idioma_vaga === 'pt' || v.ptbr))
-              || (_filtros.tags.has('de')   && (v.titulo||'').toLowerCase().includes('design eng'));
+      const isPcd  = !!(v.pcd || v.pcd_detectado);
+      const isPtbr = v.idioma_vaga === 'pt' || v.idioma_vaga === 'pt-BR' || !!v.ptbr || (v.plataforma||'').match(/BR|Gupy|Catho|Adzuna BR/i);
+      const isDe   = (v.titulo||'').toLowerCase().includes('design eng');
+      let ok = false;
+      if (_filtros.tags.has('pcd')  && isPcd)  ok = true;
+      if (_filtros.tags.has('ptbr') && isPtbr) ok = true;
+      if (_filtros.tags.has('de')   && isDe)   ok = true;
       if (!ok) return false;
     }
 
@@ -3968,7 +3972,7 @@ function abrirModal(idx, abaInicial = 'cover') {
   // Info tab
   document.getElementById('mv-info-score').textContent = v.score || '—';
   document.getElementById('mv-info-plat').textContent  = v.plataforma || '—';
-  _toggle('mv-info-ptbr', v.idioma_vaga === 'pt' || v.ptbr);
+  _toggle('mv-info-ptbr', v.idioma_vaga === 'pt' || v.idioma_vaga === 'pt-BR' || v.ptbr || !!(v.plataforma||'').match(/BR|Gupy|Catho|Adzuna BR/i));
   _toggle('mv-info-pcd',  v.pcd || v.pcd_detectado);
   document.getElementById('mv-info-desc').textContent  = v.descricao || '—';
   document.getElementById('mv-info-rec').textContent   = v.recomendacao || '—';
