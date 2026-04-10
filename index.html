@@ -359,6 +359,36 @@
     color: var(--colorTextTertiary);
     line-height: 1.45;
   }
+  .auth-config-toggle {
+    margin-top: 12px;
+    text-align: center;
+  }
+  .auth-config-toggle a {
+    font-size: .72rem;
+    color: var(--colorTextTertiary);
+    text-decoration: none;
+  }
+  .auth-config-toggle a:hover { color: var(--colorTextSecondary); text-decoration: underline; }
+  .auth-config-panel {
+    margin-top: 10px;
+    padding: 12px;
+    background: var(--colorBgContainer);
+    border: 1px solid var(--colorBorderSecondary);
+    border-radius: var(--borderRadiusSM);
+  }
+  .auth-cfg-save-btn {
+    margin-top: 10px;
+    width: 100%;
+    height: 34px;
+    border: 1px solid var(--colorBorder);
+    border-radius: var(--borderRadiusSM);
+    background: var(--colorBgContainer);
+    color: var(--colorTextSecondary);
+    font-size: .82rem;
+    font-weight: 600;
+    cursor: pointer;
+  }
+  .auth-cfg-save-btn:hover { border-color: var(--colorPrimary); color: var(--colorPrimaryText); }
   @media (max-width: 860px) {
     .auth-shell {
       max-width: 460px;
@@ -1482,6 +1512,16 @@
         <div id="auth-feedback" class="auth-feedback"></div>
         <div id="auth-note" class="auth-note"></div>
       </form>
+      <div class="auth-config-toggle">
+        <a href="#" onclick="toggleAuthConfig(event)" id="auth-config-link">⚙ Configurar conexão Supabase</a>
+      </div>
+      <div class="auth-config-panel" id="auth-config-panel" style="display:none">
+        <label class="auth-label" for="auth-cfg-url">Project URL</label>
+        <input id="auth-cfg-url" class="auth-input" type="url" placeholder="https://xxxx.supabase.co" autocomplete="off" />
+        <label class="auth-label" for="auth-cfg-key">Anon Key</label>
+        <input id="auth-cfg-key" class="auth-input" type="text" placeholder="eyJh..." autocomplete="off" />
+        <button type="button" class="auth-cfg-save-btn" onclick="saveAuthConfig()">Salvar e conectar</button>
+      </div>
     </div>
   </div>
 </div>
@@ -2495,6 +2535,43 @@ async function requestPasswordReset(event) {
     _setAuthFeedback('Link de recuperação enviado para o e-mail informado.', 'success');
   } catch (e) {
     _setAuthFeedback(e.message || 'Não foi possível enviar o e-mail de recuperação.');
+  }
+}
+
+function toggleAuthConfig(event) {
+  if (event) event.preventDefault();
+  const panel = document.getElementById('auth-config-panel');
+  if (!panel) return;
+  const isOpen = panel.style.display !== 'none';
+  panel.style.display = isOpen ? 'none' : 'block';
+  if (!isOpen) {
+    const urlEl = document.getElementById('auth-cfg-url');
+    const keyEl = document.getElementById('auth-cfg-key');
+    if (urlEl) urlEl.value = localStorage.getItem('mv_sb_url') || '';
+    if (keyEl) keyEl.value = localStorage.getItem('mv_sb_key') || '';
+  }
+}
+
+function saveAuthConfig() {
+  const urlEl = document.getElementById('auth-cfg-url');
+  const keyEl = document.getElementById('auth-cfg-key');
+  const url = (urlEl?.value || '').trim();
+  const key = (keyEl?.value || '').trim();
+  if (!url || !key) {
+    _setAuthFeedback('Preencha o Project URL e o Anon Key.');
+    return;
+  }
+  localStorage.setItem('mv_sb_url', url);
+  localStorage.setItem('mv_sb_key', key);
+  if (initSupabase()) {
+    _authListenerBound = false;
+    _registerAuthListener();
+    _setAuthFeedback('Supabase configurado. Faça login agora.', 'success');
+    _setAuthNote('');
+    const panel = document.getElementById('auth-config-panel');
+    if (panel) panel.style.display = 'none';
+  } else {
+    _setAuthFeedback('Não foi possível conectar ao Supabase. Verifique a URL e a chave.');
   }
 }
 
