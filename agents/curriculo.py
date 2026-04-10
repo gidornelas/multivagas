@@ -2,10 +2,12 @@
 Agente 2 — Construtor de Currículo Inteligente
 Transforma o currículo base em versão personalizada para cada vaga,
 otimizada para o ATS específico da empresa.
+Inclui análise de Fit Cultural (Fase 5).
 """
 
 import json
 import re
+import time
 from pathlib import Path
 import anthropic
 
@@ -47,6 +49,86 @@ def carregar_ats_db() -> dict:
 
 
 # ──────────────────────────────────────────────
+# Análise de Fit Cultural (Fase 5)
+# ──────────────────────────────────────────────
+
+def analisar_fit_cultural(empresa: str, url_vaga: str = "") -> dict:
+    """
+    Tenta buscar a página da empresa e detectar o perfil cultural.
+    Retorna dict com: tipo ('startup'|'corporate'|'product'|'agency'|'unknown'),
+    tom recomendado, e palavras-chave encontradas.
+    Falha silenciosamente — retorna valores padrão se não conseguir buscar.
+    """
+    resultado = {"tipo": "unknown", "tom": "profissional e direto", "keywords": []}
+
+    # Heurística por nome/URL antes de fazer request
+    empresa_lower = empresa.lower()
+    url_lower = url_vaga.lower()
+
+    if any(k in empresa_lower for k in ["bank", "banco", "itau", "bradesco", "governo", "federal", "ministerio", "caixa"]):
+        resultado.update(tipo="corporate", tom="formal e institucional",
+                         keywords=["excelência", "compliance", "processos", "governança"])
+        return resultado
+
+    if any(k in empresa_lower for k in ["agency", "agência", "agencia", "studio", "criativo"]):
+        resultado.update(tipo="agency", tom="criativo e colaborativo",
+                         keywords=["criatividade", "colaboração", "projetos", "clientes"])
+        return resultado
+
+    try:
+        import urllib.request
+        import urllib.parse
+
+        # Tenta pegar página da empresa via URL da vaga ou busca por nome
+        target_url = None
+        if "gupy.io" in url_lower or "inhire.io" in url_lower:
+            # Extrai domínio da empresa do subdomínio da plataforma
+            parts = url_lower.split(".")
+            if len(parts) >= 3:
+                empresa_slug = parts[0].replace("https://", "").replace("http://", "")
+                target_url = f"https://{empresa_slug}.com.br/sobre"
+
+        if not target_url:
+            slug = re.sub(r"[^a-z0-9]", "", empresa_lower)[:20]
+            target_url = f"https://www.{slug}.com.br/sobre"
+
+        req = urllib.request.Request(
+            target_url,
+            headers={"User-Agent": "Mozilla/5.0 (compatible; Multivagas/1.0)"},
+        )
+        with urllib.request.urlopen(req, timeout=5) as resp:
+            html = resp.read().decode("utf-8", errors="ignore")[:8000]
+
+        html_lower = html.lower()
+        startup_kw = ["startup", "scale-up", "inovação", "inovacao", "disruptiv", "ágil", "agil", "movimento rápido"]
+        corporate_kw = ["governança", "compliance", "resultado sustentável", "décadas", "sólida", "tradição"]
+        product_kw = ["produto", "product-led", "growth", "data-driven", "usuário no centro", "ux research"]
+
+        startup_hits  = sum(1 for k in startup_kw  if k in html_lower)
+        corporate_hits = sum(1 for k in corporate_kw if k in html_lower)
+        product_hits   = sum(1 for k in product_kw   if k in html_lower)
+
+        max_hits = max(startup_hits, corporate_hits, product_hits)
+        if max_hits == 0:
+            return resultado
+
+        if startup_hits == max_hits:
+            resultado.update(tipo="startup", tom="dinâmico, com impacto e velocidade",
+                             keywords=["inovação", "agilidade", "impacto", "crescimento"])
+        elif product_hits == max_hits:
+            resultado.update(tipo="product", tom="centrado no usuário e orientado a dados",
+                             keywords=["produto", "UX", "dados", "iteração"])
+        else:
+            resultado.update(tipo="corporate", tom="formal e orientado a resultados",
+                             keywords=["excelência", "processos", "eficiência", "resultados"])
+
+    except Exception:
+        pass  # Falha silenciosa — retorna resultado padrão
+
+    return resultado
+
+
+# ──────────────────────────────────────────────
 # Adaptação do currículo via Claude API
 # ──────────────────────────────────────────────
 
@@ -58,13 +140,21 @@ def adaptar_curriculo_e_cover(vaga: dict, curriculo_base: dict, regras_ats: dict
     skills_principais = ', '.join([s['nome'] for s in curriculo_base.get('skills', [])[:6]])
     pcd = vaga.get('pcd_detectado', False)
 
+    # Fit Cultural (Fase 5) — falha silenciosa
+    fit = analisar_fit_cultural(vaga.get('empresa', ''), vaga.get('url', ''))
+    fit_instrucao = ""
+    if fit['tipo'] != 'unknown':
+        kws = ', '.join(fit['keywords'][:3])
+        fit_instrucao = (f"\nFIT CULTURAL: empresa tipo '{fit['tipo']}' — "
+                         f"use tom {fit['tom']} — keywords sugeridas: {kws}")
+
     prompt = f"""Você é especialista em currículos ATS e candidaturas para tecnologia/design.
 Gere DUAS saídas em uma única resposta, separadas por ===COVER===.
 
 VAGA:
 Título: {vaga['titulo']} | Empresa: {vaga['empresa']}
 Descrição: {vaga['descricao'][:2000]}
-PCD: {pcd}
+PCD: {pcd}{fit_instrucao}
 
 CURRÍCULO BASE:
 {json.dumps(curriculo_base, ensure_ascii=False, indent=2)[:3000]}
@@ -75,13 +165,13 @@ PARTE 1 — JSON do currículo adaptado:
 - Extraia keywords da vaga e injete no resumo e bullets
 - Reordene skills priorizando as da vaga
 - {'Mencione PCD (deficiência auditiva) no resumo' if pcd else ''}
-- Adicione: "keywords_injetadas":[], "ats_nome":"...", "vaga_titulo":"...", "vaga_empresa":"..."
+- Adicione: "keywords_injetadas":[], "ats_nome":"...", "vaga_titulo":"...", "vaga_empresa":"...", "fit_cultural":"..."
 - Retorne JSON válido completo
 
 ===COVER===
 
 PARTE 2 — Cover letter (só texto, sem markdown):
-- 4 parágrafos, tom profissional e direto
+- 4 parágrafos, {fit['tom'] if fit['tipo'] != 'unknown' else 'profissional e direto'}
 - P1: fit imediato com a vaga | P2: 2-3 conquistas com números
 - P3: por que esta empresa | P4: chamada para ação
 - {'P3: mencione deficiência auditiva + autonomia remota' if pcd else ''}

@@ -1546,6 +1546,12 @@
     <a onclick="navTo('busca', this)">
       <span class="icon">⊕</span><span>Busca</span>
     </a>
+    <a onclick="navTo('analytics', this)">
+      <span class="icon">◈</span><span>Analytics</span>
+    </a>
+    <a onclick="navTo('linkedin', this)">
+      <span class="icon">◆</span><span>LinkedIn</span>
+    </a>
     <a onclick="navTo('config', this)">
       <span class="icon">◌</span><span>Configurações</span>
     </a>
@@ -1554,7 +1560,7 @@
     </a>
   </nav>
   <div class="sidebar-footer">
-    Fase 4 — Abril 2026
+    Fase 5 — Abril 2026
     <span class="auth-user" id="auth-user-email">não autenticado</span>
     <button type="button" class="logout-btn" onclick="logoutUser()">Sair</button>
   </div>
@@ -2193,6 +2199,85 @@
 
   </div>
 
+  <!-- ── PÁGINA: ANALYTICS ──────────────────────────── -->
+  <div id="page-analytics" class="page">
+    <div class="page-header" style="margin-bottom:20px">
+      <h2>Analytics de Candidaturas</h2>
+      <button class="btn btn-sm btn-secondary" onclick="carregarAnalytics()">Atualizar</button>
+    </div>
+
+    <!-- Cards de métricas -->
+    <div class="stats-grid" id="analytics-stats" style="margin-bottom:20px">
+      <div class="stat-card"><div class="stat-label">Total candidaturas</div><div class="stat-value" id="an-total">—</div></div>
+      <div class="stat-card"><div class="stat-label">Taxa de resposta</div><div class="stat-value" id="an-taxa">—</div></div>
+      <div class="stat-card"><div class="stat-label">Score médio</div><div class="stat-value" id="an-score">—</div></div>
+      <div class="stat-card"><div class="stat-label">Follow-ups vencidos</div><div class="stat-value" id="an-followups" style="color:var(--colorWarning)">—</div></div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+
+      <!-- Por status -->
+      <div class="section">
+        <div class="section-header"><h3>Por Status</h3></div>
+        <div id="an-status-chart" style="padding:12px 16px"></div>
+      </div>
+
+      <!-- Por plataforma -->
+      <div class="section">
+        <div class="section-header"><h3>Por Plataforma</h3></div>
+        <div id="an-plat-chart" style="padding:12px 16px;overflow-x:auto"></div>
+      </div>
+
+      <!-- Top keywords -->
+      <div class="section" style="grid-column:1/-1">
+        <div class="section-header"><h3>Keywords Efetivas (candidaturas com contato)</h3></div>
+        <div id="an-keywords" style="padding:12px 16px;display:flex;flex-wrap:wrap;gap:8px"></div>
+      </div>
+
+      <!-- PCD + tempo médio -->
+      <div class="section" style="grid-column:1/-1">
+        <div class="section-header"><h3>Candidaturas PCD</h3></div>
+        <div id="an-pcd" style="padding:12px 16px;color:var(--colorText)"></div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ── PÁGINA: LINKEDIN ────────────────────────────── -->
+  <div id="page-linkedin" class="page">
+    <div class="page-header" style="margin-bottom:20px">
+      <h2>Mensagens LinkedIn</h2>
+      <button class="btn btn-sm btn-secondary" onclick="carregarCandsSemEmail()">Atualizar lista</button>
+    </div>
+
+    <div class="section" style="margin-bottom:16px">
+      <div class="section-header"><h3>Gerar mensagem para vaga</h3></div>
+      <div style="padding:16px;display:flex;gap:12px;align-items:flex-end;flex-wrap:wrap">
+        <div style="flex:1;min-width:200px">
+          <label style="font-size:.78rem;font-weight:600;display:block;margin-bottom:4px">ID da vaga</label>
+          <input id="li-vaga-id" class="input" placeholder="cole o ID da vaga aqui" style="width:100%">
+        </div>
+        <button class="btn btn-primary" onclick="gerarLinkedIn()">Gerar mensagem</button>
+      </div>
+      <div id="li-resultado" style="display:none;padding:0 16px 16px">
+        <div style="font-size:.78rem;font-weight:600;margin-bottom:6px;color:var(--colorTextSecondary)" id="li-vaga-titulo"></div>
+        <textarea id="li-mensagem" rows="4" class="input" style="width:100%;font-family:inherit;resize:vertical"></textarea>
+        <div style="display:flex;gap:8px;margin-top:8px">
+          <button class="btn btn-sm btn-secondary" onclick="copiarLinkedIn()">Copiar</button>
+          <span id="li-chars" style="font-size:.75rem;color:var(--colorTextTertiary);align-self:center"></span>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-header">
+        <h3>Candidaturas sem e-mail de recrutador</h3>
+        <span class="badge" id="li-count-badge">—</span>
+      </div>
+      <div id="li-sem-email-list" style="padding:8px 0"></div>
+    </div>
+  </div>
+
   <!-- ── PÁGINA: CONFIGURAÇÕES ──────────────────────── -->
   <div id="page-config" class="page">
     <div class="section">
@@ -2394,6 +2479,7 @@
         <!-- Footer de ação -->
         <div style="padding:12px 16px;border-top:1px solid var(--colorBorder);display:flex;gap:8px;flex-wrap:wrap;flex-shrink:0;background:var(--colorBgContainer)">
           <button class="btn btn-accent" id="mv-btn-aplicada" onclick="marcarAplicada()">✓ Marcar como Aplicada</button>
+          <button class="btn btn-ghost btn-sm" id="mv-btn-linkedin" onclick="gerarLinkedInModal()" title="Gerar mensagem LinkedIn">LinkedIn</button>
           <a id="mv-link-vaga" href="#" target="_blank" class="btn btn-ghost btn-sm">Ver vaga →</a>
         </div>
       </div>
@@ -2735,8 +2821,8 @@ function navTo(page, el) {
   document.querySelectorAll('#sidebar nav a').forEach(a => a.classList.remove('active'));
   document.getElementById('page-' + page).classList.add('active');
   if (el) el.classList.add('active');
-  const titles = { dashboard:'Dashboard', curriculo:'Meu Currículo', vagas:'Vagas', candidaturas:'Candidaturas', busca:'Busca', config:'Configurações' };
-  const subtitles = { dashboard:'Visão geral do pipeline', curriculo:'Edite suas informações e habilidades', vagas:'Pipeline de vagas encontradas', candidaturas:'Histórico e acompanhamento', busca:'Executar busca por novas vagas', config:'Preferências e fontes de busca' };
+  const titles = { dashboard:'Dashboard', curriculo:'Meu Currículo', vagas:'Vagas', candidaturas:'Candidaturas', busca:'Busca', analytics:'Analytics', linkedin:'LinkedIn', config:'Configurações' };
+  const subtitles = { dashboard:'Visão geral do pipeline', curriculo:'Edite suas informações e habilidades', vagas:'Pipeline de vagas encontradas', candidaturas:'Histórico e acompanhamento', busca:'Executar busca por novas vagas', analytics:'Performance das candidaturas', linkedin:'Mensagens para recrutadores', config:'Preferências e fontes de busca' };
   document.getElementById('page-title').textContent = titles[page] || page;
   document.getElementById('page-subtitle').textContent = subtitles[page] || '';
   document.getElementById('topbar-actions').innerHTML = _TOPBAR_ACTIONS[page] || '';
@@ -2745,6 +2831,8 @@ function navTo(page, el) {
   if (page === 'curriculo') renderCurriculo();
   if (page === 'busca') renderBusca();
   if (page === 'config') renderConfig();
+  if (page === 'analytics') carregarAnalytics();
+  if (page === 'linkedin') carregarCandsSemEmail();
 }
 
 function switchTab(id, btn) {
@@ -3459,6 +3547,241 @@ function renderConfig() {
   el.innerHTML = configTerms.map((t,i) => `
     <span class="term-chip">${t} <span class="del" onclick="removeTerm(${i})">×</span></span>
   `).join('');
+}
+
+// ═══════════════════════════════════════════════════════
+// Analytics
+// ═══════════════════════════════════════════════════════
+async function carregarAnalytics() {
+  let metricas = null;
+
+  // Tenta API local primeiro
+  try {
+    const r = await fetch(`${_API}/analytics`);
+    if (r.ok) metricas = await r.json();
+  } catch (_) {}
+
+  // Fallback: calcula do Supabase
+  if (!metricas && _sb) {
+    try {
+      const { data } = await _sb.from('candidaturas').select('*');
+      if (data && data.length > 0) metricas = _calcularMetricasLocal(data);
+    } catch (_) {}
+  }
+
+  if (!metricas || !metricas.total_candidaturas) {
+    document.getElementById('an-total').textContent = '0';
+    document.getElementById('an-taxa').textContent = '—';
+    document.getElementById('an-score').textContent = '—';
+    document.getElementById('an-followups').textContent = '—';
+    document.getElementById('an-status-chart').innerHTML = '<p style="color:var(--colorTextTertiary);font-size:.85rem">Sem candidaturas ainda.</p>';
+    return;
+  }
+
+  // Cards
+  document.getElementById('an-total').textContent = metricas.total_candidaturas;
+  document.getElementById('an-taxa').textContent = (metricas.taxa_resposta_pct || 0) + '%';
+  document.getElementById('an-score').textContent = metricas.score_medio || '—';
+  document.getElementById('an-followups').textContent = metricas.followups_vencidos || '0';
+
+  // Gráfico de status (barras CSS)
+  const statusEl = document.getElementById('an-status-chart');
+  const statusData = metricas.por_status || {};
+  const totalStatus = Object.values(statusData).reduce((a,b) => a+b, 0) || 1;
+  const statusColors = { aplicada:'var(--colorInfo)', enviada:'var(--colorPrimary)', em_processo:'var(--colorWarning)', visualizada:'var(--colorWarning)', entrevista:'var(--colorSuccess)', aprovada:'#22c55e', reprovada:'var(--colorError)', ignorada:'var(--colorTextDisabled)' };
+  statusEl.innerHTML = Object.entries(statusData)
+    .sort(([,a],[,b]) => b-a)
+    .map(([st, qt]) => {
+      const pct = Math.round(qt / totalStatus * 100);
+      const cor = statusColors[st] || 'var(--colorTextSecondary)';
+      return `<div style="margin-bottom:10px">
+        <div style="display:flex;justify-content:space-between;font-size:.78rem;margin-bottom:3px">
+          <span>${st}</span><span style="color:var(--colorTextSecondary)">${qt} (${pct}%)</span>
+        </div>
+        <div style="background:var(--colorBgLayout);border-radius:4px;height:8px;overflow:hidden">
+          <div style="width:${pct}%;height:100%;background:${cor};border-radius:4px;transition:width .4s"></div>
+        </div>
+      </div>`;
+    }).join('');
+
+  // Gráfico de plataforma
+  const platEl = document.getElementById('an-plat-chart');
+  const platData = metricas.por_plataforma || {};
+  if (Object.keys(platData).length === 0) {
+    platEl.innerHTML = '<p style="font-size:.82rem;color:var(--colorTextTertiary)">Sem dados por plataforma.</p>';
+  } else {
+    platEl.innerHTML = `<table style="width:100%;font-size:.78rem;border-collapse:collapse">
+      <thead><tr style="color:var(--colorTextSecondary);border-bottom:1px solid var(--colorBorderSecondary)">
+        <th style="text-align:left;padding:4px 6px">Plataforma</th>
+        <th style="text-align:right;padding:4px 6px">Total</th>
+        <th style="text-align:right;padding:4px 6px">Contatos</th>
+        <th style="text-align:right;padding:4px 6px">Taxa</th>
+      </tr></thead>
+      <tbody>${Object.entries(platData).map(([p, d]) => `
+        <tr style="border-bottom:1px solid var(--colorBorderSecondary)">
+          <td style="padding:5px 6px">${p}</td>
+          <td style="padding:5px 6px;text-align:right">${d.total}</td>
+          <td style="padding:5px 6px;text-align:right">${d.contatos}</td>
+          <td style="padding:5px 6px;text-align:right;font-weight:600;color:${d.taxa_pct>0?'var(--colorSuccess)':'var(--colorTextTertiary)'}">${d.taxa_pct}%</td>
+        </tr>`).join('')}
+      </tbody>
+    </table>`;
+  }
+
+  // Keywords
+  const kwEl = document.getElementById('an-keywords');
+  const kws = metricas.top_keywords_efetivas || [];
+  if (kws.length === 0) {
+    kwEl.innerHTML = '<p style="font-size:.82rem;color:var(--colorTextTertiary)">Sem dados de keywords ainda.</p>';
+  } else {
+    const maxOc = kws[0].ocorrencias || 1;
+    kwEl.innerHTML = kws.map(k => {
+      const alpha = 0.3 + 0.7 * (k.ocorrencias / maxOc);
+      return `<span style="background:var(--colorPrimaryBg);color:var(--colorPrimaryText);padding:4px 10px;border-radius:20px;font-size:.78rem;opacity:${alpha.toFixed(2)};font-weight:600">${k.keyword} <sup>${k.ocorrencias}</sup></span>`;
+    }).join('');
+  }
+
+  // PCD
+  const pcdEl = document.getElementById('an-pcd');
+  const pcd = metricas.pcd || {};
+  pcdEl.innerHTML = pcd.total > 0
+    ? `<span style="font-size:.9rem">${pcd.contatos} contatos em ${pcd.total} candidaturas PCD — taxa <strong>${pcd.taxa_pct}%</strong></span>`
+    : '<span style="font-size:.85rem;color:var(--colorTextTertiary)">Nenhuma candidatura PCD registrada.</span>';
+}
+
+function _calcularMetricasLocal(cands) {
+  const STATUS_CONTATO = new Set(['em_processo', 'visualizada', 'entrevista', 'aprovada']);
+  const total = cands.length;
+  const contatos = cands.filter(c => STATUS_CONTATO.has(c.status)).length;
+  const scores = cands.map(c => c.score).filter(Boolean);
+  const score_medio = scores.length ? Math.round(scores.reduce((a,b)=>a+b,0)/scores.length * 10)/10 : 0;
+  const hoje = new Date().toISOString().slice(0,10);
+  const followups_vencidos = cands.filter(c => c.data_followup && c.data_followup <= hoje && ['aplicada','enviada'].includes(c.status)).length;
+
+  const por_status = {};
+  cands.forEach(c => { const s = c.status || 'nova'; por_status[s] = (por_status[s]||0)+1; });
+
+  const por_plat = {};
+  cands.forEach(c => {
+    const p = c.plataforma || 'Desconhecida';
+    if (!por_plat[p]) por_plat[p] = {total:0, contatos:0};
+    por_plat[p].total++;
+    if (STATUS_CONTATO.has(c.status)) por_plat[p].contatos++;
+  });
+  const por_plataforma = {};
+  Object.entries(por_plat).forEach(([p,d]) => {
+    por_plataforma[p] = {...d, taxa_pct: d.total ? Math.round(d.contatos/d.total*100*10)/10 : 0};
+  });
+
+  const pcd_cands = cands.filter(c => c.pcd_detectado);
+  const pcd_cont = pcd_cands.filter(c => STATUS_CONTATO.has(c.status)).length;
+
+  return {
+    total_candidaturas: total,
+    taxa_resposta_pct: total ? Math.round(contatos/total*100*10)/10 : 0,
+    score_medio,
+    followups_vencidos,
+    por_status,
+    por_plataforma,
+    top_keywords_efetivas: [],
+    pcd: { total: pcd_cands.length, contatos: pcd_cont, taxa_pct: pcd_cands.length ? Math.round(pcd_cont/pcd_cands.length*100*10)/10 : 0 }
+  };
+}
+
+// ═══════════════════════════════════════════════════════
+// LinkedIn Message Generator
+// ═══════════════════════════════════════════════════════
+async function gerarLinkedIn() {
+  const vagaId = document.getElementById('li-vaga-id').value.trim();
+  if (!vagaId) { alert('Cole o ID da vaga.'); return; }
+
+  const btn = event.target;
+  btn.disabled = true; btn.textContent = 'Gerando...';
+
+  try {
+    const r = await fetch(`${_API}/linkedin-msg`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ vaga_id: vagaId })
+    });
+    const data = await r.json();
+    if (data.mensagem) {
+      document.getElementById('li-resultado').style.display = 'block';
+      document.getElementById('li-vaga-titulo').textContent = `${data.titulo} — ${data.empresa}`;
+      const ta = document.getElementById('li-mensagem');
+      ta.value = data.mensagem;
+      _atualizarContadorLinkedIn(ta);
+    } else {
+      alert('Erro: ' + (data.msg || data.erro || 'API offline'));
+    }
+  } catch (e) {
+    alert('API offline ou erro: ' + e.message);
+  } finally {
+    btn.disabled = false; btn.textContent = 'Gerar mensagem';
+  }
+}
+
+function _atualizarContadorLinkedIn(ta) {
+  const chars = ta.value.length;
+  const el = document.getElementById('li-chars');
+  el.textContent = `${chars}/300 caracteres`;
+  el.style.color = chars > 280 ? 'var(--colorError)' : 'var(--colorTextTertiary)';
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  const ta = document.getElementById('li-mensagem');
+  if (ta) ta.addEventListener('input', () => _atualizarContadorLinkedIn(ta));
+});
+
+function copiarLinkedIn() {
+  const ta = document.getElementById('li-mensagem');
+  navigator.clipboard.writeText(ta.value).then(() => {
+    const btn = event.target;
+    btn.textContent = 'Copiado!';
+    setTimeout(() => btn.textContent = 'Copiar', 1500);
+  });
+}
+
+async function carregarCandsSemEmail() {
+  const listEl = document.getElementById('li-sem-email-list');
+  const badge = document.getElementById('li-count-badge');
+  listEl.innerHTML = '<p style="padding:12px 16px;color:var(--colorTextTertiary);font-size:.85rem">Carregando...</p>';
+
+  // Pega candidaturas (API ou Supabase)
+  let cands = [];
+  try {
+    const r = await fetch(`${_API}/candidaturas`);
+    if (r.ok) cands = await r.json();
+  } catch (_) {}
+  if (!cands.length && _sb) {
+    try {
+      const { data } = await _sb.from('candidaturas').select('*');
+      cands = data || [];
+    } catch (_) {}
+  }
+
+  const semEmail = cands.filter(c => !c.email_gerado?.para?.trim());
+  badge.textContent = semEmail.length;
+
+  if (semEmail.length === 0) {
+    listEl.innerHTML = '<p style="padding:12px 16px;color:var(--colorTextTertiary);font-size:.85rem">Todas as candidaturas têm e-mail de recrutador.</p>';
+    return;
+  }
+
+  listEl.innerHTML = semEmail.map(c => `
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 16px;border-bottom:1px solid var(--colorBorderSecondary)">
+      <div>
+        <div style="font-size:.85rem;font-weight:600">${c.empresa || '—'} — ${(c.vaga_titulo||'').slice(0,50)}</div>
+        <div style="font-size:.75rem;color:var(--colorTextSecondary)">${c.vaga_id || ''} · status: ${c.status || '—'}</div>
+      </div>
+      <button class="btn btn-sm btn-ghost" onclick="preencherVagaIdLinkedIn('${c.vaga_id}')">Usar</button>
+    </div>
+  `).join('');
+}
+
+function preencherVagaIdLinkedIn(vagaId) {
+  document.getElementById('li-vaga-id').value = vagaId;
+  navTo('linkedin', document.querySelector('[onclick*="linkedin"]'));
 }
 
 function removeTerm(i) { configTerms.splice(i,1); renderConfig(); }
@@ -4198,6 +4521,42 @@ function marcarAplicada() {
   if (idx >= 0) {
     const btn = document.querySelector(`[data-vi="${idx}"]`);
     if (btn) { btn.textContent = 'aplicada'; btn.className = 'vaga-status-btn vs-aplicada'; }
+  }
+}
+
+async function gerarLinkedInModal() {
+  if (!_modalVaga) return;
+  const vagaId = _modalVaga.id;
+  if (!vagaId) { alert('Vaga sem ID.'); return; }
+  const btn = document.getElementById('mv-btn-linkedin');
+  btn.disabled = true; btn.textContent = 'Gerando...';
+  try {
+    const r = await fetch(`${_API}/linkedin-msg`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ vaga_id: vagaId })
+    });
+    const data = await r.json();
+    if (data.mensagem) {
+      // Navega para a página LinkedIn e preenche
+      navTo('linkedin', document.querySelector('[onclick*="linkedin"]'));
+      document.getElementById('li-vaga-id').value = vagaId;
+      document.getElementById('li-resultado').style.display = 'block';
+      document.getElementById('li-vaga-titulo').textContent = `${data.titulo} — ${data.empresa}`;
+      const ta = document.getElementById('li-mensagem');
+      ta.value = data.mensagem;
+      _atualizarContadorLinkedIn(ta);
+      fecharModal();
+    } else {
+      alert('API offline. Use a página LinkedIn e cole o ID: ' + vagaId);
+    }
+  } catch (e) {
+    // API offline — redireciona para página LinkedIn com ID preenchido
+    navTo('linkedin', document.querySelector('[onclick*="linkedin"]'));
+    document.getElementById('li-vaga-id').value = vagaId;
+    fecharModal();
+  } finally {
+    btn.disabled = false; btn.textContent = 'LinkedIn';
   }
 }
 

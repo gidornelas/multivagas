@@ -400,6 +400,23 @@ if __name__ == "__main__":
         pipeline_digest(dry_run="--confirmar" not in sys.argv)
     elif modo == "analytics":
         pipeline_analytics(salvar="--salvar" in sys.argv)
+    elif modo == "linkedin":
+        vaga_id = sys.argv[2] if len(sys.argv) > 2 else None
+        if vaga_id:
+            from agents.linkedin_msg import gerar_e_salvar
+            res = gerar_e_salvar(vaga_id)
+            if "mensagem" in res:
+                print(f"\n{res['mensagem']}")
+            else:
+                print(f"Erro: {res.get('erro')}")
+        else:
+            from agents.linkedin_msg import listar_sem_email
+            sem_email = listar_sem_email()
+            print(f"\n{len(sem_email)} candidatura(s) sem e-mail de recrutador:")
+            for c in sem_email:
+                print(f"  [{c.get('vaga_id','')}] {c.get('empresa','')} — {c.get('vaga_titulo','')}")
+            if sem_email:
+                print("\n  Use: py orchestrator.py linkedin <vaga_id>")
     else:
         print("Modos disponíveis:")
         print("  busca | gerar | completo | dashboard | listar | curriculo <id>")

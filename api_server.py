@@ -258,6 +258,22 @@ class _Handler(BaseHTTPRequestHandler):
                 state = dict(_gerar_states.get(vaga_id, {"running": False}))
             self._json(state)
 
+        elif path == "/api/analytics":
+            try:
+                from agents.analytics import calcular_metricas
+                self._json(calcular_metricas())
+            except Exception as e:
+                self._json({"error": str(e)}, 500)
+
+        elif path == "/api/analytics/historico":
+            try:
+                from agents.analytics import tendencia
+                metrica = params.get("metrica", ["taxa_resposta_pct"])[0]
+                dias = int(params.get("dias", ["30"])[0])
+                self._json(tendencia(metrica, dias))
+            except Exception as e:
+                self._json({"error": str(e)}, 500)
+
         else:
             self._json({"error": "not found"}, 404)
 
@@ -330,6 +346,21 @@ class _Handler(BaseHTTPRequestHandler):
                     self._json({"ok": False, "msg": "Já gerando para esta vaga"}); return
             threading.Thread(target=_run_gerar_curriculo, args=(vaga_id,), daemon=True).start()
             self._json({"ok": True, "msg": f"Gerando currículo para {vaga_id}"})
+
+        elif path == "/api/linkedin-msg":
+            try:
+                data = json.loads(body_bytes or b"{}")
+            except Exception:
+                self._json({"ok": False, "msg": "JSON inválido"}, 400); return
+            vaga_id = data.get("vaga_id", "").strip()
+            if not vaga_id:
+                self._json({"ok": False, "msg": "vaga_id obrigatório"}, 400); return
+            try:
+                from agents.linkedin_msg import gerar_e_salvar
+                resultado = gerar_e_salvar(vaga_id)
+                self._json(resultado)
+            except Exception as e:
+                self._json({"ok": False, "msg": str(e)}, 500)
 
         elif path == "/api/candidatura":
             try:
