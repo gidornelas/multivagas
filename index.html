@@ -155,18 +155,18 @@
     border-right: 1px solid rgba(255, 255, 255, 0.16);
   }
   #sidebar .logo {
-    padding: 18px 16px 16px;
+    padding: 28px 16px 16px;
     border-bottom: 1px solid rgba(255, 255, 255, 0.2);
     display: flex;
     flex-direction: column;
     gap: 6px;
   }
   #sidebar .logo img {
-    width: 100%;
+    width: 88%;
     max-width: 100%;
     height: auto;
     display: block;
-    margin-bottom: 2px;
+    margin: 0 auto 2px;
   }
   #sidebar .logo h1 {
     font-size: 1.2rem;
@@ -1199,8 +1199,7 @@
 ══════════════════════════════════════════════════════ -->
 <aside id="sidebar">
   <div class="logo">
-    <img src="https://i.imgur.com/yk5MctN.png" alt="Multivagas" referrerpolicy="no-referrer" />
-    <span>Design Engineer · AI UX</span>
+    <img src="assets/inclua_logo_3.png" alt="Multivagas" />
   </div>
   <nav>
     <a class="active" onclick="navTo('dashboard', this)">
@@ -1658,7 +1657,21 @@
         </thead>
         <tbody id="vagas-body"></tbody>
       </table>
-      <!-- vagas-count-footer removido: badge inline na filter-bar já cobre -->
+
+      <!-- Paginação -->
+      <div id="vagas-paginacao" style="display:flex;align-items:center;justify-content:space-between;padding:10px 4px;gap:8px;flex-wrap:wrap">
+        <span id="pg-info" style="font-size:.8rem;color:var(--colorTextTertiary)"></span>
+        <div style="display:flex;gap:4px;align-items:center">
+          <button id="pg-prev" class="btn btn-ghost btn-sm" onclick="irPagina(_pgAtual-1)" style="padding:4px 10px">‹ Anterior</button>
+          <span id="pg-nums" style="display:flex;gap:3px"></span>
+          <button id="pg-next" class="btn btn-ghost btn-sm" onclick="irPagina(_pgAtual+1)" style="padding:4px 10px">Próxima ›</button>
+        </div>
+        <select id="pg-size" onchange="_pgSize=+this.value;_pgAtual=1;_renderPagina()" class="search-input" style="width:auto;padding:4px 8px;font-size:.8rem">
+          <option value="15">15 por página</option>
+          <option value="25" selected>25 por página</option>
+          <option value="50">50 por página</option>
+        </select>
+      </div>
 
     </div>
   </div>
@@ -2393,15 +2406,71 @@ async function atualizarVagas() {
 // Vagas
 // ═══════════════════════════════════════════════════════
 let vagasAtual = [];
+let _pgAtual  = 1;
+let _pgSize   = 25;
 
 function renderVagas(lista) {
   vagasAtual = lista;
+  _pgAtual = 1;
+  _renderPagina();
+}
+
+function irPagina(n) {
+  const total = Math.ceil(vagasAtual.length / _pgSize) || 1;
+  _pgAtual = Math.max(1, Math.min(n, total));
+  _renderPagina();
+}
+
+function _renderPagina() {
+  const lista   = vagasAtual;
+  const total   = lista.length;
+  const pgTotal = Math.ceil(total / _pgSize) || 1;
+  _pgAtual = Math.max(1, Math.min(_pgAtual, pgTotal));
+  const inicio  = (_pgAtual - 1) * _pgSize;
+  const fatia   = lista.slice(inicio, inicio + _pgSize);
+
+  // Info
+  const info = document.getElementById('pg-info');
+  if (info) info.textContent = total
+    ? `${inicio + 1}–${Math.min(inicio + _pgSize, total)} de ${total} vagas`
+    : '';
+
+  // Números de página
+  const nums = document.getElementById('pg-nums');
+  if (nums) {
+    const pages = [];
+    for (let p = 1; p <= pgTotal; p++) {
+      if (p === 1 || p === pgTotal || Math.abs(p - _pgAtual) <= 2) {
+        pages.push(p);
+      } else if (pages[pages.length-1] !== '…') {
+        pages.push('…');
+      }
+    }
+    nums.innerHTML = pages.map(p => p === '…'
+      ? `<span style="padding:0 4px;color:var(--colorTextTertiary)">…</span>`
+      : `<button class="btn btn-ghost btn-sm${p===_pgAtual?' ativo':''}" onclick="irPagina(${p})" style="padding:4px 9px;min-width:32px${p===_pgAtual?';font-weight:700;background:var(--colorPrimaryBg)':''}">${p}</button>`
+    ).join('');
+  }
+
+  // Prev / Next
+  const prev = document.getElementById('pg-prev');
+  const next = document.getElementById('pg-next');
+  if (prev) prev.disabled = _pgAtual <= 1;
+  if (next) next.disabled = _pgAtual >= pgTotal;
+
+  // Esconde paginação se só 1 página
+  const pg = document.getElementById('vagas-paginacao');
+  if (pg) pg.style.display = pgTotal <= 1 ? 'none' : 'flex';
+
   const tbody = document.getElementById('vagas-body');
-  if (!lista.length) {
+  if (!total) {
     tbody.innerHTML = `<tr><td colspan="7" class="empty"><div class="icon">◌</div><div>Importe vagas.json para visualizar todas</div></td></tr>`;
+    _atualizarContador(lista, total);
     return;
   }
-  tbody.innerHTML = lista.map((v, i) => {
+
+  tbody.innerHTML = fatia.map((v, fi) => {
+    const i = inicio + fi; // índice real na lista filtrada
     const st  = getVagaStatus(v);
     const sc  = v.score || 0;
     const cls = sc>=80?'score-high':sc>=60?'score-mid':'score-low';
@@ -2432,11 +2501,16 @@ function renderVagas(lista) {
       </td>
     </tr>`;
   }).join('');
-  const total = (vagas.length || topVagas.length);
+  _atualizarContador(lista, total);
+}
+
+function _atualizarContador(lista, totalGlobal) {
   const el = document.getElementById('vagas-count');
-  if (el) el.innerHTML = lista.length < total
-    ? `<span>${lista.length}</span> de ${total} vagas`
-    : `${total} vagas`;
+  if (!el) return;
+  const tg = totalGlobal || (vagas.length || topVagas.length);
+  el.innerHTML = lista.length < tg
+    ? `<span>${lista.length}</span> de ${tg} vagas`
+    : `${tg} vagas`;
 }
 
 // ── Estado dos filtros ──────────────────────────────────
