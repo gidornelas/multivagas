@@ -508,7 +508,25 @@
     position: sticky; top: 0; z-index: 50;
     box-shadow: 0 1px 3px rgba(30,43,26,0.05);
   }
-  #topbar .topbar-left { display: flex; flex-direction: column; gap: 1px; }
+  #topbar .topbar-left {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 14px;
+    height: 56px;
+  }
+  .dashboard-logo {
+    height: 32px;
+    width: auto;
+    display: block;
+    margin-right: 2px;
+  }
+  .topbar-titles {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 1px;
+  }
   #topbar h2 { font-size: 1.0625rem; font-weight: 600; color: var(--colorText); line-height: 1.2; }
   #topbar .topbar-subtitle { font-size: .75rem; color: var(--colorTextTertiary); font-weight: 400; }
   #topbar .actions { display: flex; gap: 8px; align-items: center; }
