@@ -613,6 +613,7 @@
   .page-section-title::before { content: ''; display: block; width: 3px; height: 12px; background: var(--colorPrimary); border-radius: 99px; flex-shrink: 0; }
 
   /* ── Tabela de vagas ─────────────────────────────────── */
+  .vagas-table-container { overflow-x: auto; position: relative; }
   .vagas-table { width: 100%; border-collapse: collapse; }
   .vagas-table th {
     text-align: left; padding: 9px 12px; font-size: .6875rem;
@@ -620,6 +621,7 @@
     background: var(--colorBgLayout);
     text-transform: uppercase; letter-spacing: .05em;
     white-space: nowrap;
+    position: sticky; top: 0; z-index: 5;
   }
   .vagas-table td { padding: 11px 12px; font-size: .875rem; vertical-align: middle; color: var(--colorText); transition: background .15s ease; }
   .vagas-table tbody tr { transition: background .15s ease; }
@@ -735,9 +737,9 @@
     font-size: .66rem; font-weight: 700; margin-right: 3px;
     letter-spacing: .04em; text-transform: uppercase;
   }
-  .tag-pcd  { background: var(--colorErrorBg); color: var(--colorErrorText); }
-  .tag-ptbr { background: var(--colorInfoBg); color: var(--colorInfoText); }
-  .tag-de   { background: var(--colorPrimaryBg); color: var(--colorPrimaryText); }
+  .tag-pcd  { background: var(--colorBgLayout); color: var(--colorTextSecondary); }
+  .tag-ptbr { background: var(--colorBgLayout); color: var(--colorTextSecondary); }
+  .tag-de   { background: var(--colorBgLayout); color: var(--colorTextSecondary); }
 
   /* ── Formulário currículo ────────────────────────────── */
   .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
@@ -1361,7 +1363,7 @@
   .mv-textarea.cover { min-height: 200px; font-size: .8125rem; font-family: 'Consolas', monospace; }
   .mv-actions {
     display: flex; gap: 8px; flex-wrap: wrap; margin-top: 12px;
-    padding-top: 10px; border-top: 1px solid var(--colorBorder);
+    padding-top: 10px;
   }
   .mv-badge-gerar {
     display: inline-flex; align-items: center; gap: 6px;
@@ -1373,7 +1375,33 @@
     .mv-cv-panel   { flex: 0 0 45vh; border-right: none; border-bottom: 1px solid var(--colorBorder); }
   }
 
-  /* ── Dashboard CTA ──────────────────────────────────── */
+  /* ── Modal info description box ────────────────────── */
+  .mv-desc-box {
+    font-size: .82rem; line-height: 1.7; color: var(--colorTextSecondary);
+    max-height: 220px; overflow-y: auto;
+    background: var(--colorBgLayout); border-radius: var(--borderRadiusSM);
+    padding: 12px 14px;
+  }
+
+  /* ── Skeleton screens ───────────────────────────────── */
+  @keyframes skeleton-shimmer {
+    from { background-position: -200% 0; }
+    to   { background-position:  200% 0; }
+  }
+  .skeleton {
+    background: linear-gradient(90deg,
+      var(--colorBgLayout) 25%,
+      var(--colorBgContainer) 50%,
+      var(--colorBgLayout) 75%);
+    background-size: 200% 100%;
+    animation: skeleton-shimmer 1.5s ease-in-out infinite;
+    border-radius: var(--borderRadiusSM);
+  }
+  .skeleton-row  { height: 44px; margin-bottom: 6px; }
+  .skeleton-text { height: 13px; margin-bottom: 8px; }
+  .skeleton-text.sm { width: 55%; }
+  .skeleton-text.lg { width: 80%; }
+  .skeleton-card { height: 90px; border-radius: var(--borderRadius); margin-bottom: 12px; }
   .dashboard-cta {
     display: flex; align-items: center; justify-content: space-between;
     background: var(--colorPrimaryBg); border-radius: var(--borderRadius);
@@ -1563,41 +1591,41 @@
   <div class="logo">
     <img src="assets/inclua_logo_3.png" alt="Multivagas" />
   </div>
-  <nav>
-    <a class="active" onclick="navTo('dashboard', this)">
+  <nav role="navigation" aria-label="Menu principal">
+    <a role="button" tabindex="0" aria-label="Dashboard" aria-current="page" class="active" onclick="navTo('dashboard', this)">
       <span class="icon"><i class="fi fi-rr-apps"></i></span>
       <span>Dashboard</span>
     </a>
-    <a onclick="navTo('curriculo', this)">
+    <a role="button" tabindex="0" aria-label="Meu Currículo" onclick="navTo('curriculo', this)">
       <span class="icon"><i class="fi fi-rr-user"></i></span>
       <span>Meu Currículo</span>
     </a>
-    <a onclick="navTo('vagas', this)">
+    <a role="button" tabindex="0" aria-label="Vagas" onclick="navTo('vagas', this)">
       <span class="icon"><i class="fi fi-rr-briefcase"></i></span>
       <span>Vagas</span>
     </a>
-    <a onclick="navTo('candidaturas', this)">
+    <a role="button" tabindex="0" aria-label="Candidaturas" onclick="navTo('candidaturas', this)">
       <span class="icon"><i class="fi fi-rr-paper-plane"></i></span>
       <span>Candidaturas</span>
     </a>
-    <a onclick="navTo('busca', this)">
+    <a role="button" tabindex="0" aria-label="Busca de vagas" onclick="navTo('busca', this)">
       <span class="icon"><i class="fi fi-rr-search"></i></span>
       <span>Busca</span>
     </a>
-    <a onclick="navTo('analytics', this)">
+    <a role="button" tabindex="0" aria-label="Analytics" onclick="navTo('analytics', this)">
       <span class="icon"><i class="fi fi-rr-chart-histogram"></i></span>
       <span>Analytics</span>
     </a>
-    <a onclick="navTo('linkedin', this)">
+    <a role="button" tabindex="0" aria-label="LinkedIn" onclick="navTo('linkedin', this)">
       <span class="icon"><i class="fi fi-brands-linkedin"></i></span>
       <span>LinkedIn</span>
     </a>
     <hr class="nav-divider">
-    <a onclick="navTo('config', this)">
+    <a role="button" tabindex="0" aria-label="Configurações" onclick="navTo('config', this)">
       <span class="icon"><i class="fi fi-rr-settings"></i></span>
       <span>Configurações</span>
     </a>
-    <a onclick="abrirTemaPanel()" style="margin-top:auto">
+    <a role="button" tabindex="0" aria-label="Personalizar tema" onclick="abrirTemaPanel()" style="margin-top:auto">
       <span class="icon"><i class="fi fi-rr-palette"></i></span>
       <span>Tema</span>
     </a>
@@ -2056,6 +2084,7 @@
         <button class="filter-clear" id="filter-clear" onclick="limparFiltros()">✕ Limpar filtros</button>
         <span class="vagas-count-badge" id="vagas-count"></span>
       </div>
+      <div class="vagas-table-container">
       <table class="vagas-table">
         <thead>
           <tr>
@@ -2070,6 +2099,7 @@
         </thead>
         <tbody id="vagas-body"></tbody>
       </table>
+      </div>
 
       <!-- Paginação -->
       <div id="vagas-paginacao" style="display:flex;align-items:center;justify-content:space-between;padding:10px 4px;gap:8px;flex-wrap:wrap">
@@ -2550,7 +2580,7 @@
             <span class="tag tag-pcd"  id="mv-info-pcd"  style="display:none">PCD</span>
           </div>
           <div class="mv-field-label">Descrição</div>
-          <div id="mv-info-desc" style="font-size:.82rem;line-height:1.6;color:var(--cinza3);max-height:140px;overflow-y:auto;background:rgba(255,255,255,.5);border-radius:10px;padding:10px">—</div>
+          <div id="mv-info-desc" class="mv-desc-box">—</div>
           <div class="mv-field-label">Skills identificadas</div>
           <div id="mv-info-skills" style="display:flex;gap:6px;flex-wrap:wrap"></div>
           <div class="mv-field-label" id="mv-info-gaps-lbl" style="display:none">Gaps</div>
@@ -2901,9 +2931,12 @@ const _TOPBAR_ACTIONS = {
 
 function navTo(page, el) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-  document.querySelectorAll('#sidebar nav a').forEach(a => a.classList.remove('active'));
+  document.querySelectorAll('#sidebar nav a').forEach(a => {
+    a.classList.remove('active');
+    a.removeAttribute('aria-current');
+  });
   document.getElementById('page-' + page).classList.add('active');
-  if (el) el.classList.add('active');
+  if (el) { el.classList.add('active'); el.setAttribute('aria-current', 'page'); }
   const titles = { dashboard:'Dashboard', curriculo:'Meu Currículo', vagas:'Vagas', candidaturas:'Candidaturas', busca:'Busca', analytics:'Analytics', linkedin:'LinkedIn', config:'Configurações' };
   const subtitles = { dashboard:'Visão geral do pipeline', curriculo:'Edite suas informações e habilidades', vagas:'Pipeline de vagas encontradas', candidaturas:'Histórico e acompanhamento', busca:'Executar busca por novas vagas', analytics:'Performance das candidaturas', linkedin:'Mensagens para recrutadores', config:'Preferências e fontes de busca' };
   document.getElementById('page-title').textContent = titles[page] || page;
@@ -4997,6 +5030,19 @@ function aplicarTema(vars) {
     root.setProperty('--colorTextDisabled',    _rgbStr(t, 0.30));
     root.setProperty('--colorBgMask',          _rgbStr(t, 0.35));
     root.setProperty('--colorBgSpotlight',     _rgbStr(t, 0.90));
+  }
+  // Ajusta sombras conforme luminância do fundo (temas escuros = sombras mais pronunciadas)
+  const bgKey = vars['--colorBgBase'] || vars['--colorBgLayout'];
+  if (bgKey && bgKey.startsWith('#')) {
+    try {
+      const [r, g, b] = _hexToRgb(bgKey);
+      const lum = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
+      const isDark = lum < 0.38;
+      const a1 = isDark ? 0.20 : 0.05;
+      const a2 = isDark ? 0.28 : 0.07;
+      root.setProperty('--boxShadow',          `0 1px 2px 0 rgba(0,0,0,${a1}), 0 3px 10px 0 rgba(0,0,0,${+(a1*1.4).toFixed(3)})`);
+      root.setProperty('--boxShadowSecondary', `0 2px 4px 0 rgba(0,0,0,${a2}), 0 5px 14px 0 rgba(0,0,0,${+(a2*1.3).toFixed(3)})`);
+    } catch (_) {}
   }
 }
 
