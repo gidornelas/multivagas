@@ -506,11 +506,22 @@ def detectar_pcd(vaga: dict) -> bool:
 def deduplicar(vagas_novas: list[dict], existentes: list[dict]) -> list[dict]:
     ids_existentes = {v["id"] for v in existentes}
     vistos_ids = set()
-    # Chave secundária: (empresa normalizada, titulo normalizado) — evita duplicatas cross-fonte
-    vistos_chave = set()
+    # Chave secundária: (empresa normalizada, titulo normalizado) — evita duplicatas cross-fonte.
+    # Inicializa com existentes para evitar re-adição em rodadas futuras.
+    vistos_chave: set[tuple[str, str]] = set()
+    for e in existentes:
+        emp = re.sub(r"\s+", " ", e.get("empresa", "").lower().strip())[:40]
+        tit = re.sub(r"\s+", " ", e.get("titulo", "").lower().strip())[:50]
+        if emp:
+            vistos_chave.add((emp, tit))
     # Cap por empresa: máximo 3 vagas de qualquer empresa (evita spam de DataAnnotation etc.)
+    # Inicializa contagem a partir dos existentes também.
     _CAP_POR_EMPRESA = 3
     contagem_empresa: dict[str, int] = {}
+    for e in existentes:
+        emp = re.sub(r"\s+", " ", e.get("empresa", "").lower().strip())[:40]
+        if emp and e.get("idioma_vaga") != "pt":
+            contagem_empresa[emp] = contagem_empresa.get(emp, 0) + 1
     resultado = []
     for v in vagas_novas:
         # Filtro qualidade mínima: vaga sem empresa E sem descrição é ruído
