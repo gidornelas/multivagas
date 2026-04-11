@@ -170,10 +170,10 @@
     width: 100%;
     max-width: 900px;
     min-height: 540px;
-    border: 1px solid var(--colorBorder);
+    border: none;
     border-radius: 18px;
     overflow: hidden;
-    box-shadow: var(--boxShadowSecondary);
+    box-shadow: 0 10px 40px rgba(0,0,0,0.12);
     background: var(--colorBgElevated);
     display: grid;
     grid-template-columns: 1.1fr .9fr;
@@ -412,7 +412,8 @@
     position: fixed;
     left: 0; top: 0; bottom: 0;
     z-index: 100;
-    border-right: 1px solid rgba(255, 255, 255, 0.08);
+    border-right: none;
+    box-shadow: 1px 0 0 rgba(0,0,0,0.04);
   }
   #sidebar .logo {
     padding: 28px 16px 20px;
@@ -504,7 +505,7 @@
     padding: 0 24px; height: 56px;
     display: flex; align-items: center; justify-content: space-between;
     position: sticky; top: 0; z-index: 50;
-    box-shadow: 0 1px 0 var(--colorBorderSecondary);
+    box-shadow: 0 1px 3px rgba(30,43,26,0.05);
   }
   #topbar .topbar-left { display: flex; flex-direction: column; gap: 1px; }
   #topbar h2 { font-size: 1.0625rem; font-weight: 600; color: var(--colorText); line-height: 1.2; }
@@ -515,9 +516,9 @@
   .btn {
     padding: 0 15px; height: 32px;
     border-radius: var(--borderRadiusSM);
-    border: 1px solid var(--colorBorder);
+    border: none;
     cursor: pointer; font-size: .875rem; font-weight: 500;
-    transition: background .12s, border-color .12s, color .12s, box-shadow .12s;
+    transition: background .12s, color .12s, box-shadow .12s;
     text-decoration: none;
     display: inline-flex; align-items: center; gap: 6px;
     font-family: inherit; line-height: 1;
@@ -526,22 +527,21 @@
   .btn:active { transform: scale(.98); }
   /* Primary — ação principal, filled, alto destaque */
   .btn-primary {
-    background: var(--colorPrimary); color: #fff; border-color: var(--colorPrimary);
+    background: var(--colorPrimary); color: #fff;
     box-shadow: 0 1px 3px rgba(79,111,47,.25);
   }
-  .btn-primary:hover { background: var(--colorPrimaryHover); border-color: var(--colorPrimaryHover); box-shadow: 0 2px 6px rgba(79,111,47,.3); }
+  .btn-primary:hover { background: var(--colorPrimaryHover); box-shadow: 0 2px 6px rgba(79,111,47,.3); }
   /* Accent — ação secundária importante, filled mais sutil */
   .btn-accent {
     background: var(--colorPrimaryBg); color: var(--colorPrimary);
-    border-color: var(--colorPrimaryBorder);
   }
-  .btn-accent:hover { background: var(--colorPrimaryBgHover); border-color: var(--colorPrimary); }
+  .btn-accent:hover { background: var(--colorPrimaryBgHover); }
   /* Danger */
-  .btn-danger { background: var(--colorErrorText); color: #fff; border-color: var(--colorErrorText); }
+  .btn-danger { background: var(--colorErrorText); color: #fff; }
   .btn-danger:hover { opacity: .88; }
   /* Ghost — ação terciária, sem fundo */
-  .btn-ghost { background: transparent; color: var(--colorTextSecondary); border-color: var(--colorBorder); }
-  .btn-ghost:hover { color: var(--colorPrimary); border-color: var(--colorPrimaryBorder); background: var(--colorPrimaryBg); }
+  .btn-ghost { background: var(--colorBgContainer); color: var(--colorTextSecondary); }
+  .btn-ghost:hover { color: var(--colorPrimary); background: var(--colorPrimaryBg); }
   .btn-sm { padding: 0 11px; height: 28px; font-size: .8125rem; }
 
   /* ── Páginas ─────────────────────────────────────────── */
@@ -654,7 +654,7 @@
   .filter-chip {
     height: 24px; padding: 0 10px;
     border-radius: 99px;
-    border: 1px solid var(--colorBorder);
+    border: none;
     background: var(--colorBgElevated);
     color: var(--colorTextSecondary);
     font-size: .75rem; font-weight: 500;
@@ -663,7 +663,6 @@
     display: inline-flex; align-items: center; gap: 4px;
   }
   .filter-chip:hover {
-    border-color: var(--colorPrimaryBorder);
     color: var(--colorPrimary);
     background: var(--colorPrimaryBg);
   }
@@ -1008,9 +1007,9 @@
   .profile-badge {
     padding: 2px 9px; border-radius: var(--borderRadiusXS); font-size: .6875rem; font-weight: 500;
     background: var(--colorBgLayout); color: var(--colorTextSecondary);
-    border: 1px solid var(--colorBorder); text-transform: uppercase; letter-spacing: .04em;
+    text-transform: uppercase; letter-spacing: .04em;
   }
-  .profile-badge.gold { background: var(--colorWarningBg); color: var(--colorWarningText); border-color: var(--colorWarningBorder); }
+  .profile-badge.gold { background: var(--colorWarningBg); color: var(--colorWarningText); }
 
   /* ── Search input ────────────────────────────────────── */
   .search-input {
@@ -1223,19 +1222,19 @@
 
   /* ── Command block ───────────────────────────────────── */
   .cmd-block {
-    background: var(--colorBgLayout); border: 1px solid var(--colorBorder); border-radius: var(--borderRadiusSM);
+    background: var(--colorBgLayout); border-radius: var(--borderRadiusSM);
     padding: 10px 14px; font-family: 'Consolas', 'Cascadia Code', monospace;
     font-size: .875rem; color: var(--colorSuccessText); display: flex; justify-content: space-between;
     align-items: center; gap: 12px; overflow-x: auto;
   }
   .cmd-block .cmd-text { white-space: nowrap; }
   .copy-btn {
-    padding: 0 10px; height: 28px; border-radius: var(--borderRadiusXS); border: 1px solid var(--colorBorder);
+    padding: 0 10px; height: 28px; border-radius: var(--borderRadiusXS); border: none;
     background: var(--colorBgElevated); color: var(--colorTextSecondary); cursor: pointer; font-size: .75rem;
     font-weight: 500; white-space: nowrap; transition: all .15s; flex-shrink: 0;
   }
-  .copy-btn:hover { border-color: var(--colorPrimary); color: var(--colorPrimary); }
-  .copy-btn.copied { background: var(--colorSuccessBg); color: var(--colorSuccessText); border-color: var(--colorSuccessBorder); }
+  .copy-btn:hover { color: var(--colorPrimary); background: var(--colorPrimaryBg); }
+  .copy-btn.copied { background: var(--colorSuccessBg); color: var(--colorSuccessText); }
 
   /* ── Platform bar ────────────────────────────────────── */
   .plat-row { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
@@ -1246,8 +1245,9 @@
 
   /* ── Config cards ────────────────────────────────────── */
   .config-card {
-    background: var(--colorBgElevated); border: 1px solid var(--colorBorder);
+    background: var(--colorBgElevated);
     border-radius: var(--borderRadiusSM); padding: 14px 18px; margin-bottom: 10px;
+    box-shadow: 0 1px 2px rgba(30,43,26,0.04);
   }
   .config-card h4 { font-size: .875rem; font-weight: 600; color: var(--colorText); margin-bottom: 8px; }
   .terms-grid { display: flex; flex-wrap: wrap; gap: 5px; }
@@ -1292,16 +1292,16 @@
   .mv-overlay.open { display: flex; }
   .mv-modal {
     background: var(--colorBgElevated);
-    border: 1px solid var(--colorBorder);
+    border: none;
     border-radius: var(--borderRadiusLG);
-    box-shadow: 0 8px 32px rgba(30,43,26,.14), 0 20px 80px rgba(30,43,26,.10);
+    box-shadow: 0 10px 40px rgba(0,0,0,0.12), 0 20px 80px rgba(0,0,0,0.08);
     width: min(96vw, 1100px);
     height: min(92vh, 820px);
     display: flex; flex-direction: column; overflow: hidden;
   }
   .mv-modal-header {
     display: flex; align-items: center; gap: 12px;
-    padding: 14px 20px; border-bottom: 1px solid var(--colorBorder);
+    padding: 14px 20px; border-bottom: none;
     background: var(--colorBgContainer); flex-shrink: 0;
   }
   .mv-modal-header h3 {
@@ -1309,20 +1309,20 @@
   }
   .mv-modal-header .empresa-tag {
     font-size: .75rem; color: var(--colorTextSecondary); font-weight: 500;
-    background: var(--colorBgLayout); border: 1px solid var(--colorBorder);
+    background: var(--colorBgLayout);
     padding: 2px 9px; border-radius: var(--borderRadiusXS);
   }
   .mv-modal-close {
-    width: 32px; height: 32px; border-radius: var(--borderRadiusSM); border: 1px solid var(--colorBorder);
-    background: var(--colorBgElevated); cursor: pointer; font-size: .875rem; font-weight: 600;
+    width: 32px; height: 32px; border-radius: var(--borderRadiusSM); border: none;
+    background: var(--colorBgLayout); cursor: pointer; font-size: .875rem; font-weight: 600;
     display: flex; align-items: center; justify-content: center; flex-shrink: 0;
     transition: all .15s; color: var(--colorTextSecondary);
   }
-  .mv-modal-close:hover { border-color: var(--colorErrorBorder); color: var(--colorErrorText); background: var(--colorErrorBg); }
+  .mv-modal-close:hover { color: var(--colorErrorText); background: var(--colorErrorBg); }
   .mv-modal-body { display: flex; flex: 1; overflow: hidden; }
   /* Painel esquerdo — iframe currículo */
   .mv-cv-panel {
-    flex: 0 0 58%; border-right: 1px solid var(--colorBorder);
+    flex: 0 0 58%;
     display: flex; flex-direction: column; overflow: hidden;
   }
   .mv-cv-panel iframe { flex: 1; width: 100%; border: none; background: #fff; }
@@ -1455,15 +1455,15 @@
   .tp-color-row {
     display: flex; align-items: center; justify-content: space-between;
     padding: 7px 12px; border-radius: var(--borderRadiusSM);
-    background: var(--colorBgElevated); border: 1px solid var(--colorBorder);
-    transition: border-color .15s;
+    background: var(--colorBgElevated);
+    transition: background .13s;
   }
-  .tp-color-row:hover { border-color: var(--colorPrimaryBorder); }
+  .tp-color-row:hover { background: var(--colorBgContainer); }
   .tp-color-row label {
     font-size: .8125rem; font-weight: 500; color: var(--colorTextSecondary); flex: 1; cursor: pointer;
   }
   .tp-color-row input[type=color] {
-    width: 36px; height: 28px; border-radius: var(--borderRadiusSM); border: 1px solid var(--colorBorder);
+    width: 36px; height: 28px; border-radius: var(--borderRadiusSM); border: none;
     cursor: pointer; padding: 2px; background: none;
   }
 
