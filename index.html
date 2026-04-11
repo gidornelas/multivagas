@@ -589,7 +589,12 @@
     display: flex; align-items: center; justify-content: center;
     margin-bottom: 10px; font-size: 1rem;
   }
-  .stat-card.accent { border: none; background: linear-gradient(180deg, var(--colorPrimaryBg), transparent); }
+  .stat-card.accent {
+    border: none;
+    background:
+      linear-gradient(180deg, rgba(169, 194, 125, 0.18), rgba(169, 194, 125, 0.04)),
+      var(--colorBgElevated);
+  }
   .stat-card.accent .kpi-icon-wrap { background: var(--colorPrimaryBg); color: var(--colorPrimary); }
   .stat-card.danger .kpi-icon-wrap { background: var(--colorWarningBg); color: var(--colorWarning); }
   .stat-card.dark   .kpi-icon-wrap { background: var(--colorBgLayout);  color: var(--colorTextTertiary); }
