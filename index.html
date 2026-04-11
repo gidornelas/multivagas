@@ -501,7 +501,6 @@
   /* ── Topbar ──────────────────────────────────────────── */
   #topbar {
     background: var(--colorBgElevated);
-    border-bottom: 1px solid var(--colorBorder);
     padding: 0 24px; height: 56px;
     display: flex; align-items: center; justify-content: space-between;
     position: sticky; top: 0; z-index: 50;
@@ -558,7 +557,6 @@
     background: var(--colorBgElevated);
     border-radius: var(--borderRadius);
     padding: 20px 22px 18px;
-    border: 1px solid var(--colorBorderSecondary);
     box-shadow: var(--boxShadow);
     position: relative; overflow: hidden;
     transition: box-shadow .17s, transform .17s;
@@ -592,7 +590,6 @@
     background: var(--colorBgElevated);
     border-radius: var(--borderRadius);
     padding: 20px 24px; margin-bottom: 16px;
-    border: 1px solid var(--colorBorder);
     box-shadow: var(--boxShadow);
   }
   .section-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; gap: 12px; }
@@ -603,7 +600,6 @@
     font-size: .6875rem; font-weight: 700; text-transform: uppercase; letter-spacing: .08em;
     color: var(--colorTextTertiary); padding: 0 0 8px;
     margin-bottom: 12px; margin-top: 8px;
-    border-bottom: 1px solid var(--colorBorderSecondary);
     display: flex; align-items: center; gap: 8px;
   }
   .page-section-title::before { content: ''; display: block; width: 3px; height: 12px; background: var(--colorPrimary); border-radius: 99px; flex-shrink: 0; }
@@ -618,7 +614,7 @@
     text-transform: uppercase; letter-spacing: .05em;
     white-space: nowrap;
   }
-  .vagas-table td { padding: 11px 12px; font-size: .875rem; border-bottom: 1px solid var(--colorBorderSecondary); vertical-align: middle; color: var(--colorText); }
+  .vagas-table td { padding: 11px 12px; font-size: .875rem; vertical-align: middle; color: var(--colorText); }
   .vagas-table tbody tr { transition: background .1s; }
   .vagas-table tbody tr:hover td { background: rgba(79,111,47,.035) !important; }
   .vagas-table tbody tr:hover td:first-child { box-shadow: inset 3px 0 0 var(--colorPrimary); }
@@ -644,7 +640,6 @@
   .filter-bar {
     display: flex; flex-wrap: wrap; align-items: center;
     gap: 10px; padding: 12px 0 16px;
-    border-top: 1px solid var(--colorBorderSecondary);
     margin-top: 12px;
   }
   .filter-group {
