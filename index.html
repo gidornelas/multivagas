@@ -275,11 +275,11 @@
     border: none;
     border-radius: var(--borderRadiusSM);
     background: var(--colorBgLayout);
-    color: var(--colorTextSecondary);
+    color: var(--colorTextTertiary);
     font-size: .78rem;
-    font-weight: 600;
-    cursor: not-allowed;
-    opacity: .7;
+    font-weight: 500;
+    cursor: default;
+    pointer-events: none;
     transition: none;
   }
   .auth-divider {
@@ -377,23 +377,23 @@
   .auth-config-panel {
     margin-top: 10px;
     padding: 12px;
-    background: var(--colorBgContainer);
-    border: 1px solid var(--colorBorderSecondary);
+    background: var(--colorBgLayout);
     border-radius: var(--borderRadiusSM);
   }
   .auth-cfg-save-btn {
     margin-top: 10px;
     width: 100%;
     height: 34px;
-    border: 1px solid var(--colorBorder);
+    border: none;
     border-radius: var(--borderRadiusSM);
-    background: var(--colorBgContainer);
+    background: var(--colorBgLayout);
     color: var(--colorTextSecondary);
     font-size: .82rem;
     font-weight: 600;
     cursor: pointer;
+    transition: background .15s ease, color .15s ease;
   }
-  .auth-cfg-save-btn:hover { border-color: var(--colorPrimary); color: var(--colorPrimaryText); }
+  .auth-cfg-save-btn:hover { background: var(--colorPrimaryBg); color: var(--colorPrimaryText); }
   @media (max-width: 860px) {
     .auth-shell {
       max-width: 460px;
@@ -455,7 +455,7 @@
     text-decoration: none;
     font-size: .875rem; font-weight: 400;
     border-radius: var(--borderRadiusSM);
-    transition: all .15s; cursor: pointer; position: relative;
+    transition: background .15s ease, color .15s ease; cursor: pointer; position: relative;
     letter-spacing: .01em;
   }
   #sidebar nav a:hover { background: rgba(255, 255, 255, 0.14); color: #fff; }
@@ -688,13 +688,13 @@
   .filter-divider { width: 1px; height: 16px; background: var(--colorBorder); margin: 0 4px; align-self: center; }
   .filter-clear {
     height: 24px; padding: 0 10px;
-    border-radius: 99px; border: 1px dashed var(--colorBorder);
-    background: transparent; color: var(--colorTextTertiary);
+    border-radius: 99px; border: none;
+    background: var(--colorBgLayout); color: var(--colorTextTertiary);
     font-size: .75rem; font-weight: 500; cursor: pointer; font-family: inherit;
-    transition: all .13s; display: none; align-items: center; gap: 4px;
+    transition: background .15s ease, color .15s ease; display: none; align-items: center; gap: 4px;
   }
   .filter-clear.visivel { display: inline-flex; }
-  .filter-clear:hover { border-color: var(--colorErrorBorder); color: var(--colorErrorText); background: var(--colorErrorBg); border-style: solid; }
+  .filter-clear:hover { color: var(--colorErrorText); background: var(--colorErrorBg); }
   /* Contador de resultados inline */
   .vagas-count-badge {
     font-size: .75rem; font-weight: 600; color: var(--colorTextTertiary);
@@ -1099,27 +1099,24 @@
     height: 28px; padding: 0 10px; border-radius: var(--borderRadiusSM);
     font-size: .8125rem; font-weight: 500; cursor: pointer; font-family: inherit;
     display: inline-flex; align-items: center; gap: 5px;
-    transition: background .15s, border-color .15s, box-shadow .15s, transform .1s;
-    white-space: nowrap;
+    transition: background .15s ease, box-shadow .15s ease, color .15s ease, transform .1s ease;
+    white-space: nowrap; border: none;
   }
   .btn-cv.gerado {
     background: var(--colorPrimary); color: #fff;
-    border: 1px solid var(--colorPrimary);
     box-shadow: 0 1px 3px rgba(79,111,47,.2);
   }
   .btn-cv.gerado:hover {
-    background: var(--colorPrimaryHover); border-color: var(--colorPrimaryHover);
+    background: var(--colorPrimaryHover);
     box-shadow: 0 2px 8px rgba(79,111,47,.35);
     transform: translateY(-1px);
   }
   .btn-cv.gerado:active { transform: scale(.96); box-shadow: none; }
   .btn-cv.pendente {
-    background: transparent; color: var(--colorTextSecondary);
-    border: 1px dashed var(--colorBorder);
+    background: var(--colorBgLayout); color: var(--colorTextSecondary);
   }
   .btn-cv.pendente:hover {
-    color: var(--colorPrimary); border-color: var(--colorPrimary);
-    border-style: solid; background: var(--colorPrimaryBgHover);
+    color: var(--colorPrimary); background: var(--colorPrimaryBgHover);
     transform: translateY(-1px);
     box-shadow: 0 1px 4px rgba(79,111,47,.15);
   }
@@ -1201,20 +1198,20 @@
   }
   .busca-status-pill {
     display: inline-flex; align-items: center; gap: 6px;
-    padding: 4px 12px; border-radius: var(--borderRadiusXS);
+    padding: 4px 12px; border-radius: 999px;
     font-size: .8125rem; font-weight: 500;
     background: var(--colorBgLayout); color: var(--colorTextSecondary);
-    border: 1px solid var(--colorBorder); transition: all .25s;
+    transition: background .2s ease, color .2s ease;
   }
-  .busca-status-pill.running  { background: var(--colorInfoBg);    color: var(--colorInfoText);    border-color: var(--colorInfoBorder); }
-  .busca-status-pill.success  { background: var(--colorSuccessBg); color: var(--colorSuccessText); border-color: var(--colorSuccessBorder); }
-  .busca-status-pill.error    { background: var(--colorErrorBg);   color: var(--colorErrorText);   border-color: var(--colorErrorBorder); }
+  .busca-status-pill.running  { background: var(--colorInfoBg);    color: var(--colorInfoText); }
+  .busca-status-pill.success  { background: var(--colorSuccessBg); color: var(--colorSuccessText); }
+  .busca-status-pill.error    { background: var(--colorErrorBg);   color: var(--colorErrorText); }
   @keyframes spin { to { transform: rotate(360deg); } }
   .spin { display: inline-block; animation: spin 1s linear infinite; }
   .api-badge {
     font-size: .6875rem; font-weight: 500; letter-spacing: .03em;
-    padding: 2px 8px; border-radius: var(--borderRadiusXS);
-    background: var(--colorBgLayout); border: 1px solid var(--colorBorder);
+    padding: 2px 8px; border-radius: 999px;
+    background: var(--colorBgLayout);
     color: var(--colorTextSecondary);
   }
   .cmd-details summary {
@@ -1370,8 +1367,8 @@
   }
   .mv-badge-gerar {
     display: inline-flex; align-items: center; gap: 6px;
-    padding: 4px 12px; border-radius: var(--borderRadiusXS); font-size: .75rem; font-weight: 500;
-    background: var(--colorWarningBg); color: var(--colorWarningText); border: 1px solid var(--colorWarningBorder);
+    padding: 4px 12px; border-radius: 999px; font-size: .75rem; font-weight: 500;
+    background: var(--colorWarningBg); color: var(--colorWarningText);
   }
   @media (max-width: 700px) {
     .mv-modal-body { flex-direction: column; }
@@ -1391,8 +1388,7 @@
     position: fixed; top: 0; right: -380px; bottom: 0;
     width: 340px; z-index: 810;
     background: var(--colorBgElevated);
-    border-left: 1px solid var(--colorBorder);
-    box-shadow: -4px 0 24px rgba(46,58,107,.1);
+    box-shadow: -8px 0 32px rgba(46,58,107,.14);
     display: flex; flex-direction: column;
     transition: right .28s cubic-bezier(.4,0,.2,1);
     overflow: hidden;
@@ -1401,8 +1397,7 @@
 
   #tema-panel-header {
     display: flex; align-items: center; justify-content: space-between;
-    padding: 16px 20px 12px;
-    border-bottom: 1px solid var(--colorBorder);
+    padding: 16px 20px 14px;
     background: var(--colorBgContainer);
     flex-shrink: 0;
   }
@@ -1412,12 +1407,12 @@
   }
   #tema-panel-close {
     width: 32px; height: 32px; border-radius: var(--borderRadiusSM);
-    border: 1px solid var(--colorBorder); background: var(--colorBgElevated);
+    border: none; background: var(--colorBgLayout);
     cursor: pointer; font-size: .875rem;
     display: flex; align-items: center; justify-content: center;
-    color: var(--colorTextSecondary); transition: all .15s;
+    color: var(--colorTextSecondary); transition: background .15s ease, color .15s ease;
   }
-  #tema-panel-close:hover { border-color: var(--colorErrorBorder); color: var(--colorErrorText); background: var(--colorErrorBg); }
+  #tema-panel-close:hover { color: var(--colorErrorText); background: var(--colorErrorBg); }
 
   #tema-panel-body {
     flex: 1; overflow-y: auto; padding: 18px 20px 24px;
@@ -1425,9 +1420,8 @@
   }
   .tp-section-title {
     font-size: .6875rem; font-weight: 600; text-transform: uppercase;
-    letter-spacing: .07em; color: var(--colorTextSecondary);
+    letter-spacing: .07em; color: var(--colorTextTertiary);
     margin-bottom: 10px; margin-top: 20px;
-    padding-bottom: 5px; border-bottom: 1px solid var(--colorBorder);
   }
   .tp-section-title:first-child { margin-top: 0; }
 
@@ -1438,12 +1432,12 @@
   .preset-btn {
     display: flex; flex-direction: column; align-items: center; gap: 6px;
     padding: 10px 8px; border-radius: var(--borderRadiusSM); cursor: pointer;
-    border: 1px solid var(--colorBorder); background: var(--colorBgElevated);
-    transition: all .15s; font-size: .8125rem;
+    border: none; background: var(--colorBgLayout);
+    transition: background .15s ease, color .15s ease; font-size: .8125rem;
     font-weight: 500; color: var(--colorTextSecondary);
   }
-  .preset-btn:hover { border-color: var(--colorPrimaryBorder); color: var(--colorPrimary); }
-  .preset-btn.ativo { border-color: var(--colorPrimary); color: var(--colorPrimary); background: var(--colorPrimaryBg); }
+  .preset-btn:hover { background: var(--colorPrimaryBg); color: var(--colorPrimary); }
+  .preset-btn.ativo { color: var(--colorPrimary); background: var(--colorPrimaryBg); box-shadow: inset 0 0 0 1.5px var(--colorPrimary); }
   .preset-swatches {
     display: flex; gap: 4px;
   }
@@ -1474,11 +1468,11 @@
   /* Font & Radius */
   .tp-select {
     width: 100%; padding: 7px 12px; border-radius: var(--borderRadiusSM);
-    border: 1px solid var(--colorBorder); background: var(--colorBgInput);
+    border: none; background: var(--colorBgLayout);
     color: var(--colorText); font-size: .875rem;
-    outline: none; cursor: pointer; transition: border-color .15s;
+    outline: none; cursor: pointer; transition: box-shadow .15s ease, background .15s ease;
   }
-  .tp-select:focus { border-color: var(--colorPrimary); }
+  .tp-select:focus { background: var(--colorBgContainer); box-shadow: 0 0 0 2px var(--colorPrimary); }
 
   .tp-radius-wrap { display: flex; align-items: center; gap: 10px; }
   .tp-range { flex: 1; accent-color: var(--colorPrimary); cursor: pointer; }
@@ -1489,11 +1483,11 @@
 
   .tp-reset-btn {
     margin-top: 20px; width: 100%; padding: 10px;
-    border: 1px dashed var(--colorBorder); border-radius: var(--borderRadiusSM);
-    background: transparent; cursor: pointer; font-size: .875rem;
-    color: var(--colorTextSecondary); font-weight: 500; transition: all .15s;
+    border: none; border-radius: var(--borderRadiusSM);
+    background: var(--colorBgLayout); cursor: pointer; font-size: .875rem;
+    color: var(--colorTextSecondary); font-weight: 500; transition: background .15s ease, color .15s ease;
   }
-  .tp-reset-btn:hover { border-color: var(--colorErrorBorder); color: var(--colorErrorText); background: var(--colorErrorBg); }
+  .tp-reset-btn:hover { color: var(--colorErrorText); background: var(--colorErrorBg); }
 </style>
 </head>
 <body class="auth-locked">
