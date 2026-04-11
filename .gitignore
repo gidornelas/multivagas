@@ -6,12 +6,13 @@ venv/
 .venv/
 env/
 
-# Saídas geradas (currículos e covers não versionados por padrão)
-output/pdfs/*.pdf
-output/pdfs/*.html
-output/covers/*.txt
+# Saídas geradas (currículos, covers e PDFs — dados pessoais)
+output/
+assets/
 
-# Dados sensíveis
+# Dados pessoais e sensíveis
+data/curriculo.json
+data/vagas.json
 data/candidaturas.json
 config/google_credentials.json
 config/google_token.json
