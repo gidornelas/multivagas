@@ -619,12 +619,11 @@
     text-align: left; padding: 9px 12px; font-size: .6875rem;
     font-weight: 700; color: var(--colorTextTertiary);
     background: var(--colorBgLayout);
-    border-bottom: 1px solid var(--colorBorder);
     text-transform: uppercase; letter-spacing: .05em;
     white-space: nowrap;
   }
   .vagas-table td { padding: 11px 12px; font-size: .875rem; vertical-align: middle; color: var(--colorText); transition: background .15s ease; }
-  .vagas-table tbody tr { transition: background .15s ease; border-bottom: 1px solid rgba(0,0,0,0.04); }
+  .vagas-table tbody tr { transition: background .15s ease; }
   .vagas-table tbody tr:hover td { background: rgba(79,111,47,.055) !important; }
   .vagas-table tbody tr:hover td:first-child { box-shadow: inset 3px 0 0 var(--colorPrimary); }
   .vagas-table tr:hover td.col-acoes { background: rgba(79,111,47,.035) !important; }
@@ -757,7 +756,7 @@
     border-color: var(--colorPrimary); box-shadow: 0 0 0 2px rgba(79,111,47,.12);
   }
   .form-group textarea { resize: vertical; min-height: 80px; }
-  .form-divider { grid-column: 1 / -1; border: none; border-top: 1px solid var(--colorBorder); margin: 2px 0; }
+  .form-divider { grid-column: 1 / -1; border: none; margin: 2px 0; }
   .form-section-title {
     grid-column: 1 / -1; font-size: .72rem; font-weight: 700; text-transform: uppercase;
     letter-spacing: .08em; color: var(--colorPrimary); padding: 8px 0 2px;
@@ -1334,14 +1333,14 @@
   /* Painel direito — abas */
   .mv-right-panel { flex: 1; display: flex; flex-direction: column; overflow: hidden; min-width: 0; }
   .mv-tabs {
-    display: flex; border-bottom: 1px solid var(--colorBorder);
+    display: flex;
     background: var(--colorBgContainer); flex-shrink: 0;
   }
   .mv-tab {
     padding: 10px 16px; font-size: .8125rem; font-weight: 400; cursor: pointer;
     border: none; background: none; color: var(--colorTextSecondary);
-    border-bottom: 2px solid transparent; margin-bottom: -1px;
-    transition: color .15s, border-color .15s;
+    border-bottom: 2px solid transparent;
+    transition: color .15s ease, border-color .15s ease;
   }
   .mv-tab:hover { color: var(--colorPrimary); }
   .mv-tab.active { color: var(--colorPrimary); border-bottom-color: var(--colorPrimary); font-weight: 500; }
