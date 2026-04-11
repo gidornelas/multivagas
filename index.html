@@ -418,8 +418,7 @@
     box-shadow: 1px 0 0 rgba(0,0,0,0.04);
   }
   #sidebar .logo {
-    padding: 28px 16px 20px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    padding: 28px 16px 22px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -471,13 +470,12 @@
   #sidebar nav a .icon i { font-size: 1rem; line-height: 1; }
   #sidebar nav a.active .icon { opacity: 1; }
   /* Separadores visuais */
-  #sidebar nav a[onclick*="TemaPanel"] { margin-top: 8px; border-top: 1px solid rgba(255, 255, 255, 0.2); padding-top: 14px; }
-  .nav-divider { border: none; border-top: 1px solid rgba(255,255,255,0.15); margin: 6px 12px; }
+  #sidebar nav a[onclick*="TemaPanel"] { margin-top: 8px; padding-top: 10px; }
+  .nav-divider { border: none; margin: 4px 12px; opacity: 0; height: 1px; }
   #sidebar .sidebar-footer {
-    padding: 12px 16px;
+    padding: 14px 16px;
     font-size: .73rem;
     color: rgba(255, 255, 255, 0.72);
-    border-top: 1px solid rgba(255, 255, 255, 0.16);
   }
   #sidebar .sidebar-footer .auth-user {
     display: block;
@@ -489,14 +487,15 @@
   #sidebar .sidebar-footer .logout-btn {
     width: 100%;
     height: 30px;
-    border: 1px solid rgba(255, 255, 255, 0.28);
+    border: none;
     background: rgba(255, 255, 255, 0.1);
-    color: #fff;
+    color: rgba(255, 255, 255, 0.8);
     border-radius: var(--borderRadiusSM);
     font-size: .78rem;
     cursor: pointer;
+    transition: background .15s ease, color .15s ease;
   }
-  #sidebar .sidebar-footer .logout-btn:hover { background: rgba(255, 255, 255, 0.18); }
+  #sidebar .sidebar-footer .logout-btn:hover { background: rgba(255, 255, 255, 0.2); color: #fff; }
 
   /* ── Main ────────────────────────────────────────────── */
   #main { margin-left: 220px; flex: 1; min-height: 100vh; background: var(--colorBgLayout); position: relative; }
@@ -759,8 +758,8 @@
   .form-divider { grid-column: 1 / -1; border: none; margin: 2px 0; }
   .form-section-title {
     grid-column: 1 / -1; font-size: .72rem; font-weight: 700; text-transform: uppercase;
-    letter-spacing: .08em; color: var(--colorPrimary); padding: 8px 0 2px;
-    border-bottom: 1px dashed var(--colorSuccess); margin-bottom: 4px;
+    letter-spacing: .08em; color: var(--colorPrimary); padding: 12px 0 4px;
+    margin-bottom: 4px;
   }
 
   /* ── Lista dinâmica ──────────────────────────────────── */
@@ -939,19 +938,19 @@
     }
   }
   .add-btn {
-    width: 100%; padding: 7px; border: 1px dashed var(--colorBorder); border-radius: var(--borderRadiusSM);
-    background: transparent; cursor: pointer; font-size: .875rem; color: var(--colorTextTertiary);
-    font-weight: 500; transition: all .15s; margin-top: 4px;
+    width: 100%; padding: 9px; border: none; border-radius: var(--borderRadiusSM);
+    background: var(--colorBgLayout); cursor: pointer; font-size: .875rem; color: var(--colorTextTertiary);
+    font-weight: 500; transition: background .15s ease, color .15s ease; margin-top: 4px;
   }
-  .add-btn:hover { border-color: var(--colorPrimary); color: var(--colorPrimary); background: var(--colorPrimaryBg); }
+  .add-btn:hover { color: var(--colorPrimary); background: var(--colorPrimaryBg); }
 
   /* ── Abas ────────────────────────────────────────────── */
-  .tabs { display: flex; gap: 0; border-bottom: 1px solid var(--colorBorder); margin-bottom: 18px; flex-wrap: wrap; }
+  .tabs { display: flex; gap: 0; margin-bottom: 18px; flex-wrap: wrap; }
   .tab-btn {
     padding: 8px 16px; border: none; background: none; cursor: pointer;
     font-size: .875rem; font-weight: 400; color: var(--colorTextSecondary);
-    border-bottom: 2px solid transparent; margin-bottom: -1px;
-    transition: color .15s, border-color .15s;
+    border-bottom: 2px solid transparent;
+    transition: color .15s ease, border-color .15s ease;
   }
   .tab-btn.active { color: var(--colorPrimary); border-bottom-color: var(--colorPrimary); font-weight: 500; }
   .tab-btn:hover:not(.active) { color: var(--colorPrimary); }
@@ -1374,7 +1373,21 @@
     .mv-cv-panel   { flex: 0 0 45vh; border-right: none; border-bottom: 1px solid var(--colorBorder); }
   }
 
-  /* ── Painel de Tema ──────────────────────────────────── */
+  /* ── Dashboard CTA ──────────────────────────────────── */
+  .dashboard-cta {
+    display: flex; align-items: center; justify-content: space-between;
+    background: var(--colorPrimaryBg); border-radius: var(--borderRadius);
+    padding: 18px 24px; margin-bottom: 20px;
+  }
+  .dashboard-cta-text { display: flex; flex-direction: column; gap: 2px; }
+  .dashboard-cta-text strong {
+    font-size: 1rem; font-weight: 700; color: var(--colorText);
+  }
+  .dashboard-cta-text span {
+    font-size: .82rem; color: var(--colorTextSecondary);
+  }
+
+  /* ── Tema panel — product feel ───────────────────────── */
   #tema-fab { display: none; }
 
   #tema-overlay {
@@ -1414,13 +1427,13 @@
   #tema-panel-close:hover { color: var(--colorErrorText); background: var(--colorErrorBg); }
 
   #tema-panel-body {
-    flex: 1; overflow-y: auto; padding: 18px 20px 24px;
+    flex: 1; overflow-y: auto; padding: 24px 22px 32px;
     display: flex; flex-direction: column; gap: 0;
   }
   .tp-section-title {
     font-size: .6875rem; font-weight: 600; text-transform: uppercase;
     letter-spacing: .07em; color: var(--colorTextTertiary);
-    margin-bottom: 10px; margin-top: 20px;
+    margin-bottom: 12px; margin-top: 28px;
   }
   .tp-section-title:first-child { margin-top: 0; }
 
@@ -1429,8 +1442,8 @@
     display: grid; grid-template-columns: 1fr 1fr; gap: 8px;
   }
   .preset-btn {
-    display: flex; flex-direction: column; align-items: center; gap: 6px;
-    padding: 10px 8px; border-radius: var(--borderRadiusSM); cursor: pointer;
+    display: flex; flex-direction: column; align-items: center; gap: 8px;
+    padding: 14px 8px; border-radius: var(--borderRadiusSM); cursor: pointer;
     border: none; background: var(--colorBgLayout);
     transition: background .15s ease, color .15s ease; font-size: .8125rem;
     font-weight: 500; color: var(--colorTextSecondary);
@@ -1451,9 +1464,9 @@
   }
   .tp-color-row {
     display: flex; align-items: center; justify-content: space-between;
-    padding: 7px 12px; border-radius: var(--borderRadiusSM);
+    padding: 10px 14px; border-radius: var(--borderRadiusSM);
     background: var(--colorBgElevated);
-    transition: background .13s;
+    transition: background .13s ease;
   }
   .tp-color-row:hover { background: var(--colorBgContainer); }
   .tp-color-row label {
@@ -1781,6 +1794,15 @@
         <div class="label">PT-BR</div>
         <div class="sub">Vagas em português</div>
       </div>
+    </div>
+
+    <!-- CTA principal -->
+    <div class="dashboard-cta">
+      <div class="dashboard-cta-text">
+        <strong>Continuar o pipeline</strong>
+        <span id="dashboard-cta-sub">Gere currículos e avance as vagas com maior score</span>
+      </div>
+      <button class="btn btn-primary" onclick="navTo('vagas', document.querySelector('[onclick*=vagas]'))">Ver pipeline →</button>
     </div>
 
     <!-- Top vagas -->
