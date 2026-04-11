@@ -721,13 +721,13 @@
     display: inline-block; padding: 2px 8px; border-radius: 4px;
     font-size: .75rem; font-weight: 700; letter-spacing: .03em;
   }
-  .score-high  { background: var(--colorSuccessBg); color: var(--colorSuccessText); border: 1px solid var(--colorSuccessBorder); }
-  .score-mid   { background: var(--colorWarningBg); color: var(--colorWarningText); border: 1px solid var(--colorWarningBorder); }
-  .score-low   { background: var(--colorErrorBg); color: var(--colorErrorText); border: 1px solid var(--colorErrorBorder); }
+  .score-high  { background: var(--colorSuccessBg); color: var(--colorSuccessText); }
+  .score-mid   { background: var(--colorWarningBg); color: var(--colorWarningText); }
+  .score-low   { background: var(--colorErrorBg); color: var(--colorErrorText); }
   .tag {
     display: inline-block; padding: 2px 7px; border-radius: 4px;
     font-size: .66rem; font-weight: 700; margin-right: 3px;
-    border: 1px solid currentColor; letter-spacing: .04em; text-transform: uppercase;
+    letter-spacing: .04em; text-transform: uppercase;
   }
   .tag-pcd  { background: var(--colorErrorBg); color: var(--colorErrorText); }
   .tag-ptbr { background: var(--colorInfoBg); color: var(--colorInfoText); }
@@ -975,7 +975,7 @@
   .status-pill {
     display: inline-flex; align-items: center; gap: 5px;
     padding: 3px 9px; border-radius: 4px; font-size: .72rem; font-weight: 700;
-    border: 1px solid currentColor; text-transform: uppercase; letter-spacing: .04em;
+    text-transform: uppercase; letter-spacing: .04em;
   }
   .status-pill::before { content: ''; width: 5px; height: 5px; border-radius: 50%; background: currentColor; flex-shrink: 0; }
   .pill-aplicada   { background: var(--colorInfoBg); color: var(--colorInfoText); }
@@ -1161,15 +1161,15 @@
 
   /* ── Status de vaga ─────────────────────────────────── */
   .vaga-status-btn {
-    padding: 0 10px; height: 24px; border-radius: var(--borderRadiusXS); border: 1px solid; cursor: pointer;
+    padding: 0 10px; height: 24px; border-radius: var(--borderRadiusXS); border: none; cursor: pointer;
     font-size: .6875rem; font-weight: 500; white-space: nowrap; transition: all .15s;
     letter-spacing: .02em; display: inline-flex; align-items: center;
   }
   .vaga-status-btn:hover { transform: scale(1.06); }
-  .vs-nova       { background: var(--colorBgLayout);    color: var(--colorTextSecondary); border-color: var(--colorBorder); }
-  .vs-verificada { background: var(--colorWarningBg);   color: var(--colorWarningText);   border-color: var(--colorWarningBorder); }
-  .vs-aplicada   { background: var(--colorSuccessBg);   color: var(--colorSuccessText);   border-color: var(--colorSuccessBorder); }
-  .vs-ignorada   { background: var(--colorBgLayout);    color: var(--colorTextTertiary);  border-color: var(--colorBorderSecondary); }
+  .vs-nova       { background: var(--colorBgLayout);    color: var(--colorTextSecondary); }
+  .vs-verificada { background: var(--colorWarningBg);   color: var(--colorWarningText); }
+  .vs-aplicada   { background: var(--colorSuccessBg);   color: var(--colorSuccessText); }
+  .vs-ignorada   { background: var(--colorBgLayout);    color: var(--colorTextTertiary); }
   tr.row-ignorada td { opacity: .45; text-decoration: line-through; }
   tr.row-ignorada td:last-child { opacity: 1; text-decoration: none; }
 
