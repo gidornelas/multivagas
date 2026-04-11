@@ -17,9 +17,9 @@
     --colorPrimary:            #4F6F2F;
     --colorSuccess:            #A9C27D;
     --colorWarning:            #9C9263;
-    --colorError:              #2E3A6B;
-    --colorInfo:               #7E98B2;
-    --colorTextBase:           #2E3A6B;
+    --colorError:              #6B7262;
+    --colorInfo:               #7A8B6E;
+    --colorTextBase:           #1E2B1A;
     --colorBgBase:             #E8E3D3;
 
     --colorPrimaryBg:          #DDE8CC;
@@ -52,37 +52,37 @@
     --colorWarningTextHover:   #7E7350;
     --colorWarningTextActive:  #60553D;
 
-    --colorErrorBg:            #E9ECF3;
-    --colorErrorBgHover:       #D4DBE8;
-    --colorErrorBorder:        #BEC9DB;
-    --colorErrorBorderHover:   #A4B5CE;
-    --colorErrorHover:         #8BA1C0;
-    --colorErrorActive:        #7088AC;
-    --colorErrorText:          #2E3A6B;
-    --colorErrorTextHover:     #252E55;
-    --colorErrorTextActive:    #1C2240;
+    --colorErrorBg:            #EDECEA;
+    --colorErrorBgHover:       #E2E0DC;
+    --colorErrorBorder:        #CCC9C0;
+    --colorErrorBorderHover:   #B8B5AA;
+    --colorErrorHover:         #888078;
+    --colorErrorActive:        #6E6660;
+    --colorErrorText:          #5A5750;
+    --colorErrorTextHover:     #46443E;
+    --colorErrorTextActive:    #332F2B;
 
-    --colorInfoBg:             #E9EFF5;
-    --colorInfoBgHover:        #D4E0EC;
-    --colorInfoBorder:         #BFD0E0;
-    --colorInfoBorderHover:    #A4BBD1;
-    --colorInfoHover:          #8BA6C2;
-    --colorInfoActive:         #7091B3;
-    --colorInfoText:           #7E98B2;
-    --colorInfoTextHover:      #647F9F;
-    --colorInfoTextActive:     #4F668B;
+    --colorInfoBg:             #E8EDE4;
+    --colorInfoBgHover:        #D8E2D2;
+    --colorInfoBorder:         #BED0B5;
+    --colorInfoBorderHover:    #A5BA9C;
+    --colorInfoHover:          #8CA680;
+    --colorInfoActive:         #728A65;
+    --colorInfoText:           #5C7450;
+    --colorInfoTextHover:      #4A5E40;
+    --colorInfoTextActive:     #394930;
 
-    --colorText:               rgba(46, 58, 107, 0.88);
-    --colorTextSecondary:      rgba(46, 58, 107, 0.65);
-    --colorTextTertiary:       rgba(46, 58, 107, 0.45);
-    --colorTextQuaternary:     rgba(46, 58, 107, 0.25);
-    --colorTextDisabled:       rgba(46, 58, 107, 0.25);
+    --colorText:               rgba(30, 43, 26, 0.90);
+    --colorTextSecondary:      rgba(30, 43, 26, 0.62);
+    --colorTextTertiary:       rgba(30, 43, 26, 0.42);
+    --colorTextQuaternary:     rgba(30, 43, 26, 0.22);
+    --colorTextDisabled:       rgba(30, 43, 26, 0.22);
     --colorBgContainer:        #F3F1E8;
     --colorBgElevated:         #f6f5ee;
     --colorBgInput:            #fdfdfb;
     --colorBgLayout:           #E8E3D3;
-    --colorBgSpotlight:        rgba(46, 58, 107, 0.85);
-    --colorBgMask:             rgba(46, 58, 107, 0.45);
+    --colorBgSpotlight:        rgba(27, 38, 19, 0.85);
+    --colorBgMask:             rgba(27, 38, 19, 0.45);
     --colorBorder:             #D5CDB7;
     --colorBorderSecondary:    #E8E3D3;
 
@@ -96,8 +96,8 @@
     --margin:    18px;
     --marginSM:  14px;
     --marginLG:  26px;
-    --boxShadow:          0 1px 2px 0 rgba(46,58,107,.04), 0 3px 10px 0 rgba(46,58,107,.06);
-    --boxShadowSecondary: 0 2px 4px 0 rgba(46,58,107,.05), 0 5px 14px 0 rgba(46,58,107,.08);
+    --boxShadow:          0 1px 2px 0 rgba(30,43,26,.04), 0 3px 10px 0 rgba(30,43,26,.05);
+    --boxShadowSecondary: 0 2px 4px 0 rgba(30,43,26,.05), 0 5px 14px 0 rgba(30,43,26,.07);
 
     /* legacy aliases — mantidos para compatibilidade com JS/inline */
     --azul:   var(--colorBgContainer);
@@ -406,7 +406,7 @@
   #sidebar {
     width: 220px;
     min-height: 100vh;
-    background: #2E3A6B;
+    background: #1B2613;
     display: flex;
     flex-direction: column;
     position: fixed;
@@ -558,31 +558,34 @@
     background: var(--colorBgElevated);
     border-radius: var(--borderRadius);
     padding: 20px 22px 18px;
-    border: 1px solid var(--colorBorder);
+    border: 1px solid var(--colorBorderSecondary);
     box-shadow: var(--boxShadow);
     position: relative; overflow: hidden;
-    transition: box-shadow .15s, transform .15s;
+    transition: box-shadow .17s, transform .17s;
+    display: flex; flex-direction: column;
   }
-  .stat-card:hover { box-shadow: 0 2px 8px rgba(46,58,107,.08), 0 6px 20px rgba(46,58,107,.08); transform: translateY(-1px); }
-  .stat-card::before {
-    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
-    background: var(--colorBorder); border-radius: var(--borderRadius) var(--borderRadius) 0 0;
+  .stat-card:hover { box-shadow: 0 2px 8px rgba(30,43,26,.07), 0 6px 20px rgba(30,43,26,.07); transform: translateY(-1px); }
+  .stat-card .kpi-icon-wrap {
+    width: 34px; height: 34px; border-radius: var(--borderRadiusSM);
+    background: var(--colorBorderSecondary); color: var(--colorTextTertiary);
+    display: flex; align-items: center; justify-content: center;
+    margin-bottom: 10px; font-size: 1rem;
   }
-  .stat-card.accent::before { background: var(--colorPrimary); }
-  .stat-card.danger::before { background: var(--colorError); }
-  .stat-card.dark::before   { background: var(--colorTextTertiary); }
+  .stat-card.accent .kpi-icon-wrap { background: var(--colorPrimaryBg); color: var(--colorPrimary); }
+  .stat-card.danger .kpi-icon-wrap { background: var(--colorWarningBg); color: var(--colorWarning); }
+  .stat-card.dark   .kpi-icon-wrap { background: var(--colorBgLayout);  color: var(--colorTextTertiary); }
   .stat-card .num {
-    font-size: 2.5rem; font-weight: 700; color: var(--colorText);
-    line-height: 1; letter-spacing: -.04em; font-variant-numeric: tabular-nums;
+    font-size: 2.2rem; font-weight: 700; color: var(--colorText);
+    line-height: 1; letter-spacing: -.045em; font-variant-numeric: tabular-nums;
   }
   .stat-card.accent .num { color: var(--colorPrimary); }
-  .stat-card.danger .num { color: var(--colorError); }
+  .stat-card.danger .num { color: var(--colorWarning); }
   .stat-card.dark .num   { color: var(--colorTextSecondary); }
   .stat-card .label {
-    font-size: .75rem; color: var(--colorTextSecondary); margin-top: 10px;
-    font-weight: 600; text-transform: uppercase; letter-spacing: .05em;
+    font-size: .7rem; color: var(--colorTextTertiary); margin-top: 9px;
+    font-weight: 700; text-transform: uppercase; letter-spacing: .065em;
   }
-  .stat-card .sub { font-size: .8125rem; color: var(--colorTextTertiary); margin-top: 2px; }
+  .stat-card .sub { font-size: .78rem; color: var(--colorTextTertiary); margin-top: 2px; }
 
   /* ── Seções de conteúdo ──────────────────────────────── */
   .section {
@@ -616,10 +619,10 @@
     white-space: nowrap;
   }
   .vagas-table td { padding: 11px 12px; font-size: .875rem; border-bottom: 1px solid var(--colorBorderSecondary); vertical-align: middle; color: var(--colorText); }
-  .vagas-table tbody tr:nth-child(even) td { background: rgba(79,111,47,.025); }
-  .vagas-table tr:hover td { background: rgba(79,111,47,.05) !important; transition: background .1s; }
-  /* Célula de ações não recebe o highlight de linha — botões têm seus próprios hovers */
-  .vagas-table tr:hover td.col-acoes { background: transparent !important; }
+  .vagas-table tbody tr { transition: background .1s; }
+  .vagas-table tbody tr:hover td { background: rgba(79,111,47,.035) !important; }
+  .vagas-table tbody tr:hover td:first-child { box-shadow: inset 3px 0 0 var(--colorPrimary); }
+  .vagas-table tr:hover td.col-acoes { background: rgba(79,111,47,.035) !important; }
   #page-vagas .vagas-table th.col-empresa,
   #page-vagas .vagas-table td.col-empresa {
     width: 14%;
@@ -698,6 +701,29 @@
     margin-left: auto; white-space: nowrap;
   }
   .vagas-count-badge span { color: var(--colorPrimary); }
+
+  /* ── Célula vaga (título + empresa colapsados) ─────── */
+  .cell-vaga-title {
+    font-weight: 500; color: var(--colorText); font-size: .875rem;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 260px;
+    display: block;
+  }
+  .cell-vaga-emp {
+    font-size: .76rem; color: var(--colorTextTertiary); margin-top: 1px;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 260px;
+    display: block;
+  }
+
+  /* ── Próxima ação chip ──────────────────────────────── */
+  .na-chip {
+    display: inline-flex; align-items: center; gap: 5px;
+    padding: 4px 10px; border-radius: 99px;
+    font-size: .745rem; font-weight: 500; white-space: nowrap;
+  }
+  .na-action { background: var(--colorPrimaryBg); color: var(--colorPrimaryText); }
+  .na-wait   { background: var(--colorWarningBg); color: var(--colorWarningText); }
+  .na-skip   { background: var(--colorBgLayout);  color: var(--colorTextTertiary); }
+  .na-arrow  { font-size: .6rem; opacity: 0.6; }
 
   .score-badge {
     display: inline-block; padding: 2px 8px; border-radius: 4px;
@@ -938,7 +964,7 @@
     position: fixed; bottom: 24px; right: 24px;
     background: var(--colorBgElevated); color: var(--colorText);
     padding: 10px 16px; border-radius: var(--borderRadiusSM); font-size: .875rem; font-weight: 500;
-    box-shadow: var(--boxShadow), 0 6px 20px rgba(46,58,107,.12);
+    box-shadow: var(--boxShadow), 0 6px 20px rgba(30,43,26,.10);
     transform: translateY(80px); opacity: 0; transition: all .25s cubic-bezier(.4,0,.2,1);
     z-index: 999; max-width: 300px;
     border: 1px solid var(--colorBorder);
@@ -1149,10 +1175,10 @@
     letter-spacing: .02em; display: inline-flex; align-items: center;
   }
   .vaga-status-btn:hover { transform: scale(1.06); }
-  .vs-nova       { background: var(--colorBgContainer);  color: var(--colorTextSecondary); border-color: var(--colorBorder); }
-  .vs-verificada { background: var(--colorInfoBg);        color: var(--colorInfoText);     border-color: var(--colorInfoBorder); }
-  .vs-aplicada   { background: var(--colorSuccessBg);     color: var(--colorSuccessText);  border-color: var(--colorSuccessBorder); }
-  .vs-ignorada   { background: var(--colorErrorBg);       color: var(--colorErrorText);    border-color: var(--colorErrorBorder); }
+  .vs-nova       { background: var(--colorBgLayout);    color: var(--colorTextSecondary); border-color: var(--colorBorder); }
+  .vs-verificada { background: var(--colorWarningBg);   color: var(--colorWarningText);   border-color: var(--colorWarningBorder); }
+  .vs-aplicada   { background: var(--colorSuccessBg);   color: var(--colorSuccessText);   border-color: var(--colorSuccessBorder); }
+  .vs-ignorada   { background: var(--colorBgLayout);    color: var(--colorTextTertiary);  border-color: var(--colorBorderSecondary); }
   tr.row-ignorada td { opacity: .45; text-decoration: line-through; }
   tr.row-ignorada td:last-child { opacity: 1; text-decoration: none; }
 
@@ -1276,7 +1302,7 @@
     background: var(--colorBgElevated);
     border: 1px solid var(--colorBorder);
     border-radius: var(--borderRadiusLG);
-    box-shadow: 0 8px 32px rgba(46,58,107,.16), 0 20px 80px rgba(46,58,107,.12);
+    box-shadow: 0 8px 32px rgba(30,43,26,.14), 0 20px 80px rgba(30,43,26,.10);
     width: min(96vw, 1100px);
     height: min(92vh, 820px);
     display: flex; flex-direction: column; overflow: hidden;
@@ -1723,21 +1749,25 @@
 
     <div class="stats-grid">
       <div class="stat-card">
+        <div class="kpi-icon-wrap"><i class="fi fi-rr-list"></i></div>
         <div class="num" id="stat-total">467</div>
         <div class="label">Vagas coletadas</div>
         <div class="sub">Última rodada completa</div>
       </div>
       <div class="stat-card accent">
+        <div class="kpi-icon-wrap"><i class="fi fi-rr-briefcase"></i></div>
         <div class="num" id="stat-pipeline">67</div>
         <div class="label">Pipeline (≥ 80)</div>
         <div class="sub">Prontas para candidatura</div>
       </div>
       <div class="stat-card danger">
+        <div class="kpi-icon-wrap"><i class="fi fi-rr-accessibility"></i></div>
         <div class="num" id="stat-pcd">22</div>
         <div class="label">Vagas PCD</div>
         <div class="sub">Cota inclusiva detectada</div>
       </div>
       <div class="stat-card dark">
+        <div class="kpi-icon-wrap"><i class="fi fi-rr-globe"></i></div>
         <div class="num" id="stat-ptbr">68</div>
         <div class="label">PT-BR</div>
         <div class="sub">Vagas em português</div>
@@ -1755,10 +1785,10 @@
           <tr>
             <th>Score</th>
             <th>Vaga</th>
-            <th>Empresa</th>
             <th>Tags</th>
             <th>Fonte</th>
-            <th></th>
+            <th>Status</th>
+            <th>Próxima ação</th>
           </tr>
         </thead>
         <tbody id="top-vagas-body"></tbody>
@@ -2000,10 +2030,10 @@
           <tr>
             <th>Score</th>
             <th>Vaga</th>
-            <th>Empresa</th>
             <th>Tags</th>
             <th>Fonte</th>
-            <th style="min-width:100px">Status</th>
+            <th>Status</th>
+            <th>Próxima ação</th>
             <th class="col-acoes">Ações</th>
           </tr>
         </thead>
@@ -2032,18 +2062,22 @@
   <div id="page-candidaturas" class="page">
     <div class="stats-grid">
       <div class="stat-card">
+        <div class="kpi-icon-wrap"><i class="fi fi-rr-paper-plane"></i></div>
         <div class="num" id="cand-total">—</div>
         <div class="label">Total</div>
       </div>
       <div class="stat-card accent">
+        <div class="kpi-icon-wrap"><i class="fi fi-rr-check"></i></div>
         <div class="num" id="cand-enviadas">—</div>
         <div class="label">Enviadas</div>
       </div>
       <div class="stat-card danger">
+        <div class="kpi-icon-wrap"><i class="fi fi-rr-time-forward"></i></div>
         <div class="num" id="cand-processo">—</div>
         <div class="label">Em processo</div>
       </div>
       <div class="stat-card dark">
+        <div class="kpi-icon-wrap"><i class="fi fi-rr-bell"></i></div>
         <div class="num" id="cand-followup">—</div>
         <div class="label">Follow-up</div>
       </div>
@@ -2057,7 +2091,6 @@
         <thead>
           <tr>
             <th>Data</th>
-            <th>Empresa</th>
             <th>Vaga</th>
             <th>Score</th>
             <th>Status</th>
@@ -2078,19 +2111,23 @@
     <!-- Stats de busca -->
     <div class="stats-grid">
       <div class="stat-card">
+        <div class="kpi-icon-wrap"><i class="fi fi-rr-list"></i></div>
         <div class="num" id="busca-stat-total">—</div>
         <div class="label">Vagas carregadas</div>
         <div class="sub" id="busca-stat-sub">Importe vagas.json</div>
       </div>
       <div class="stat-card accent">
+        <div class="kpi-icon-wrap"><i class="fi fi-rr-briefcase"></i></div>
         <div class="num" id="busca-stat-pipeline">—</div>
         <div class="label">Pipeline (≥ 80)</div>
       </div>
       <div class="stat-card danger">
+        <div class="kpi-icon-wrap"><i class="fi fi-rr-accessibility"></i></div>
         <div class="num" id="busca-stat-pcd">—</div>
         <div class="label">PCD detectado</div>
       </div>
       <div class="stat-card dark">
+        <div class="kpi-icon-wrap"><i class="fi fi-rr-search"></i></div>
         <div class="num" id="busca-stat-fontes">9</div>
         <div class="label">Fontes ativas</div>
         <div class="sub" id="busca-stat-fontes-sub">configuradas</div>
@@ -2860,26 +2897,51 @@ function switchTab(id, btn) {
 // ═══════════════════════════════════════════════════════
 // Dashboard
 // ═══════════════════════════════════════════════════════
+// ── Próxima ação por vaga ───────────────────────────────
+function proximaAcao(v) {
+  const st = getVagaStatus(v);
+  const cv = !!v.curriculo_path;
+  if (st === 'ignorada')                 return { text: 'Ignorada',           cls: 'na-skip'   };
+  if (st === 'aplicada')                 return { text: 'Aguardar follow-up', cls: 'na-wait'   };
+  if (st === 'verificada' && cv)         return { text: 'Candidatar-se',      cls: 'na-action' };
+  if (st === 'verificada' && !cv)        return { text: 'Gerar CV',           cls: 'na-action' };
+  if (st === 'nova' && cv)               return { text: 'Candidatar-se',      cls: 'na-action' };
+  return                                        { text: 'Gerar CV',           cls: 'na-action' };
+}
+function _naChip(v) {
+  const a = proximaAcao(v);
+  const arrow = a.cls === 'na-action' ? '<span class="na-arrow">→</span>' : '';
+  return `<span class="na-chip ${a.cls}">${escapeHtml(a.text)}${arrow}</span>`;
+}
+
 function renderDashboard() {
   // Usa vagas reais se disponíveis, senão exibe exemplos estáticos
   const fonte = vagas.length ? vagas : topVagas;
   const top = [...fonte].sort((a,b) => (b.score||0) - (a.score||0)).slice(0, 9);
 
   const tbody = document.getElementById('top-vagas-body');
-  tbody.innerHTML = top.map(v => `
+  const st_top = getVagaStatus ? getVagaStatus : () => 'nova';
+  tbody.innerHTML = top.map(v => {
+    const sc = v.score||0;
+    const cls = sc>=80?'score-high':sc>=60?'score-mid':'score-low';
+    const st = getVagaStatus(v);
+    return `
     <tr>
-      <td><span class="score-badge ${v.score>=80?'score-high':'score-mid'}">${escapeHtml(String(v.score||0))}</span></td>
-      <td style="font-weight:600;max-width:260px">${escapeHtml(v.titulo||'')}</td>
-      <td style="color:var(--cinza3)">${escapeHtml(v.empresa||'—')}</td>
+      <td><span class="score-badge ${cls}">${escapeHtml(String(sc))}</span></td>
+      <td>
+        <span class="cell-vaga-title">${escapeHtml(v.titulo||'')}</span>
+        <span class="cell-vaga-emp">${escapeHtml(v.empresa||'—')}</span>
+      </td>
       <td>
         ${(v.idioma_vaga==='pt'||v.idioma_vaga==='pt-BR'||v.ptbr||(v.plataforma||'').match(/BR|Gupy|Catho|Adzuna BR/i))?'<span class="tag tag-ptbr">PT-BR</span>':''}
         ${(v.pcd||v.pcd_detectado)?'<span class="tag tag-pcd">PCD</span>':''}
         ${(v.titulo||'').toLowerCase().includes('design eng')?'<span class="tag tag-de">DE</span>':''}
       </td>
-      <td style="font-size:.78rem;color:var(--cinza3)">${escapeHtml(v.plataforma||'')}</td>
-      <td><a href="${escapeHtml(v.url||'#')}" target="_blank" rel="noopener" class="btn btn-ghost btn-sm">Ver →</a></td>
-    </tr>
-  `).join('');
+      <td style="font-size:.78rem;color:var(--colorTextTertiary)">${escapeHtml(v.plataforma||'')}</td>
+      <td><button class="vaga-status-btn vs-${st}">${escapeHtml(st)}</button></td>
+      <td>${_naChip(v)}</td>
+    </tr>`;
+  }).join('');
 
   renderCompleteness();
   _atualizarBarrasDashboard(fonte);
@@ -3087,7 +3149,7 @@ function _renderPagina() {
   }
 
   tbody.innerHTML = fatia.map((v, fi) => {
-    const i = inicio + fi; // índice real na lista filtrada
+    const i = inicio + fi;
     const st  = getVagaStatus(v);
     const sc  = v.score || 0;
     const cls = sc>=80?'score-high':sc>=60?'score-mid':'score-low';
@@ -3098,15 +3160,18 @@ function _renderPagina() {
     return `
     <tr class="${st === 'ignorada' ? 'row-ignorada' : ''}">
       <td><span class="score-badge ${cls}">${escapeHtml(String(sc))}</span></td>
-      <td style="font-weight:600;max-width:250px;font-size:.83rem">${escapeHtml(v.titulo||'')}</td>
-      <td class="col-empresa" style="color:var(--cinza3);font-size:.82rem">${escapeHtml(v.empresa||'—')}</td>
+      <td>
+        <span class="cell-vaga-title">${escapeHtml(v.titulo||'')}</span>
+        <span class="cell-vaga-emp">${escapeHtml(v.empresa||'—')}</span>
+      </td>
       <td>
         ${(v.idioma_vaga==='pt'||v.idioma_vaga==='pt-BR'||v.ptbr||(v.plataforma||'').match(/BR|Gupy|Catho|Adzuna BR/i))?'<span class="tag tag-ptbr">PT-BR</span>':''}
         ${(v.pcd||v.pcd_detectado)?'<span class="tag tag-pcd">PCD</span>':''}
         ${(v.titulo||'').toLowerCase().includes('design eng')?'<span class="tag tag-de">DE</span>':''}
       </td>
-      <td style="font-size:.75rem;color:var(--cinza3)">${escapeHtml(v.plataforma||'')}</td>
+      <td style="font-size:.75rem;color:var(--colorTextTertiary)">${escapeHtml(v.plataforma||'')}</td>
       <td><button class="vaga-status-btn vs-${st}" data-vi="${i}" onclick="ciclarStatus(${i})" title="Clique para avançar status">${escapeHtml(st)}</button></td>
+      <td>${_naChip(v)}</td>
       <td class="col-acoes">
         <span class="btn-acoes">
         ${v.curriculo_path
@@ -3251,17 +3316,22 @@ function renderCandidaturas() {
     const pill = statusMap[c.status] || 'pill-aplicada';
     const email = c.email_gerado?.para || '';
     const temEmail = email && !email.includes('[');
+    const sc = c.score || 0;
+    const scCls = sc>=80?'score-high':sc>=60?'score-mid':'score-low';
+    const vencido = c.data_followup && c.data_followup <= hoje;
     return `
     <tr>
-      <td style="font-size:.78rem;color:var(--cinza3)">${(c.data_aplicacao||'').substring(0,10)}</td>
-      <td style="font-weight:600;font-size:.83rem">${c.empresa||'—'}</td>
-      <td style="font-size:.82rem;max-width:200px">${c.vaga_titulo||c.titulo||'—'}</td>
-      <td><span class="score-badge score-high">${c.score||'—'}</span></td>
+      <td style="font-size:.78rem;color:var(--colorTextTertiary);white-space:nowrap">${(c.data_aplicacao||'').substring(0,10)}</td>
+      <td>
+        <span class="cell-vaga-title">${escapeHtml(c.vaga_titulo||c.titulo||'—')}</span>
+        <span class="cell-vaga-emp">${escapeHtml(c.empresa||'—')}</span>
+      </td>
+      <td><span class="score-badge ${scCls}">${sc||'—'}</span></td>
       <td><span class="status-pill ${pill}">${c.status||'aplicada'}</span></td>
-      <td style="font-size:.78rem;color:${c.data_followup<=hoje?'var(--laranja)':'var(--cinza3)'}">${c.data_followup||'—'}</td>
+      <td style="font-size:.78rem;color:${vencido?'var(--colorWarningText)':'var(--colorTextTertiary)'};white-space:nowrap">${c.data_followup||'—'}</td>
       <td>
         ${temEmail
-          ? `<span style="font-size:.72rem;color:#2e7d32">✓ ${email}</span>`
+          ? `<span style="font-size:.72rem;color:var(--colorSuccessText);font-weight:500">✓ ${escapeHtml(email)}</span>`
           : `<button class="btn btn-ghost btn-sm" onclick="editarEmail('${c.id}')">Preencher</button>`}
       </td>
     </tr>`;
