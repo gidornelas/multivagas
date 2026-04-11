@@ -3,14 +3,14 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Multivagas — Dashboard</title>
+<title>Opta — Dashboard</title>
 <!-- Flaticon Uicons -->
 <link rel="stylesheet" href="https://cdn-uicons.flaticon.com/2.6.0/uicons-regular-rounded/css/uicons-regular-rounded.css">
 <link rel="stylesheet" href="https://cdn-uicons.flaticon.com/2.6.0/uicons-brands/css/uicons-brands.css">
 <!-- Supabase JS SDK -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Sora:wght@500;600;700;800&display=swap');
 
   /* ── Tokens: Ant Design / shadcn ─────────────────────── */
   :root {
@@ -19,8 +19,8 @@
     --colorWarning:            #D8A46E;
     --colorError:              #F18974;
     --colorInfo:               #7AA6FF;
-    --colorTextBase:           #E7EEF8;
-    --colorBgBase:             #0F1722;
+    --colorTextBase:           #233243;
+    --colorBgBase:             #EEF4F8;
 
     --colorPrimaryBg:          rgba(241, 135, 62, 0.12);
     --colorPrimaryBgHover:     rgba(241, 135, 62, 0.22);
@@ -75,19 +75,19 @@
     --colorInfoTextHover:      #95B8FF;
     --colorInfoTextActive:     #6591EA;
 
-    --colorText:               rgba(231, 238, 248, 0.92);
-    --colorTextSecondary:      rgba(231, 238, 248, 0.72);
-    --colorTextTertiary:       rgba(231, 238, 248, 0.50);
-    --colorTextQuaternary:     rgba(231, 238, 248, 0.30);
-    --colorTextDisabled:       rgba(231, 238, 248, 0.30);
-    --colorBgContainer:        #16202C;
-    --colorBgElevated:         #1A2735;
-    --colorBgInput:            #1E2C3C;
-    --colorBgLayout:           #0A1119;
-    --colorBgSpotlight:        rgba(9, 15, 24, 0.92);
-    --colorBgMask:             rgba(9, 15, 24, 0.55);
-    --colorBorder:             #243447;
-    --colorBorderSecondary:    #1A2735;
+    --colorText:               rgba(35, 50, 67, 0.92);
+    --colorTextSecondary:      rgba(35, 50, 67, 0.72);
+    --colorTextTertiary:       rgba(35, 50, 67, 0.50);
+    --colorTextQuaternary:     rgba(35, 50, 67, 0.30);
+    --colorTextDisabled:       rgba(35, 50, 67, 0.30);
+    --colorBgContainer:        #F7FAFC;
+    --colorBgElevated:         #FFFFFF;
+    --colorBgInput:            #F8FBFD;
+    --colorBgLayout:           #E6EEF4;
+    --colorBgSpotlight:        rgba(26, 42, 60, 0.18);
+    --colorBgMask:             rgba(26, 42, 60, 0.22);
+    --colorBorder:             #D3DEE8;
+    --colorBorderSecondary:    #E5EDF3;
     --sidebarBg:               #0D1822;
 
     --borderRadius:    10px;
@@ -134,9 +134,9 @@
     --bgCard:    var(--colorBgElevated);
     --bodyBg:    var(--colorBgBase);
     --statAccentBase:        var(--colorBgElevated);
-    --statAccentTop:         #6F513D;
-    --statAccentMid:         #3C3128;
-    --statAccentBottom:      #1A2735;
+    --statAccentTop:         #FFF5EC;
+    --statAccentMid:         #FFF0E2;
+    --statAccentBottom:      #F7FAFC;
   }
 
 
@@ -162,9 +162,9 @@
     justify-content: center;
     padding: 24px;
     background:
-      radial-gradient(circle at 12% 12%, rgba(79, 111, 47, 0.22), transparent 38%),
-      radial-gradient(circle at 88% 0%, rgba(46, 58, 107, 0.22), transparent 44%),
-      var(--colorBgLayout);
+      radial-gradient(circle at 12% 12%, rgba(241, 135, 62, 0.14), transparent 32%),
+      radial-gradient(circle at 88% 0%, rgba(99, 191, 175, 0.12), transparent 34%),
+      linear-gradient(180deg, #09111A, #050B12);
     z-index: 1200;
   }
   body.auth-locked #auth-screen { display: flex; }
@@ -181,20 +181,23 @@
     border: none;
     border-radius: 18px;
     overflow: hidden;
+    isolation: isolate;
     box-shadow:
       0 24px 70px rgba(4, 12, 24, 0.28),
       0 10px 28px rgba(4, 12, 24, 0.18);
-    background: var(--colorBgElevated);
+    background: linear-gradient(90deg, #162131 0 54%, var(--colorBgElevated) 54% 100%);
     display: grid;
     grid-template-columns: 1.1fr .9fr;
   }
   .auth-brand {
     position: relative;
+    border-radius: 18px 0 0 18px;
+    overflow: hidden;
     padding: 34px 32px;
     background:
-      linear-gradient(160deg, rgba(251, 253, 255, 0.98), rgba(241, 246, 250, 0.96)),
-      linear-gradient(35deg, rgba(99, 191, 175, 0.14), rgba(241, 135, 62, 0.08));
-    color: rgba(35, 50, 67, 0.92);
+      radial-gradient(circle at top right, rgba(241, 135, 62, 0.18), transparent 26%),
+      linear-gradient(180deg, #162131, #1E2B40);
+    color: rgba(239, 244, 251, 0.92);
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -207,7 +210,7 @@
     width: 280px;
     height: 280px;
     border-radius: 50%;
-    background: radial-gradient(circle, rgba(99, 191, 175, 0.18), transparent 70%);
+    background: radial-gradient(circle, rgba(99, 191, 175, 0.16), transparent 70%);
   }
   .auth-brand-kicker {
     font-size: .74rem;
@@ -225,13 +228,13 @@
   .auth-brand h2 {
     font-size: 1.9rem;
     line-height: 1.08;
-    color: #233243;
+    color: #F5F8FC;
     margin-bottom: 12px;
   }
   .auth-brand p {
     font-size: .88rem;
     line-height: 1.55;
-    color: rgba(35, 50, 67, 0.78);
+    color: rgba(231, 238, 248, 0.78);
     max-width: 320px;
   }
   .auth-brand-list {
@@ -241,10 +244,12 @@
   }
   .auth-brand-list span {
     font-size: .8rem;
-    color: rgba(35, 50, 67, 0.86);
+    color: rgba(231, 238, 248, 0.86);
   }
   .auth-card {
     width: 100%;
+    position: relative;
+    border-radius: 0 18px 18px 0;
     background: var(--colorBgElevated);
     padding: 28px;
     box-shadow: inset 1px 0 0 rgba(255, 255, 255, 0.04);
@@ -1564,6 +1569,327 @@
     color: var(--colorTextSecondary); font-weight: 500; transition: background .15s ease, color .15s ease;
   }
   .tp-reset-btn:hover { color: var(--colorErrorText); background: var(--colorErrorBg); }
+
+  /* ── Opta Design System overrides ─────────────────────── */
+  :root {
+    --fontBody: 'Manrope', 'Segoe UI', Roboto, Arial, sans-serif;
+    --fontDisplay: 'Sora', 'Segoe UI', Roboto, Arial, sans-serif;
+    --surfaceShadow: 0 4px 14px color-mix(in srgb, var(--colorBgSpotlight) 14%, transparent);
+    --surfaceShadowHover: 0 6px 18px color-mix(in srgb, var(--colorBgSpotlight) 16%, transparent);
+  }
+
+  body {
+    font-family: var(--fontBody);
+    background:
+      radial-gradient(circle at top left, color-mix(in srgb, var(--colorPrimary) 16%, transparent), transparent 24%),
+      radial-gradient(circle at bottom right, color-mix(in srgb, var(--colorSuccess) 16%, transparent), transparent 20%),
+      linear-gradient(180deg, var(--colorBgBase), var(--colorBgLayout));
+    color: var(--colorText);
+  }
+
+  #sidebar {
+    width: 248px;
+    background:
+      radial-gradient(circle at top, rgba(241, 135, 62, 0.16), transparent 30%),
+      linear-gradient(180deg, #162131, #1e2b40);
+    border-right: 1px solid rgba(255,255,255,.06);
+    box-shadow: 14px 0 40px rgba(18,32,49,.08);
+  }
+
+  #sidebar .logo {
+    padding: 28px 20px 18px;
+    border-bottom: 1px solid rgba(255,255,255,.06);
+  }
+
+  #sidebar nav {
+    padding: 18px 12px 10px;
+    gap: 8px;
+  }
+
+  #sidebar nav a {
+    border-radius: 16px;
+    padding: 13px 14px;
+    color: rgba(255,255,255,.74);
+    font-weight: 700;
+    letter-spacing: -.01em;
+  }
+
+  #sidebar nav a:hover {
+    background: rgba(255,255,255,.07);
+    color: #fff;
+    transform: translateX(2px);
+  }
+
+  #sidebar nav a.active {
+    background: linear-gradient(180deg, rgba(255,255,255,.12), rgba(255,255,255,.05));
+    box-shadow: inset 0 0 0 1px rgba(255,255,255,.08);
+  }
+
+  #sidebar nav a.active::before {
+    top: 9px;
+    bottom: 9px;
+    width: 4px;
+    border-radius: 999px;
+    background: var(--colorPrimary);
+  }
+
+  #sidebar .sidebar-footer {
+    border-top: 1px solid rgba(255,255,255,.06);
+    color: rgba(255,255,255,.58);
+    font-size: .72rem;
+  }
+
+  #sidebar .sidebar-footer .logout-btn {
+    border-radius: 999px;
+    background: rgba(255,255,255,.06);
+  }
+
+  #main {
+    margin-left: 248px;
+    background: transparent;
+  }
+
+  #topbar {
+    height: auto;
+    min-height: 84px;
+    margin: 18px 28px 10px;
+    padding: 18px 22px;
+    background: color-mix(in srgb, var(--colorBgElevated) 90%, transparent);
+    backdrop-filter: blur(14px);
+    border-bottom: 0;
+    border-radius: 22px;
+    box-shadow: 0 6px 18px color-mix(in srgb, var(--colorBgSpotlight) 18%, transparent);
+    align-items: flex-start;
+  }
+
+  #topbar h2,
+  .section-header h3,
+  .dashboard-cta-text strong {
+    font-family: var(--fontDisplay);
+    letter-spacing: -.03em;
+  }
+
+  #topbar h2 {
+    font-size: 1.5rem;
+    line-height: 1.02;
+  }
+
+  #topbar .topbar-subtitle {
+    font-size: .84rem;
+    color: var(--colorTextSecondary);
+    margin-top: 6px;
+    display: inline-block;
+  }
+
+  .page {
+    padding: 0 28px 44px;
+  }
+
+  .btn {
+    border-radius: 999px;
+    height: 40px;
+    padding: 0 16px;
+    font-weight: 700;
+    letter-spacing: -.01em;
+  }
+
+  .btn-sm {
+    height: 34px;
+    padding: 0 13px;
+  }
+
+  .btn-primary {
+    background: linear-gradient(135deg, var(--colorPrimary), var(--colorPrimaryHover));
+    border-color: transparent;
+    box-shadow: 0 10px 28px rgba(241,135,62,.18);
+  }
+
+  .btn-primary:hover {
+    background: linear-gradient(135deg, var(--colorPrimaryHover), var(--colorPrimaryActive));
+  }
+
+  .btn-ghost {
+    background: color-mix(in srgb, var(--colorBgElevated) 88%, transparent);
+    color: var(--colorTextSecondary);
+    border-color: transparent;
+  }
+
+  .btn-ghost:hover {
+    background: var(--colorPrimaryBg);
+    color: var(--colorPrimaryText);
+  }
+
+  .stats-grid {
+    gap: 18px;
+    margin-bottom: 20px;
+  }
+
+  .stat-card,
+  .section,
+  .source-card,
+  .config-card {
+    border-radius: 24px;
+    border: none;
+    box-shadow: var(--surfaceShadow);
+  }
+
+  .stat-card {
+    background:
+      linear-gradient(180deg, color-mix(in srgb, var(--colorBgElevated) 94%, white), color-mix(in srgb, var(--colorPrimaryBg) 26%, var(--colorBgElevated)));
+    padding: 22px 24px 20px;
+  }
+
+  .stat-card::before {
+    content: '';
+    position: absolute;
+    inset: 0 auto 0 0;
+    width: 5px;
+    background: var(--colorPrimary);
+  }
+
+  .stat-card.accent::before { background: var(--colorSuccess); }
+  .stat-card.danger::before { background: var(--colorWarning); }
+  .stat-card.dark::before { background: var(--colorInfo); }
+
+  .stat-card.accent,
+  .stat-card.danger,
+  .stat-card.dark {
+    background:
+      linear-gradient(180deg, rgba(255,255,255,.98), color-mix(in srgb, var(--colorPrimaryBg) 18%, #fff));
+  }
+
+  .stat-card .num {
+    color: var(--colorText);
+    font-family: var(--fontDisplay);
+    letter-spacing: -.05em;
+  }
+
+  .stat-card.accent .num { color: var(--colorSuccessText); }
+  .stat-card.danger .num { color: var(--colorWarningText); }
+  .stat-card.dark .num { color: var(--colorInfoText); }
+
+  .stat-card .label,
+  .page-section-title,
+  .form-section-title,
+  .form-group label,
+  .tab-btn {
+    letter-spacing: .08em;
+  }
+
+  .dashboard-cta {
+    border-radius: 28px;
+    padding: 28px 30px;
+    margin-bottom: 18px;
+    border: none;
+    background:
+      radial-gradient(circle at top right, rgba(99,191,175,.16), transparent 28%),
+      linear-gradient(135deg, #162131, #1e2b40);
+    box-shadow: 0 8px 24px rgba(18,32,49,.12);
+  }
+
+  .dashboard-cta-text strong {
+    color: #fff;
+    font-size: 1.45rem;
+  }
+
+  .dashboard-cta-text span {
+    color: rgba(255,255,255,.72);
+    font-size: .94rem;
+  }
+
+  .section,
+  .source-card,
+  .config-card {
+    background:
+      linear-gradient(180deg, color-mix(in srgb, var(--colorBgElevated) 96%, white), color-mix(in srgb, var(--colorPrimaryBg) 12%, var(--colorBgElevated)));
+  }
+
+  .section.section-primary {
+    background:
+      radial-gradient(circle at top right, rgba(241,135,62,.14), transparent 24%),
+      linear-gradient(180deg, color-mix(in srgb, var(--colorBgElevated) 96%, white), color-mix(in srgb, var(--colorPrimaryBg) 18%, var(--colorBgElevated)));
+  }
+
+  .source-card:hover,
+  .stat-card:hover,
+  .section:hover,
+  .config-card:hover {
+    box-shadow: var(--surfaceShadowHover);
+  }
+
+  .vagas-table th {
+    background: color-mix(in srgb, var(--colorPrimaryBg) 72%, var(--colorBgElevated));
+    color: var(--colorTextTertiary);
+    border-bottom: 1px solid color-mix(in srgb, var(--colorBorder) 72%, transparent);
+  }
+
+  .vagas-table td {
+    color: var(--colorText);
+    border-bottom: 1px solid color-mix(in srgb, var(--colorBorder) 58%, transparent);
+  }
+
+  .vagas-table tbody tr:hover td {
+    background: rgba(241,135,62,.06) !important;
+  }
+
+  .vagas-table tbody tr:hover td:first-child {
+    box-shadow: inset 3px 0 0 var(--colorPrimary);
+  }
+
+  .progress-bar {
+    height: 8px;
+    background: rgba(16,32,51,.08);
+  }
+
+  .progress-fill {
+    border-radius: 999px;
+    background: linear-gradient(90deg, var(--colorPrimary), var(--colorPrimaryHover));
+  }
+
+  .tabs {
+    gap: 8px;
+    margin-bottom: 20px;
+  }
+
+  .tab-btn {
+    border-radius: 999px;
+    border: 1px solid transparent;
+    padding: 10px 14px;
+    background: color-mix(in srgb, var(--colorBgElevated) 90%, transparent);
+    font-size: .72rem;
+    font-weight: 800;
+    color: var(--colorTextTertiary);
+  }
+
+  .tab-btn.active {
+    color: var(--colorPrimaryText);
+    background: var(--colorPrimaryBg);
+    border-color: var(--colorPrimaryBorder);
+  }
+
+  .form-group input,
+  .form-group textarea,
+  .form-group select,
+  .tp-select {
+    background: var(--colorBgInput);
+    border: 1px solid color-mix(in srgb, var(--colorBorder) 72%, transparent);
+    color: var(--colorText);
+    border-radius: 14px;
+  }
+
+  .status-pill {
+    border-radius: 999px;
+    font-weight: 700;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+    padding: 5px 10px;
+  }
+
+  @media (max-width: 1180px) {
+    #sidebar { width: 84px; }
+    #main { margin-left: 84px; }
+    #sidebar .logo { padding-inline: 12px; }
+  }
 </style>
 </head>
 <body class="auth-locked">
@@ -1575,7 +1901,7 @@
   <div class="auth-shell">
     <div class="auth-brand">
       <div>
-        <img class="auth-brand-logo" src="assets/logos_opta-09.png" alt="Opta" />
+        <img class="auth-brand-logo" src="assets/logos_opta-10.png" alt="Opta" />
         <h2>Seu pipeline de candidaturas em um só lugar</h2>
         <p>Monitore vagas, personalize currículo e mantenha follow-up com fluxo contínuo e organizado.</p>
       </div>
@@ -1688,7 +2014,7 @@
 
     <div class="tp-section-title">Temas prontos</div>
     <div class="preset-grid" id="preset-grid">
-      <button class="preset-btn ativo" data-tema="opta" onclick="aplicarPreset('opta')">
+      <button class="preset-btn" data-tema="opta" onclick="aplicarPreset('opta')">
         <div class="preset-swatches">
           <div style="background:#F1873E"></div>
           <div style="background:#0F1722"></div>
@@ -1696,7 +2022,7 @@
         </div>
         <span>Opta</span>
       </button>
-      <button class="preset-btn" data-tema="opta-light" onclick="aplicarPreset('opta-light')">
+      <button class="preset-btn ativo" data-tema="opta-light" onclick="aplicarPreset('opta-light')">
         <div class="preset-swatches">
           <div style="background:#F1873E"></div>
           <div style="background:#F3F7FB"></div>
@@ -1839,8 +2165,8 @@
   <!-- Topbar -->
   <header id="topbar">
     <div class="topbar-left">
-      <h2 id="page-title">Dashboard</h2>
-      <span class="topbar-subtitle" id="page-subtitle">Visão geral do pipeline</span>
+      <h2 id="page-title">Opta</h2>
+      <span class="topbar-subtitle" id="page-subtitle">Decisão, pipeline e cadência operacional</span>
     </div>
     <div class="actions" id="topbar-actions">
       <!-- Preenchido dinamicamente por navTo() -->
@@ -1880,8 +2206,8 @@
     <!-- CTA principal -->
     <div class="dashboard-cta">
       <div class="dashboard-cta-text">
-        <strong>Continuar o pipeline</strong>
-        <span id="dashboard-cta-sub">Gere currículos e avance as vagas com maior score</span>
+        <strong>Cabine de decisão da Opta</strong>
+        <span id="dashboard-cta-sub">Priorize capturas, prepare currículos e avance as vagas com maior aderência</span>
       </div>
       <button class="btn btn-primary" onclick="navTo('vagas', document.querySelector('[onclick*=vagas]'))">Ver pipeline →</button>
     </div>
@@ -2992,6 +3318,17 @@ function navTo(page, el) {
   if (el) { el.classList.add('active'); el.setAttribute('aria-current', 'page'); }
   const titles = { dashboard:'Dashboard', curriculo:'Meu Currículo', vagas:'Vagas', candidaturas:'Candidaturas', busca:'Busca', analytics:'Analytics', linkedin:'LinkedIn', config:'Configurações' };
   const subtitles = { dashboard:'Visão geral do pipeline', curriculo:'Edite suas informações e habilidades', vagas:'Pipeline de vagas encontradas', candidaturas:'Histórico e acompanhamento', busca:'Executar busca por novas vagas', analytics:'Performance das candidaturas', linkedin:'Mensagens para recrutadores', config:'Preferências e fontes de busca' };
+  titles.dashboard = 'Opta';
+  titles.vagas = 'Pipeline';
+  titles.candidaturas = 'Cadencia';
+  titles.busca = 'Captura';
+  titles.analytics = 'Signals';
+  subtitles.dashboard = 'Decisao, pipeline e cadencia operacional';
+  subtitles.vagas = 'Vagas capturadas e priorizadas por aderencia';
+  subtitles.candidaturas = 'Historico, follow-up e proximos passos';
+  subtitles.busca = 'Executar nova captura de vagas';
+  subtitles.analytics = 'Leituras de performance e resposta';
+  subtitles.config = 'Preferencias, fontes e automacoes';
   document.getElementById('page-title').textContent = titles[page] || page;
   document.getElementById('page-subtitle').textContent = subtitles[page] || '';
   document.getElementById('topbar-actions').innerHTML = _TOPBAR_ACTIONS[page] || '';
@@ -4901,8 +5238,8 @@ document.addEventListener('keydown', e => {
 // SISTEMA DE TEMA
 // ═══════════════════════════════════════════════════════
 
-const LS_TEMA = 'mv_tema_opta_v3';
-const TEMA_VERSION = 'antd-v1'; // muda aqui para forçar reset em todos os usuários
+const LS_TEMA = 'mv_tema_opta_v4';
+const TEMA_VERSION = 'opta-light-v1'; // muda aqui para forçar reset em todos os usuários
 
 // Presets completos (vars principais + derivadas)
 const _TEMAS = {
@@ -4912,18 +5249,20 @@ const _TEMAS = {
     '--colorWarning':        '#D8A46E',
     '--colorError':          '#F18974',
     '--colorInfo':           '#7AA6FF',
-    '--colorTextBase':       '#E7EEF8',
-    '--colorBgBase':         '#0F1722',
-    '--colorBgContainer':    '#16202C',
-    '--colorBgElevated':     '#1A2735',
-    '--colorBgInput':        '#1E2C3C',
-    '--colorBgLayout':       '#0A1119',
-    '--colorBorder':         '#243447',
-    '--colorBorderSecondary':'#1A2735',
-    '--bgMain':   'rgba(10, 17, 25, 0.96)',
-    '--bgSection':'rgba(22, 32, 44, 0.96)',
-    '--bgCard':   'rgba(26, 39, 53, 0.95)',
+    '--colorTextBase':       '#EEF4FB',
+    '--colorBgBase':         '#09111A',
+    '--colorBgContainer':    '#101A25',
+    '--colorBgElevated':     '#15212D',
+    '--colorBgInput':        '#192635',
+    '--colorBgLayout':       '#050B12',
+    '--colorBorder':         '#1C2A3A',
+    '--colorBorderSecondary':'#13202C',
+    '--bgMain':   'rgba(5, 11, 18, 0.98)',
+    '--bgSection':'rgba(16, 26, 37, 0.96)',
+    '--bgCard':   'rgba(21, 33, 45, 0.95)',
     '--sidebarBg': '#0D1822',
+    '--surfaceShadow': 'none',
+    '--surfaceShadowHover': 'none',
   },
   'opta-light': {
     '--colorPrimary':        '#F1873E',
@@ -4943,6 +5282,8 @@ const _TEMAS = {
     '--bgSection':'rgba(247, 250, 252, 0.96)',
     '--bgCard':   'rgba(255, 255, 255, 0.96)',
     '--sidebarBg': '#0D1822',
+    '--surfaceShadow': '0 4px 14px rgba(18,32,49,0.08)',
+    '--surfaceShadowHover': '0 6px 18px rgba(18,32,49,0.10)',
   },
   floresta: {
     '--colorPrimary':        '#4F6F2F',
@@ -5310,18 +5651,18 @@ function resetarTema() {
   localStorage.removeItem(LS_TEMA);
   // Reseta controles
   document.getElementById('cp-primary').value  = '#F1873E';
-  document.getElementById('cp-bg').value        = '#0F1722';
-  document.getElementById('cp-card').value      = '#1A2735';
-  document.getElementById('cp-text').value      = '#E7EEF8';
+  document.getElementById('cp-bg').value        = '#EEF4F8';
+  document.getElementById('cp-card').value      = '#FFFFFF';
+  document.getElementById('cp-text').value      = '#233243';
   document.getElementById('cp-warning').value   = '#D8A46E';
   document.getElementById('cp-success').value   = '#63BFAF';
   document.getElementById('cp-error').value     = '#F18974';
   document.getElementById('cp-info').value      = '#7AA6FF';
   document.getElementById('cp-sidebar').value   = '#0D1822';
-  document.getElementById('tp-font').value      = "'Inter', 'Segoe UI', sans-serif";
+  document.getElementById('tp-font').value      = "'Manrope', 'Segoe UI', sans-serif";
   document.getElementById('tp-radius').value    = '10';
   document.getElementById('tp-radius-val').textContent = '10px';
-  document.querySelectorAll('.preset-btn').forEach(b => b.classList.toggle('ativo', b.dataset.tema === 'opta'));
+  document.querySelectorAll('.preset-btn').forEach(b => b.classList.toggle('ativo', b.dataset.tema === 'opta-light'));
   _atualizarGradienteStatAccent();
   toast('Tema restaurado!', '');
 }
@@ -5345,7 +5686,7 @@ function _sincronizarPickers(vars) {
 function _capturarTemaAtual() {
   const style = document.documentElement.style;
   const vars = {};
-  for (const [k,v] of Object.entries(_TEMAS.opta)) {
+  for (const [k,v] of Object.entries(_TEMAS['opta-light'])) {
     const cur = style.getPropertyValue(k);
     if (cur) vars[k] = cur;
   }

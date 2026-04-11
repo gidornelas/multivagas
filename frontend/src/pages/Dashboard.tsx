@@ -5,7 +5,6 @@ import {
   Card,
   Statistic,
   Button,
-  Space,
   Tag,
   Input,
   Select,
@@ -19,8 +18,6 @@ import {
 } from 'antd';
 import {
   CheckCircleOutlined,
-  ClockCircleOutlined,
-  ExclamationCircleOutlined,
 } from '@ant-design/icons';
 import { DashboardThemeProvider } from '@/theme/DashboardThemeProvider';
 import { useState } from 'react';
@@ -151,7 +148,7 @@ const DashboardContent = () => {
               <Button>Default</Button>
             </Col>
             <Col>
-              <Button dashed>Dashed</Button>
+              <Button variant="dashed">Dashed</Button>
             </Col>
           </Row>
 

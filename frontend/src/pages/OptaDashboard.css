@@ -1,0 +1,512 @@
+#root {
+  width: auto;
+  max-width: none;
+  margin: 0;
+  text-align: initial;
+  border: 0;
+  display: block;
+}
+
+.opta-shell {
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: 296px minmax(0, 1fr);
+}
+
+.opta-sidebar {
+  position: sticky;
+  top: 0;
+  min-height: 100vh;
+  padding: 28px 20px;
+  background:
+    radial-gradient(circle at top, rgba(241, 135, 62, 0.14), transparent 32%),
+    linear-gradient(180deg, var(--ds-color-bg-dark), var(--ds-color-bg-dark-alt));
+  border-right: 1px solid rgba(255, 255, 255, 0.06);
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+.opta-brand {
+  display: grid;
+  gap: 10px;
+  padding: 4px 6px 10px;
+}
+
+.opta-brand-wordmark {
+  width: 140px;
+  height: auto;
+}
+
+.opta-brand-tag {
+  color: rgba(255, 255, 255, 0.64);
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  font-size: 11px;
+  font-weight: 800;
+}
+
+.opta-nav {
+  display: grid;
+  gap: 6px;
+}
+
+.opta-nav-item {
+  width: 100%;
+  border: 0;
+  border-radius: 18px;
+  padding: 14px 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: transparent;
+  color: rgba(255, 255, 255, 0.72);
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+  transition:
+    background 160ms ease,
+    color 160ms ease,
+    transform 160ms ease;
+}
+
+.opta-nav-item:hover {
+  background: rgba(255, 255, 255, 0.06);
+  color: #fff;
+  transform: translateX(2px);
+}
+
+.opta-nav-item.is-active {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.04));
+  color: #fff;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.06);
+}
+
+.opta-nav-icon {
+  width: 18px;
+  display: inline-flex;
+  justify-content: center;
+  color: var(--ds-color-primary);
+}
+
+.opta-sidebar-card.ant-card {
+  margin-top: auto;
+  border-radius: var(--ds-radius-lg);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05)),
+    rgba(255, 255, 255, 0.04);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.06);
+}
+
+.opta-sidebar-card .ant-card-body {
+  padding: 20px;
+}
+
+.opta-sidebar-card-kicker {
+  color: var(--ds-color-primary);
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  font-size: 11px;
+  font-weight: 800;
+}
+
+.opta-sidebar-card-title.ant-typography {
+  margin: 0;
+  color: #fff;
+  font-family: var(--ds-font-display);
+}
+
+.opta-sidebar-card-copy.ant-typography {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.68);
+}
+
+.opta-main {
+  min-width: 0;
+  padding: 26px;
+  display: grid;
+  gap: 22px;
+}
+
+.opta-topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 18px;
+}
+
+.opta-topbar-kicker {
+  color: var(--ds-color-primary);
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  font-size: 11px;
+  font-weight: 800;
+}
+
+.opta-topbar-title.ant-typography {
+  margin: 6px 0 0;
+  color: var(--ds-color-text);
+}
+
+.opta-topbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.opta-search {
+  width: 320px;
+}
+
+.opta-avatar {
+  background: linear-gradient(135deg, var(--ds-color-primary), var(--ds-color-success));
+  color: #fff;
+  font-weight: 800;
+}
+
+.opta-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1.45fr) minmax(320px, 0.9fr);
+  gap: 18px;
+}
+
+.opta-hero-copy,
+.opta-surface-card.ant-card {
+  border-radius: var(--ds-radius-lg);
+}
+
+.opta-hero-copy {
+  padding: 34px;
+  background:
+    radial-gradient(circle at top right, rgba(99, 191, 175, 0.16), transparent 28%),
+    linear-gradient(135deg, rgba(255, 255, 255, 0.92), rgba(255, 247, 241, 0.98));
+  border: 1px solid var(--ds-color-border);
+  box-shadow: var(--ds-shadow-1);
+}
+
+.opta-hero-kicker {
+  color: var(--ds-color-text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  font-size: 11px;
+  font-weight: 800;
+}
+
+.opta-hero-title.ant-typography {
+  margin: 12px 0;
+  max-width: 12ch;
+  font-size: clamp(2.2rem, 4vw, 4rem);
+  line-height: 0.98;
+  color: var(--ds-color-text);
+}
+
+.opta-hero-text.ant-typography {
+  margin: 0;
+  max-width: 58ch;
+  color: var(--ds-color-text-secondary);
+  font-size: 16px;
+}
+
+.opta-hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 24px;
+}
+
+.opta-hero-panel.ant-card,
+.opta-dark-card.ant-card {
+  background:
+    radial-gradient(circle at top, rgba(241, 135, 62, 0.18), transparent 26%),
+    linear-gradient(180deg, var(--ds-color-bg-dark), var(--ds-color-bg-dark-alt));
+  box-shadow: var(--ds-shadow-2);
+}
+
+.opta-hero-panel .ant-card-body,
+.opta-dark-card .ant-card-body {
+  padding: 26px;
+}
+
+.opta-hero-panel-header,
+.opta-section-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+}
+
+.opta-panel-kicker,
+.opta-section-kicker {
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  font-size: 11px;
+  font-weight: 800;
+  color: var(--ds-color-text-tertiary);
+}
+
+.opta-section-kicker.dark,
+.opta-panel-kicker {
+  color: rgba(255, 255, 255, 0.58);
+}
+
+.opta-panel-title.ant-typography,
+.opta-section-title.ant-typography {
+  margin: 6px 0 0;
+  color: var(--ds-color-text);
+}
+
+.opta-section-title.dark.ant-typography,
+.opta-panel-title.ant-typography {
+  color: #fff;
+}
+
+.opta-signal-list {
+  display: grid;
+  gap: 12px;
+  margin-top: 22px;
+}
+
+.opta-signal-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: rgba(255, 255, 255, 0.78);
+}
+
+.opta-signal-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 999px;
+  background: var(--ds-color-success);
+  box-shadow: 0 0 0 6px rgba(99, 191, 175, 0.12);
+}
+
+.opta-signal-meter {
+  margin-top: 26px;
+  padding-top: 20px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  display: grid;
+  gap: 10px;
+}
+
+.opta-signal-meter-copy {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  color: #fff;
+}
+
+.opta-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.opta-content-grid,
+.opta-bottom-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(320px, 0.8fr);
+  gap: 18px;
+}
+
+.opta-surface-card.ant-card {
+  border: 1px solid var(--ds-color-border);
+  box-shadow: var(--ds-shadow-1);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.98), color-mix(in srgb, var(--ds-color-primary-bg) 20%, white));
+}
+
+.opta-surface-card .ant-card-body {
+  padding: 24px;
+}
+
+.opta-queue,
+.opta-captured-list,
+.opta-task-list,
+.opta-principles {
+  display: grid;
+  gap: 14px;
+  margin-top: 18px;
+}
+
+.opta-queue-item,
+.opta-captured-item,
+.opta-task-item,
+.opta-principle {
+  border-radius: var(--ds-radius);
+}
+
+.opta-queue-item {
+  padding: 18px;
+  background: rgba(255, 255, 255, 0.78);
+  border: 1px solid var(--ds-color-border-soft);
+  display: grid;
+  gap: 16px;
+}
+
+.opta-queue-main,
+.opta-queue-meta,
+.opta-captured-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+}
+
+.opta-queue-title.ant-typography,
+.opta-captured-role.ant-typography {
+  margin: 0;
+  color: var(--ds-color-text);
+}
+
+.opta-queue-company,
+.opta-queue-step {
+  color: var(--ds-color-text-secondary);
+}
+
+.opta-queue-score,
+.opta-captured-score {
+  min-width: 54px;
+  height: 54px;
+  border-radius: 18px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--ds-font-display);
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--ds-color-primary);
+  background: var(--ds-color-primary-bg);
+}
+
+.opta-captured-item {
+  padding: 18px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.opta-captured-company,
+.opta-captured-location {
+  color: rgba(255, 255, 255, 0.64);
+}
+
+.opta-captured-role.ant-typography {
+  margin: 4px 0;
+  color: #fff;
+}
+
+.opta-captured-score {
+  background: rgba(241, 135, 62, 0.16);
+  color: #fff;
+}
+
+.opta-task-item {
+  padding: 18px;
+  display: grid;
+  grid-template-columns: 20px minmax(0, 1fr);
+  gap: 14px;
+  border: 1px solid var(--ds-color-border-soft);
+  background: rgba(255, 255, 255, 0.68);
+  color: var(--ds-color-primary);
+}
+
+.opta-task-item .ant-typography {
+  display: block;
+}
+
+.opta-task-item .ant-typography-paragraph {
+  margin: 4px 0 0;
+  color: var(--ds-color-text-secondary);
+}
+
+.opta-principle {
+  padding: 18px;
+  display: grid;
+  grid-template-columns: 36px minmax(0, 1fr);
+  gap: 14px;
+  align-items: start;
+  background: rgba(255, 255, 255, 0.72);
+  border: 1px solid var(--ds-color-border-soft);
+}
+
+.opta-principle span {
+  width: 36px;
+  height: 36px;
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--ds-color-primary-bg);
+  color: var(--ds-color-primary);
+  font-family: var(--ds-font-display);
+  font-weight: 700;
+}
+
+@media (max-width: 1200px) {
+  .opta-stats-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .opta-hero,
+  .opta-content-grid,
+  .opta-bottom-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 940px) {
+  .opta-shell {
+    grid-template-columns: 1fr;
+  }
+
+  .opta-sidebar {
+    position: relative;
+    min-height: auto;
+  }
+
+  .opta-main {
+    padding: 20px;
+  }
+
+  .opta-topbar {
+    flex-direction: column;
+  }
+
+  .opta-topbar-actions {
+    width: 100%;
+    flex-wrap: wrap;
+  }
+
+  .opta-search {
+    width: 100%;
+  }
+}
+
+@media (max-width: 640px) {
+  .opta-main,
+  .opta-sidebar {
+    padding: 16px;
+  }
+
+  .opta-hero-copy,
+  .opta-surface-card .ant-card-body,
+  .opta-hero-panel .ant-card-body,
+  .opta-dark-card .ant-card-body {
+    padding: 18px;
+  }
+
+  .opta-stats-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .opta-queue-main,
+  .opta-queue-meta,
+  .opta-captured-item,
+  .opta-section-head,
+  .opta-hero-panel-header,
+  .opta-signal-meter-copy {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}

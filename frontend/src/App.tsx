@@ -1,7 +1,12 @@
-import Dashboard from './pages/Dashboard'
+import OptaDashboard from './pages/OptaDashboard'
+import { DashboardThemeProvider } from './theme/DashboardThemeProvider'
 
 function App() {
-  return <Dashboard />
+  return (
+    <DashboardThemeProvider>
+      <OptaDashboard />
+    </DashboardThemeProvider>
+  )
 }
 
 export default App
