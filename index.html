@@ -406,7 +406,7 @@
   #sidebar {
     width: 220px;
     min-height: 100vh;
-    background: #1B2613;
+    background: var(--sidebarBg, #1B2613);
     display: flex;
     flex-direction: column;
     position: fixed;
@@ -1701,6 +1701,10 @@
       <div class="tp-color-row">
         <label for="cp-info">Info</label>
         <input type="color" id="cp-info" value="#4a8fa8" oninput="mudarCorSimples('--colorInfo','--colorInfoText',this.value)">
+      </div>
+      <div class="tp-color-row">
+        <label for="cp-sidebar">Menu lateral</label>
+        <input type="color" id="cp-sidebar" value="#1B2613" oninput="mudarCorSidebar(this.value)">
       </div>
     </div>
 
@@ -4802,6 +4806,7 @@ const _TEMAS = {
     '--bgMain':   '#E8E3D3',
     '--bgSection':'#F3F1E8',
     '--bgCard':   '#FFFFFF',
+    '--sidebarBg': '#1B2613',
   },
   oceano: {
     '--colorPrimary':        '#1a5fa8',
@@ -4819,6 +4824,7 @@ const _TEMAS = {
     '--bgMain':   'rgba(180, 206, 240, 0.88)',
     '--bgSection':'rgba(240, 245, 253, 0.94)',
     '--bgCard':   'rgba(240, 245, 253, 0.92)',
+    '--sidebarBg': '#0a2440',
   },
   pessego: {
     '--colorPrimary':        '#c15b7c',
@@ -4836,6 +4842,7 @@ const _TEMAS = {
     '--bgMain':   'rgba(240, 195, 206, 0.88)',
     '--bgSection':'rgba(255, 240, 243, 0.94)',
     '--bgCard':   'rgba(255, 240, 243, 0.92)',
+    '--sidebarBg': '#3d1520',
   },
   indigo: {
     '--colorPrimary':        '#6366f1',
@@ -4853,6 +4860,7 @@ const _TEMAS = {
     '--bgMain':   'rgba(195, 195, 238, 0.88)',
     '--bgSection':'rgba(245, 245, 255, 0.94)',
     '--bgCard':   'rgba(245, 245, 255, 0.92)',
+    '--sidebarBg': '#1e1b4b',
   },
   grafite: {
     '--colorPrimary':        '#8ab4f8',
@@ -4870,6 +4878,7 @@ const _TEMAS = {
     '--bgMain':   'rgba(30, 30, 50, 0.95)',
     '--bgSection':'rgba(49, 50, 68, 0.96)',
     '--bgCard':   'rgba(49, 50, 68, 0.94)',
+    '--sidebarBg': '#11111b',
   },
   rosa: {
     '--colorPrimary':        '#e91e8c',
@@ -4887,6 +4896,7 @@ const _TEMAS = {
     '--bgMain':   'rgba(255, 192, 220, 0.88)',
     '--bgSection':'rgba(255, 245, 249, 0.94)',
     '--bgCard':   'rgba(255, 245, 249, 0.92)',
+    '--sidebarBg': '#3d0028',
   },
 };
 
@@ -5005,6 +5015,12 @@ function mudarCorCard(hex) {
   salvarTemaLS({ preset: null, vars: _capturarTemaAtual() });
 }
 
+function mudarCorSidebar(hex) {
+  aplicarTema({ '--sidebarBg': hex });
+  _limparPresetAtivo();
+  salvarTemaLS({ preset: null, vars: _capturarTemaAtual() });
+}
+
 function mudarCorSimples(varBase, varText, hex) {
   const cat = varBase.replace('--color','');
   const vars = { [varBase]: hex };
@@ -5048,6 +5064,7 @@ function resetarTema() {
   document.getElementById('cp-success').value   = '#A9C27D';
   document.getElementById('cp-error').value     = '#2E3A6B';
   document.getElementById('cp-info').value      = '#7E98B2';
+  document.getElementById('cp-sidebar').value   = '#1B2613';
   document.getElementById('tp-font').value      = "'Inter', 'Segoe UI', sans-serif";
   document.getElementById('tp-radius').value    = '10';
   document.getElementById('tp-radius-val').textContent = '10px';
@@ -5068,6 +5085,7 @@ function _sincronizarPickers(vars) {
   if (vars['--colorSuccess']) document.getElementById('cp-success').value   = vars['--colorSuccess'];
   if (vars['--colorError'])   document.getElementById('cp-error').value     = vars['--colorError'];
   if (vars['--colorInfo'])    document.getElementById('cp-info').value      = vars['--colorInfo'];
+  if (vars['--sidebarBg'])    document.getElementById('cp-sidebar').value   = vars['--sidebarBg'];
 }
 
 function _capturarTemaAtual() {
