@@ -148,35 +148,68 @@ def adaptar_curriculo_e_cover(vaga: dict, curriculo_base: dict, regras_ats: dict
         fit_instrucao = (f"\nFIT CULTURAL: empresa tipo '{fit['tipo']}' — "
                          f"use tom {fit['tom']} — keywords sugeridas: {kws}")
 
-    prompt = f"""Você é especialista em currículos ATS e candidaturas para tecnologia/design.
+    # Monta contexto rico do candidato para personalização
+    nome_candidato = curriculo_base.get('nome', '')
+    resumo_base = curriculo_base.get('resumo', '')
+    exps = curriculo_base.get('experiencias', [])
+    exp_recente = exps[0] if exps else {}
+    cargo_recente = exp_recente.get('cargo', '')
+    empresa_recente = exp_recente.get('empresa', '')
+    resultados_recentes = ' | '.join(exp_recente.get('resultados', [])[:3])
+    projetos = curriculo_base.get('projetos', [])
+    proj_destaque = projetos[0].get('nome', '') if projetos else ''
+    idiomas = curriculo_base.get('idiomas', [])
+    idiomas_str = ', '.join([f"{i.get('idioma','')} ({i.get('nivel','')})" for i in idiomas])
+
+    prompt = f"""Você é um redator sênior de candidaturas para tecnologia/design no Brasil.
 Gere DUAS saídas em uma única resposta, separadas por ===COVER===.
 
-VAGA:
-Título: {vaga['titulo']} | Empresa: {vaga['empresa']}
-Descrição: {vaga['descricao'][:2000]}
+CONTEXTO DA VAGA:
+Título: {vaga['titulo']}
+Empresa: {vaga['empresa']}
+Descrição completa: {vaga['descricao'][:2500]}
 PCD: {pcd}{fit_instrucao}
 
-CURRÍCULO BASE:
+PERFIL DO CANDIDATO:
+Nome: {nome_candidato}
+Cargo atual/recente: {cargo_recente} na {empresa_recente}
+Resumo: {resumo_base}
+Skills principais: {skills_principais}
+Resultados comprovados: {resultados_recentes}
+Projeto em destaque: {proj_destaque}
+Idiomas: {idiomas_str}
+
+CURRÍCULO COMPLETO:
 {json.dumps(curriculo_base, ensure_ascii=False, indent=2)[:3000]}
 
 ATS: {regras_ats.get('nome', 'Genérico')} | Colunas duplas: {'NÃO' if not regras_ats.get('regras', {}).get('colunas_duplas') else 'SIM'}
 
 PARTE 1 — JSON do currículo adaptado:
-- Extraia keywords da vaga e injete no resumo e bullets
-- Reordene skills priorizando as da vaga
-- {'Mencione PCD (deficiência auditiva) no resumo' if pcd else ''}
-- Adicione: "keywords_injetadas":[], "ats_nome":"...", "vaga_titulo":"...", "vaga_empresa":"...", "fit_cultural":"..."
-- Retorne JSON válido completo
+- Extraia keywords da descrição da vaga e injete no resumo e nos bullets de experiências
+- Priorize skills mais relevantes para esta vaga específica
+- {'Mencione PCD (deficiência auditiva) com naturalidade no resumo' if pcd else ''}
+- Adicione campos: "keywords_injetadas":[], "ats_nome":"...", "vaga_titulo":"...", "vaga_empresa":"...", "fit_cultural":"..."
+- Retorne JSON válido e completo
 
 ===COVER===
 
-PARTE 2 — Cover letter (só texto, sem markdown):
-- 4 parágrafos, {fit['tom'] if fit['tipo'] != 'unknown' else 'profissional e direto'}
-- P1: fit imediato com a vaga | P2: 2-3 conquistas com números
-- P3: por que esta empresa | P4: chamada para ação
-- {'P3: mencione deficiência auditiva + autonomia remota' if pcd else ''}
-- Candidato: {curriculo_base.get('nome','')} | Skills: {skills_principais}
-- Sem clichês ("sou apaixonado", "tenho o prazer")"""
+PARTE 2 — Cover letter em português, tom {fit['tom'] if fit['tipo'] != 'unknown' else 'direto e profissional'}:
+
+REGRAS INEGOCIÁVEIS:
+- Escreva como um ser humano real que conhece a empresa, não como template
+- PROIBIDO: "sou apaixonado", "tenho o prazer", "venho por meio desta", "acredito que posso contribuir", "grande oportunidade", "desafio estimulante", "estou certo de que", "não meça esforços"
+- Use frases curtas, diretas, com personalidade própria
+- Mencione algo específico da descrição da vaga (um requisito, uma responsabilidade, uma tecnologia citada) — não escreva genérico
+- Inclua pelo menos 1 resultado concreto com número ou impacto mensurável
+- Evite adjetivos sem sustância ("proativo", "dinâmico", "dedicado")
+
+ESTRUTURA (4 parágrafos curtos):
+P1 — Abertura: conecte diretamente seu trabalho recente ({cargo_recente} na {empresa_recente}) com o que a vaga pede. Seja específico.
+P2 — Prova: cite 1 ou 2 resultados reais ({resultados_recentes if resultados_recentes else 'da experiência do candidato'}). Números ou impacto concreto.
+P3 — Empresa: mostre que você pesquisou — mencione algo real sobre a empresa ou o produto deles. {'Mencione sua deficiência auditiva de forma natural, destacando autonomia e comunicação assíncrona.' if pcd else ''}
+P4 — Fechamento: curto, sem rodeios. Disponibilidade para conversa.
+
+Assine como: {nome_candidato}"""
 
     message = client.messages.create(
         model="claude-haiku-4-5-20251001",
