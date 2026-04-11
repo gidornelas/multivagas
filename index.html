@@ -311,7 +311,7 @@
   .auth-input {
     width: 100%;
     height: 40px;
-    border: 1px solid var(--colorBorder);
+    border: 1px solid transparent;
     border-radius: var(--borderRadiusSM);
     padding: 0 12px;
     font-size: .9rem;
@@ -412,7 +412,7 @@
     position: fixed;
     left: 0; top: 0; bottom: 0;
     z-index: 100;
-    border-right: 1px solid rgba(255, 255, 255, 0.16);
+    border-right: 1px solid rgba(255, 255, 255, 0.08);
   }
   #sidebar .logo {
     padding: 28px 16px 20px;
@@ -569,6 +569,7 @@
     display: flex; align-items: center; justify-content: center;
     margin-bottom: 10px; font-size: 1rem;
   }
+  .stat-card.accent { border: none; background: linear-gradient(180deg, var(--colorPrimaryBg), transparent); }
   .stat-card.accent .kpi-icon-wrap { background: var(--colorPrimaryBg); color: var(--colorPrimary); }
   .stat-card.danger .kpi-icon-wrap { background: var(--colorWarningBg); color: var(--colorWarning); }
   .stat-card.dark   .kpi-icon-wrap { background: var(--colorBgLayout);  color: var(--colorTextTertiary); }
@@ -590,7 +591,7 @@
     background: var(--colorBgElevated);
     border-radius: var(--borderRadius);
     padding: 20px 24px; margin-bottom: 16px;
-    box-shadow: var(--boxShadow);
+    box-shadow: 0 1px 2px rgba(30,43,26,0.04);
   }
   .section-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; gap: 12px; }
   .section-header h3 { font-size: 1.0625rem; font-weight: 700; color: var(--colorText); letter-spacing: -.01em; }
@@ -615,7 +616,7 @@
     white-space: nowrap;
   }
   .vagas-table td { padding: 11px 12px; font-size: .875rem; vertical-align: middle; color: var(--colorText); }
-  .vagas-table tbody tr { transition: background .1s; }
+  .vagas-table tbody tr { transition: background .1s; border-bottom: 1px solid rgba(0,0,0,0.04); }
   .vagas-table tbody tr:hover td { background: rgba(79,111,47,.035) !important; }
   .vagas-table tbody tr:hover td:first-child { box-shadow: inset 3px 0 0 var(--colorPrimary); }
   .vagas-table tr:hover td.col-acoes { background: rgba(79,111,47,.035) !important; }
@@ -740,7 +741,7 @@
   .form-group { display: flex; flex-direction: column; gap: 5px; }
   .form-group label { font-size: .72rem; font-weight: 700; color: var(--colorTextTertiary); text-transform: uppercase; letter-spacing: .05em; }
   .form-group input, .form-group textarea, .form-group select {
-    padding: 0 11px; height: 40px; border: 1px solid var(--colorBorder); border-radius: var(--borderRadiusSM);
+    padding: 0 11px; height: 40px; border: 1px solid transparent; border-radius: var(--borderRadiusSM);
     font-size: .875rem; color: var(--colorText); background: var(--colorBgInput);
     transition: border-color .15s, box-shadow .15s; outline: none;
   }
@@ -764,7 +765,7 @@
     margin-bottom: 8px; border: none;
   }
   .list-item input, .list-item select {
-    flex: 1; padding: 0 11px; height: 40px; border: 1px solid var(--colorBorder); border-radius: var(--borderRadiusSM);
+    flex: 1; padding: 0 11px; height: 40px; border: 1px solid transparent; border-radius: var(--borderRadiusSM);
     font-size: .875rem; background: var(--colorBgInput); color: var(--colorText); outline: none;
     transition: border-color .15s, box-shadow .15s;
   }
@@ -810,7 +811,7 @@
     height: 40px;
     padding: 0 11px;
     line-height: 40px;
-    border: 1px solid var(--colorBorder);
+    border: 1px solid transparent;
     border-radius: var(--borderRadiusSM);
     background: var(--colorBgInput);
     color: var(--colorText);
@@ -856,7 +857,7 @@
     height: 40px;
     padding: 0 11px;
     line-height: 40px;
-    border: 1px solid var(--colorBorder);
+    border: 1px solid transparent;
     border-radius: var(--borderRadiusSM);
     background: var(--colorBgInput);
     color: var(--colorText);
@@ -986,7 +987,6 @@
   /* ── Profile hero ────────────────────────────────────── */
   .profile-hero {
     background: var(--colorBgElevated);
-    border: 1px solid var(--colorBorder);
     border-top: 3px solid var(--colorPrimary);
     border-radius: var(--borderRadius); padding: 24px 28px; color: var(--colorText);
     display: flex; align-items: center; gap: 20px; margin-bottom: 16px;
@@ -1014,7 +1014,7 @@
 
   /* ── Search input ────────────────────────────────────── */
   .search-input {
-    padding: 0 11px; height: 32px; border: 1px solid var(--colorBorder); border-radius: var(--borderRadiusSM);
+    padding: 0 11px; height: 32px; border: 1px solid transparent; border-radius: var(--borderRadiusSM);
     font-size: .875rem; outline: none; width: 210px; transition: border .15s, box-shadow .15s;
     background: var(--colorBgInput); color: var(--colorText);
   }
@@ -1055,11 +1055,11 @@
   /* ── Source cards ────────────────────────────────────── */
   .sources-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 10px; }
   .source-card {
-    background: var(--colorBgElevated); border: 1px solid var(--colorBorder);
+    background: var(--colorBgElevated);
     border-radius: var(--borderRadius); padding: 14px 16px;
     display: flex; flex-direction: column; gap: 7px;
-    transition: border-color .15s, box-shadow .15s;
-    box-shadow: var(--boxShadow);
+    transition: box-shadow .15s;
+    box-shadow: 0 1px 2px rgba(30,43,26,0.04);
   }
   .source-card:hover { border-color: var(--colorPrimaryBorder); box-shadow: 0 1px 2px rgba(46,58,107,.06), 0 4px 14px rgba(46,58,107,.1); }
   .source-card.on  { border-color: var(--colorPrimaryBorder); border-top: 2px solid var(--colorPrimary); }
@@ -1177,12 +1177,12 @@
   /* ── Busca API ───────────────────────────────────────── */
   .busca-api-row {
     display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
-    background: var(--colorBgElevated);
-    border: 1px solid var(--colorBorder);
+    background: var(--colorBgLayout);
     border-left: 3px solid var(--colorPrimary);
     border-radius: var(--borderRadiusSM);
     padding: 14px 18px;
     margin-bottom: 14px;
+    box-shadow: 0 1px 2px rgba(30,43,26,0.04);
   }
   .busca-api-row .btn-executar {
     background: var(--colorPrimary); color: #fff;
@@ -1352,7 +1352,7 @@
   }
   .mv-field-label:first-child { margin-top: 0; }
   .mv-input, .mv-textarea {
-    width: 100%; border: 1px solid var(--colorBorder); border-radius: var(--borderRadiusSM);
+    width: 100%; border: 1px solid transparent; border-radius: var(--borderRadiusSM);
     padding: 6px 11px; font-size: .875rem; color: var(--colorText);
     background: var(--colorBgInput); resize: vertical; outline: none;
     transition: border-color .15s, box-shadow .15s;
