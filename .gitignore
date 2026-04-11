@@ -9,6 +9,7 @@ env/
 # Saídas geradas (currículos, covers e PDFs — dados pessoais)
 output/
 assets/
+!assets/logos_opta-10.png
 
 # Dados pessoais e sensíveis
 data/curriculo.json
